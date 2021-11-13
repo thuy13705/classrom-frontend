@@ -1,0 +1,17 @@
+import axiosClient from "./axiosClient";
+
+const userApi = {
+    register(data) {
+        const url = 'api/user/register/';
+        return axiosClient.post(url, data);
+    },
+
+    login(data){
+        const url = 'api/user/login/';
+        return axiosClient.post(url, data);
+    },
+
+
+}
+
+export default userApi;

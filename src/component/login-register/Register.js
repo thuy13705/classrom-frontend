@@ -10,13 +10,8 @@ function Register() {
                 <div className="auth-inner">
                     <h3>Register</h3>
                     <div className="form-group">
-                        <label>First name</label>
-                        <input type="text" className="form-control" placeholder="First name" />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Last name</label>
-                        <input type="text" className="form-control" placeholder="Last name" />
+                        <label>Username</label>
+                        <input type="text" className="form-control" placeholder="Enter your username" />
                     </div>
 
                     <div className="form-group">
@@ -29,9 +24,10 @@ function Register() {
                         <input type="password" className="form-control" placeholder="Enter password" />
                     </div>
                     <div className="form-group">
-                        <label>Retype your password</label>
-                        <input type="password" className="form-control" placeholder="Enter retype your password" />
+                        <label>Retype password</label>
+                        <input type="password" className="form-control" placeholder="Enter retype password" />
                     </div>
+                    
                     <button type="submit" className="btn btn-block">Sign Up</button>
                     <p className="forgot-password text-right">
                         Already registered <Link to="/">login?</Link>

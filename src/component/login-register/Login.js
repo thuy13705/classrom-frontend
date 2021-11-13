@@ -1,8 +1,56 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import './index.css';
 
-function Login() {
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import userApi from "../../api/userApi";
+import './index.css';
+import { Redirect } from 'react-router-dom';
+import Header from "../header/Header";
+
+
+function Login(props) {
+
+    const [userDetails, setUserDetails] = useState({
+        username: '',
+        password: '',
+        error: '',
+        redirecToReferrer: false
+    })
+
+
+    const formValues = (event) => {
+        setUserDetails({
+            ...userDetails,
+            [event.target.name]: event.target.value,
+
+        })
+    }
+
+    const clickSubmit = () => {
+        const user = {
+            username: userDetails.username || undefined,
+            password: userDetails.password || undefined
+        }
+        
+        const response = userApi.login(user);
+        if (response.error) {
+            setUserDetails({ ...userDetails, error: response.error });
+        } else {
+            setUserDetails({ ...userDetails, error: '', redirecToReferrer: true });
+        }
+        
+    }
+
+    const { from } = props.location.state || {
+        from: {
+            pathname: '/'
+        }
+    }
+    const { redirecToReferrer } = userDetails
+    if (redirecToReferrer) {
+        return (<Redirect to={from} />)
+    }
+
+
     return (
         <form>
             <h2>Classroom</h2>
@@ -10,13 +58,13 @@ function Login() {
                 <div className="auth-inner">
                     <h3>Login</h3>
                     <div className="form-group">
-                        <label>Email address</label>
-                        <input type="email" className="form-control" placeholder="Enter email" />
+                        <label>Username</label>
+                        <input id="username" type="text" className="form-control" placeholder="Enter username" onChange={formValues} />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" placeholder="Enter password" />
+                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={formValues} />
                     </div>
 
                     <div className="form-group">
@@ -25,17 +73,20 @@ function Login() {
                             <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                         </div>
                     </div>
+                    <div className="form-group">
+                        <p className="error">{userDetails.error}</p>
+                    </div>
 
-                    <button type="submit" className="btn btn-block">Login</button>
+                    <button type="submit" className="btn btn-block" onSubmit={clickSubmit}>Login</button>
 
                     <div className="form-group">
                         <div>
                             <label className="login-with">Login with</label>
                         </div>
-                        <button class="loginBtn loginBtn--google">
+                        <button className="loginBtn loginBtn--google">
                             Google
                         </button>
-                        <button class="loginBtn loginBtn--facebook">
+                        <button className="loginBtn loginBtn--facebook">
                             Facebook
                         </button>
                     </div>

@@ -1,0 +1,30 @@
+.column-layout {
+    margin-top: 36px;
+    padding: 12px 0;
+    background-color: #272343;
+    display: flex;
+    color: #fff;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    
+}
+
+
+.column-item {
+    padding: 0, 16px;
+    margin: 10px 50px;
+    text-align: left;
+} 
+.column-one {
+    flex: 1;
+}
+.column-two {
+    flex: 2;
+}
+
+.stay-update{
+    background-color: #0E6EFB;
+    width: auto;
+    float: right;
+}
+
