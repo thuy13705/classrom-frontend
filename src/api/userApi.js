@@ -7,7 +7,7 @@ const userApi = {
     },
 
     login(data){
-        const url = 'api/user/login/';
+        const url = '/login';
         return axiosClient.post(url, data);
     },
 

@@ -26,12 +26,15 @@ function Login(props) {
     }
 
     const clickSubmit = () => {
+        console.log("ff");
         const user = {
-            username: userDetails.username || undefined,
+            email: userDetails.username || undefined,
             password: userDetails.password || undefined
         }
         
         const response = userApi.login(user);
+        console.log(response);
+
         if (response.error) {
             setUserDetails({ ...userDetails, error: response.error });
         } else {
@@ -77,7 +80,7 @@ function Login(props) {
                         <p className="error">{userDetails.error}</p>
                     </div>
 
-                    <button type="submit" className="btn btn-block" onSubmit={clickSubmit}>Login</button>
+                    <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
 
                     <div className="form-group">
                         <div>
