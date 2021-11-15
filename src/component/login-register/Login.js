@@ -1,54 +1,71 @@
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import userApi from "../../api/userApi";
-import './index.css';
 import { Redirect } from 'react-router-dom';
-import Header from "../header/Header";
+import { UserContext } from '../../UserContext';
+import './index.css';
 
 
-function Login(props) {
+function Login(name) {
 
-    const [userDetails, setUserDetails] = useState({
-        username: '',
-        password: '',
-        error: '',
-        redirecToReferrer: false
-    })
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [redirect, setRedirect] = useState(false);
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [userContext, setUserContext] = useContext(UserContext);
 
+    const genericErrorMessage = "Something went wrong! Please try again later."
+    const clickSubmit = async (e) => {
+        console.log('j');
+        e.preventDefault();
+        setIsSubmitting(true);
+        setError("");
 
-    const formValues = (event) => {
-        setUserDetails({
-            ...userDetails,
-            [event.target.name]: event.target.value,
-
+        fetch('http://localhost:3000/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username,
+                password
+            })
         })
+            .then(async response => {
+                console.log('response: ', response);
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        setError("Please fill all the fields correctly!")
+                    } else if (response.status === 401) {
+                        setError("Invalid username and password combination.")
+                    } else {
+                        setError(genericErrorMessage)
+                    }
+                } else {
+                    const data = await response.json()
+                    setUserContext(oldValues => {
+                        return { ...oldValues, token: data.token }
+                    })
+                }
+            })
+            .catch(error => {
+                setIsSubmitting(false)
+                setError(genericErrorMessage)
+            })
+
+        if (isSubmitting) {
+            setRedirect(true);
+        }
+
+
+    };
+
+    if (redirect) {
+        return <Redirect to="/home" />;
     }
 
-    const clickSubmit = () => {
-        const user = {
-            username: userDetails.username || undefined,
-            password: userDetails.password || undefined
-        }
-        
-        const response = userApi.login(user);
-        if (response.error) {
-            setUserDetails({ ...userDetails, error: response.error });
-        } else {
-            setUserDetails({ ...userDetails, error: '', redirecToReferrer: true });
-        }
-        
-    }
 
-    const { from } = props.location.state || {
-        from: {
-            pathname: '/'
-        }
-    }
-    const { redirecToReferrer } = userDetails
-    if (redirecToReferrer) {
-        return (<Redirect to={from} />)
-    }
+
+
 
 
     return (
@@ -59,12 +76,12 @@ function Login(props) {
                     <h3>Login</h3>
                     <div className="form-group">
                         <label>Username</label>
-                        <input id="username" type="text" className="form-control" placeholder="Enter username" onChange={formValues} />
+                        <input id="username" type="text" className="form-control" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={formValues} />
+                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
                     </div>
 
                     <div className="form-group">
@@ -74,10 +91,10 @@ function Login(props) {
                         </div>
                     </div>
                     <div className="form-group">
-                        <p className="error">{userDetails.error}</p>
+                        <p className="error">{error}</p>
                     </div>
 
-                    <button type="submit" className="btn btn-block" onSubmit={clickSubmit}>Login</button>
+                    <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
 
                     <div className="form-group">
                         <div>

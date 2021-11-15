@@ -4,7 +4,38 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import './header.css';
 
-function Header() {
+function Header(name) {
+
+
+    name = '';
+    let menu;
+    if (name === '') {
+        menu = (
+            <Nav>
+                <Nav.Link>
+                    <Link className="header-item" to='/'>Login</Link>
+                </Nav.Link>
+                <Nav.Link>
+                    <Link className="header-item" to='/register'>Register</Link>
+                </Nav.Link>
+            </Nav>
+        )
+    } else {
+        menu = (
+            <Nav>
+                <NavDropdown title="" id="collasible-nav-dropdown" className="add">
+                    <NavDropdown.Item href="#action/3.1">Add a class</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
+
+                </NavDropdown>
+                <NavDropdown title="Account" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1">My Info</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+
+                </NavDropdown>
+            </Nav>
+        )
+    }
     return (
         <div>
             <Navbar className="header-color">
@@ -13,27 +44,9 @@ function Header() {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-
                         </Nav>
                         <Nav>
-                            {/* <NavDropdown title="" id="collasible-nav-dropdown" className="add">
-                                <NavDropdown.Item href="#action/3.1">Add a class</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
-
-                            </NavDropdown>
-                            <NavDropdown title="Account" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">My Info</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
-
-                            </NavDropdown> */}
-
-                            <Nav.Link>
-                                <Link className="header-item" to='/'>Login</Link>
-                                </Nav.Link>
-                            <Nav.Link>
-                                <Link className="header-item" to='/register'>Register</Link>
-                                </Nav.Link>
-
+                            {menu}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
