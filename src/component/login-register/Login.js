@@ -1,25 +1,28 @@
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+
 import { Link } from "react-router-dom";
 import { Redirect } from 'react-router-dom';
-import { UserContext } from '../../UserContext';
+
 import './index.css';
+import Home from "../home/Home";
+import Header from "../header/Header";
 
 
-function Login(name) {
+function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [userContext, setUserContext] = useContext(UserContext);
+
+    const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
 
     const genericErrorMessage = "Something went wrong! Please try again later."
     const clickSubmit = async (e) => {
+
         console.log('j');
         e.preventDefault();
-        setIsSubmitting(true);
         setError("");
 
         fetch('http://localhost:3000/users/login', {
@@ -42,30 +45,25 @@ function Login(name) {
                     }
                 } else {
                     const data = await response.json()
-                    setUserContext(oldValues => {
-                        return { ...oldValues, token: data.token }
-                    })
+                    console.log(data);
+                    localStorage.setItem("token", data.token)
+
+                    setLogin(true);
+
                 }
             })
             .catch(error => {
-                setIsSubmitting(false)
+
                 setError(genericErrorMessage)
             })
 
-        if (isSubmitting) {
-            setRedirect(true);
-        }
+        console.log(isLogin)
 
 
     };
-
-    if (redirect) {
-        return <Redirect to="/home" />;
+    if (isLogin) {
+        return <Redirect to="/home" />
     }
-
-
-
-
 
 
     return (
@@ -116,6 +114,8 @@ function Login(name) {
                 </div>
             </div>
         </form>
+
+
     )
 }
 

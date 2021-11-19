@@ -1,10 +1,20 @@
-import React from 'react'
+import React from 'react';
+import Card from './Card';
+import './index.css';
 
 function Home(){
 
     return (
-        <div>
-            <h4>All class</h4>
+        <div className="all-classes">
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
         </div>
     )
 }

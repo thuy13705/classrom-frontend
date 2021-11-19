@@ -5,7 +5,7 @@ import './footer.css';
 
 function Footer() {
     return (
-        <div>
+        <div className="footer">
             <div className="column-layout">
                 <div className="column-item column-one">
                     <h4>Contact with us</h4>

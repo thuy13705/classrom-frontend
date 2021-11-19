@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Nav, NavDropdown } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import './header.css';
 
-function Header(name) {
-
-
-    name = '';
+function Header(isLogin) {
+  
+    console.log(isLogin);
     let menu;
-    if (name === '') {
+    if(!!isLogin){
+        
+        console.log("khong kiem tra duoc")
+    }
+    if (!!isLogin) {
+
         menu = (
             <Nav>
                 <Nav.Link>
@@ -23,7 +27,7 @@ function Header(name) {
     } else {
         menu = (
             <Nav>
-                <NavDropdown title="" id="collasible-nav-dropdown" className="add">
+                <NavDropdown title="Add" id="collasible-nav-dropdown" className="">
                     <NavDropdown.Item href="#action/3.1">Add a class</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
 
