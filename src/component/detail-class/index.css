@@ -1,0 +1,32 @@
+.left-menu{
+    margin-top: 5%;
+    max-width: 200px;
+}
+
+.nav-pill .nav-link {
+    border: none;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #272343;
+    background:  #DBDAFF;
+    font-weight: 500;
+    font-size: medium;
+}
+
+.item-tab{
+    color: #000;
+    text-align: right;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: small;
+}
+
+.item-tab:hover{
+    cursor: pointer;
+    color: #fff;
+    background-color: #7868E6;
+}
+h5{
+    text-align: left;
+    margin-left: 10px;
+}

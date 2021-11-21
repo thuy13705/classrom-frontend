@@ -1,0 +1,27 @@
+.dropdown-toggle::after{
+    border: none;
+}
+
+.navbar-light .navbar-brand {
+    color: #fff;
+}
+
+.header-color{
+    background: #272343;
+}
+
+.add {
+    background-image: url('./add.png');
+    width: 50px;
+    height: 50px;
+
+}
+
+.header-item{
+    text-decoration: none;
+    color: #fff;
+}
+
+.header-item:hover{
+    color: rgb(206, 200, 200);
+}
