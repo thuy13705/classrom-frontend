@@ -3,7 +3,7 @@ import { Container, Table} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressBook, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
-function ShowPeopleList({items}){
+function ShowPeopleList({items,teacher}){
 
     return(
         <div className="classdetail">
@@ -12,8 +12,8 @@ function ShowPeopleList({items}){
                 <Table responsive="sm" borderless="true">
                     <thead>
                         <tr className="title-list">
-                            <th clas="list" style={{ width: '90%' }}><h3>Giảng viên</h3></th>
-                            <th class="icon" ><FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon></th>
+                            <th clas="list" style={{ width: '90%' }}><h3>Teacher</h3></th>
+                            {teacher? <th class="icon" ><FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon></th>:<></>}
                         </tr>
                     </thead>
                     <tbody>
@@ -32,8 +32,8 @@ function ShowPeopleList({items}){
                 <Table responsive="sm" borderless="true">
                     <thead>
                         <tr className="title-list">
-                            <th clas="list" style={{ width: '90%' }}><h3>Sinh viên</h3></th>
-                            <th class="icon"><FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon></th>
+                            <th clas="list" style={{ width: '90%' }}><h3>Student</h3></th>
+                            {teacher? <th class="icon" ><FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon></th>:<></>}
                         </tr>
                     </thead>
                     <tbody>

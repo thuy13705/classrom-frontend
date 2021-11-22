@@ -5,11 +5,9 @@ import { Link } from "react-router-dom";
 import { Redirect } from 'react-router-dom';
 
 import './index.css';
-import Home from "../home/Home";
-import Header from "../header/Header";
 
 
-function Login() {
+function Login({nameurl}) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -22,8 +20,6 @@ function Login() {
 
     const genericErrorMessage = "Something went wrong! Please try again later."
     const clickSubmit = async (e) => {
-
-        console.log('j');
         e.preventDefault();
         setError("");
 
@@ -60,11 +56,9 @@ function Login() {
             })
 
         console.log(isLogin)
-
-
     };
     if (isLogin) {
-        return <Redirect to="/home" />
+        return <Redirect to={nameurl} />
     }
 
 

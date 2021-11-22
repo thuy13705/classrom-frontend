@@ -29,6 +29,9 @@
 .all-classes {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
-    
+    flex-wrap: wrap;   
+}
+
+li{
+  list-style-type: none;
 }

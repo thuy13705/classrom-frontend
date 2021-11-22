@@ -1,7 +1,6 @@
 import './index.css'
 import { Container, Table} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAddressBook, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+
 
 function ShowPeopleList({items}){
 
