@@ -9,29 +9,30 @@ import Footer from './component/footer/Footer';
 import Home from './component/home/Home';
 import { useEffect, useState } from 'react';
 import DetailClass from './component/detail-class/DetailClass';
+import Profile from './component/user/Profile';
 
 
 function App() {
   // localStorage.removeItem("token");
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"))
-  console.log(loggedIn)
+  const [user, setUser] = useState(localStorage.getItem("user"))
 
 
   return (
     <BrowserRouter>
       <div className="App">
-      
-       <Header loggedIn={loggedIn}/>
-    
+        <Header loggedIn={loggedIn} />
         <Switch>
-       
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/detail-class" component={DetailClass} />
+          <Route path="/classdetail/:id">
+            <DetailClass />
+          </Route>
+          <Route exact path="/profile" component={Profile} />
+
         </Switch>
-        <Footer />
-        
+        <Footer loggedIn={loggedIn}/>
+
 
       </div>
     </BrowserRouter>

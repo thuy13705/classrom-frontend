@@ -8,11 +8,11 @@ function Header(isLogin) {
   
     console.log(isLogin);
     let menu;
-    if(!!isLogin){
+    if(!isLogin){
         
         console.log("khong kiem tra duoc")
     }
-    if (!!isLogin) {
+    if (!isLogin) {
 
         menu = (
             <Nav>

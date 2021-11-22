@@ -1,0 +1,24 @@
+.profile{
+    padding: 100px 0px;
+}
+
+.profile .account{
+    padding-top: 10px;
+}
+
+.profile .profile-border {
+    border: 0.5px solid #272343;
+    border-radius: 10px;
+}
+
+.profileh1 h2, h4, h5, h6, label, span {
+    font-weight: 300;
+    font-family: 'Fira Sans', sans-serif;
+    margin-top: 0px;
+}
+
+.profile p label{
+    font-weight: 500;
+    font-family: 'Fira Sans', sans-serif;
+    margin-top: 0px;
+}

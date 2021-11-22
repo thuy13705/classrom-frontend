@@ -23,7 +23,7 @@ function Register() {
       
             console.log('register')
             e.preventDefault();
-            await fetch('http://localhost:3000/users/signup', {
+            await fetch('http://localhost:3080/users/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

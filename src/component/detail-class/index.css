@@ -30,3 +30,67 @@ h5{
     text-align: left;
     margin-left: 10px;
 }
+
+
+.container-tab h3{
+    font-weight: 500!important;
+    margin-top: 20px;
+    margin-top: 10px;
+}
+
+.classdetail{
+    min-height: 500px;
+}
+
+table,th.list,tr {
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+th.icon{
+    text-align: right;
+}
+
+tr.title-list{
+    border-bottom: 2px solid black;
+}
+
+table{
+    margin-bottom: 40px!important;
+}
+
+.classdetail .classesdetail{
+    padding: 30px;
+}
+
+.classdetail .classesdetail span{
+    margin-left: 10px;
+    font-weight: lighter;
+}
+
+.classdetail .classesdetail h3, th.icon{
+    color: #0d6efd;
+}
+
+.classinfo{
+    margin-top: 50px;
+    padding: 0 200px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .pricingBlock .ant-row > div:nth-child(2) .ant-list-item {
+      transform: scale(1.14);
+    }
+  }
+  
+  @media only screen and (max-width: 992px) {
+    .classinfo{
+        padding: 0 100px;
+    }
+  }
+
+  @media only screen and (max-width: 576px) {
+    .classinfo{
+        padding: 0 50px;
+    }
+  }
+  

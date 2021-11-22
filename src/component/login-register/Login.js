@@ -17,6 +17,8 @@ function Login() {
     const [error, setError] = useState('');
 
     const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
+    const [user, setUser] = useState(localStorage.getItem("user") != null);
+
 
     const genericErrorMessage = "Something went wrong! Please try again later."
     const clickSubmit = async (e) => {
@@ -25,7 +27,7 @@ function Login() {
         e.preventDefault();
         setError("");
 
-        fetch('http://localhost:3000/users/login', {
+        fetch('http://localhost:3080/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -47,7 +49,7 @@ function Login() {
                     const data = await response.json()
                     console.log(data);
                     localStorage.setItem("token", data.token)
-
+                    localStorage.setItem("user", data.user._id)
                     setLogin(true);
 
                 }
@@ -74,12 +76,12 @@ function Login() {
                     <h3>Login</h3>
                     <div className="form-group">
                         <label>Username</label>
-                        <input id="username" type="text" className="form-control" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
+                        <input id="username" type="text" className="form-control" placeholder="Enter username" onChange={e => setUsername(e.target.value)} required />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={e => setPassword(e.target.value)} />
+                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={e => setPassword(e.target.value)} required/>
                     </div>
 
                     <div className="form-group">
