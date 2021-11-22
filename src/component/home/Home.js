@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Card from './Card';
+import { NavLink } from 'react-router-dom';
 import './index.css';
 
 function Home() {
@@ -19,7 +20,7 @@ function Home() {
             redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:3080/classes", requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
             .then(response => response.json())
             .then(result => {
                 console.log("hihi");
@@ -39,11 +40,10 @@ function Home() {
             <h1 style={{ textAlign: "left", marginTop: "50px" }}>My Classes</h1>
             <Row xs={1} md={2} lg={3} className="g-4">
                 {teachers && teachers.map((item, index) => (
-                    <Col key={item._id} >
+                    <NavLink style={{textDecorationLine:"none",color:"#282c34"}} to={`/classdetail/${item._id}`}>
                         <Card key={item._id + item._id} items={item}>
                         </Card>
-                    </Col>
-
+                    </NavLink>
                 ))}
             </Row>
             {/* <div className="all-classes">
@@ -55,8 +55,11 @@ function Home() {
             <Row xs={1} md={2} lg={3} className="g-4">
                 {students && students.map((item, index) => (
                     <Col key={item._id} >
-                        <Card key={item._id + item._id} items={item}>
-                        </Card>
+                        <NavLink style={{textDecorationLine:"none",color:"#282c34"}} to={`/classdetail/${item._id}`}>
+                            <Card key={item._id + item._id} items={item}>
+                            </Card>
+                        </NavLink>
+
                     </Col>
                 ))}
             </Row>

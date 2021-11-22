@@ -23,7 +23,7 @@ function DetailClass() {
             headers: myHeaders,
             redirect: 'follow'
         };
-        fetch("http://127.0.0.1:3080/classes/" + id, requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
             .then(response => response.json())
             .then(result => {
                 setItems(result);

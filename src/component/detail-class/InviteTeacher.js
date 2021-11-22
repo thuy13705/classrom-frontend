@@ -26,7 +26,7 @@ function InviteStudent() {
             redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:3080/classes/invite/0/"+id, requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/classes/invite/0/"+id, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();

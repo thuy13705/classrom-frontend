@@ -23,7 +23,7 @@ function Login({nameurl}) {
         e.preventDefault();
         setError("");
 
-        fetch('http://localhost:3080/users/login', {
+        fetch('https://class-room-midterm.herokuapp.com/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

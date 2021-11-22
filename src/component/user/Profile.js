@@ -18,7 +18,7 @@ function Profile() {
             redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:3080/users/profile", requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/users/profile", requestOptions)
             .then(response => response.json())
             .then(result => {
                 setItems(result);
