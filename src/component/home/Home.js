@@ -26,7 +26,8 @@ function Home() {
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
-            redirect: 'follow'
+            redirect: 'follow',
+            mode: "cors",
         };
 
         fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)

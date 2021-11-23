@@ -30,7 +30,8 @@ function Register() {
                     username,
                     email,
                     password
-                })
+                }),
+                mode: "cors",
             });
         
 

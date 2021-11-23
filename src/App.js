@@ -49,11 +49,11 @@ function App() {
       <div className="App"> 
        <>
        <Header/><Switch>
-            <Route exact path="/signin">
+            <Route exact path="/">
             <Login nameurl="/home" setLoggedIn={setLoggedIn}></Login>
               </Route>
             <Route exact path="/register" component={Register} />
-            {!loggedIn? <Redirect to="/signin" /> :null}
+            {!loggedIn? <Redirect to="/" /> :null}
             <Route exact path="/home"><Home /></Route>
             <Route path="/classdetail/:id">
               <DetailClass />
