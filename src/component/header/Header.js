@@ -6,6 +6,10 @@ import './header.css';
 
 function Header(isLogin) {
   
+    const logout = () =>{
+        localStorage.clear();
+        window.location.href = '/';
+    }
     console.log(isLogin);
     let menu;
     if(!isLogin){
@@ -27,6 +31,16 @@ function Header(isLogin) {
     } else {
         menu = (
             <Nav>
+
+//                 <Nav>
+//                 <Nav.Link>
+//                     <Link className="header-item" to=''>My info</Link>
+//                 </Nav.Link>
+//                 <Nav.Link>
+//                     <Link className="header-item" onClick={logout}>Logout</Link>
+//                 </Nav.Link>
+//             </Nav>
+=======
                   <Nav.Link>
                     <Link className="header-item" to='/addclass'>Add Class</Link>
                 </Nav.Link>
@@ -35,6 +49,7 @@ function Header(isLogin) {
 
                     <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
                 </NavDropdown>
+
             </Nav>
         )
     }

@@ -32,6 +32,21 @@
     flex-wrap: wrap;   
 }
 
+.add{
+  float: right;
+  background-image: url('add.png');
+  background-repeat: no-repeat;
+ 
+ 
+
+}
+
+
 li{
   list-style-type: none;
 }
+
+.btnAdd{
+  width: 100px;
+  margin-left: 40px;
+} 

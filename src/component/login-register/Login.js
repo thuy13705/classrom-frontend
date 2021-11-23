@@ -2,6 +2,13 @@
 import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
+
+import { Redirect } from 'react-router-dom';
+import GoogleLogin from 'react-google-login';
+import './index.css';
+
+function Login({ nameurl }) {
+
 import { Redirect,useHistory } from 'react-router-dom';
 
 import './index.css';
@@ -63,6 +70,50 @@ function Login({nameurl, setLoggedIn}) {
         console.log(isLogin)
     };
 
+
+    const responseGoogle = (response) => {
+        console.log(response);
+
+
+        const googleResponse = {
+            name: response.profileObj.name,
+            email: response.profileObj.email,
+            token: response.googleId,
+            Image: response.profileObj.imageUrl,
+            ProviderId: 'Google'
+        };
+        console.log(googleResponse);
+        fetch('http://localhost:3080/users/loginGoogle', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                googleResponse
+            })
+        }).then(async res => {
+            console.log('response: ', res);
+            if (!res.ok) {
+                console.log(res.state)
+            } else {
+                const data = await res.json()
+                console.log(data);
+                localStorage.setItem("token", data.token)
+                localStorage.setItem("user", data.user._id)
+                setLogin(true)
+                console.log(isLogin)
+                
+
+            }
+        })
+            .catch(error => {
+
+                
+            })
+
+        console.log(isLogin)
+
+    }
+
+
     return (
         <form>
             <h2>Classroom</h2>
@@ -76,7 +127,7 @@ function Login({nameurl, setLoggedIn}) {
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={e => setPassword(e.target.value)} required/>
+                        <input id="password" type="password" className="form-control" placeholder="Enter password" onChange={e => setPassword(e.target.value)} required />
                     </div>
 
                     <div className="form-group">
@@ -92,15 +143,14 @@ function Login({nameurl, setLoggedIn}) {
                     <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
 
                     <div className="form-group">
-                        <div>
-                            <label className="login-with">Login with</label>
-                        </div>
-                        <button className="loginBtn loginBtn--google">
-                            Google
-                        </button>
-                        <button className="loginBtn loginBtn--facebook">
-                            Facebook
-                        </button>
+
+                        <GoogleLogin
+                            clientId="835120072786-tulnah1f5c8r5v0lq8gi4visd69topae.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
                     </div>
                     <p className="register">
                         You haven't an account? <Link to="/register">Create an new account</Link>
