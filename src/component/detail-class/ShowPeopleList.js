@@ -1,9 +1,17 @@
 import './index.css'
-import { Container, Table} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Table,Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressBook, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import InviteMailStudent from './InviteMailStudent';
 
 function ShowPeopleList({items,teacher}){
+    const [modalShow, setModalShow] = useState(false);
+
+
+    const handleModalShow=()=>{
+        setModalShow(!modalShow);
+    }
 
     return(
         <div className="classdetail">
@@ -13,7 +21,16 @@ function ShowPeopleList({items,teacher}){
                     <thead>
                         <tr className="title-list">
                             <th clas="list" style={{ width: '90%' }}><h3>Teacher</h3></th>
-                            {teacher? <th class="icon" ><FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon></th>:<></>}
+                            {teacher? <th class="icon" >
+                            <Button variant="primary" onClick={() => handleModalShow()}>
+                            <FontAwesomeIcon icon={faAddressBook}></FontAwesomeIcon>
+                        </Button>
+
+                        <InviteMailStudent
+                            show={modalShow}
+                            onHide={() => handleModalShow()}
+                            id={items._id}
+                        /></th>:<></>}
                         </tr>
                     </thead>
                     <tbody>
@@ -21,7 +38,7 @@ function ShowPeopleList({items,teacher}){
                             <tr key={items._id}>
                                 <td className="list">
                                     <FontAwesomeIcon icon={faUserCircle} />
-                                    <span>{item.username}</span>
+                                    <span>{item.name}</span>
                                 </td>
                             </tr>
                         ))}
@@ -41,7 +58,7 @@ function ShowPeopleList({items,teacher}){
                             <tr key={items._id}>
                                 <td className="list">
                                     <FontAwesomeIcon icon={faUserCircle} />
-                                    <span>{item.nameUser}</span>
+                                    <span>{item.name}</span>
                                 </td>
                             </tr>
                         ))}
