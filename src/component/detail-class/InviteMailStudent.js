@@ -16,7 +16,8 @@ function InviteMailStudent({ id, show, onHide }) {
             method: 'POST',
             headers: myHeaders,
             body: urlencoded,
-            redirect: 'follow'
+            redirect: 'follow',
+            mode: "cors",
         };
 
         fetch("https://class-room-midterm.herokuapp.com/classes/sendMailStudent/"+id, requestOptions)

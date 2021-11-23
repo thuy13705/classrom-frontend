@@ -29,7 +29,8 @@ function Login({nameurl, setLoggedIn}) {
             body: JSON.stringify({
                 username,
                 password
-            })
+            }),
+            mode: "cors",
         })
             .then(async response => {
                 console.log('response: ', response);

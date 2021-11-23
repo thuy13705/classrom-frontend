@@ -2,9 +2,7 @@ import React,{useEffect} from 'react';
 import './index.css';
 
 function Card({items}) {
-    useEffect(() => {
-        console.log(items);
-    }, [])
+
     return (
         <div className="card-wrapper">
             <div className="card-inner">
