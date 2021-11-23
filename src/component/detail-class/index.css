@@ -76,6 +76,16 @@ table{
     padding: 0 200px;
 }
 
+.btn-submit{
+    padding: 10px 20px;
+    background: #272343;
+    
+}
+
+.btn{
+    width:auto;
+}
+
 @media only screen and (max-width: 1200px) {
     .pricingBlock .ant-row > div:nth-child(2) .ant-list-item {
       transform: scale(1.14);

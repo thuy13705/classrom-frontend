@@ -71,7 +71,7 @@ function Profile() {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
             let gender=items.gender;
-            if (e.target.gender.value!=""){
+            if (e.target.gender.value!==""){
                 gender=e.target.gender.value;
             }
 

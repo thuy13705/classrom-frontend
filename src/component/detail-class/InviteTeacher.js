@@ -6,9 +6,10 @@ import './index.css'
 import { Container, Fade, Table } from 'react-bootstrap';
 import Login from '../login-register/Login';
 import DetailClass from './DetailClass';
+import InviteStudent from './InviteStudent';
 
 
-function InviteStudent() {
+function InviteTeacher() {
     const { id } = useParams();
     const [result, setResult] =useState();
     const [error,setError]=useState(true);
@@ -54,4 +55,4 @@ function InviteStudent() {
     );
 }
 
-export default InviteStudent;
+export default InviteTeacher;
