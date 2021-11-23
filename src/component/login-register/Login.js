@@ -2,20 +2,16 @@
 import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
-import { Redirect } from 'react-router-dom';
+import './index.css';
+
 import GoogleLogin from 'react-google-login';
 import './index.css';
 
-function Login({ nameurl }) {
 
-import { Redirect,useHistory } from 'react-router-dom';
-
-import './index.css';
-
-
-function Login({nameurl, setLoggedIn}) {
-    const history=useHistory();
+function Login({ setLoggedIn }) {
+    const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
@@ -40,7 +36,6 @@ function Login({nameurl, setLoggedIn}) {
             mode: "cors",
         })
             .then(async response => {
-                console.log('response: ', response);
                 if (!response.ok) {
                     if (response.status === 400) {
                         setError("Please fill all the fields correctly!")
@@ -55,7 +50,6 @@ function Login({nameurl, setLoggedIn}) {
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", data.user._id)
                     setLoggedIn(data.token);
-                    console.log(history.action);
                     if (history.action !== 'POP') {
                         history.goBack();
                     } else {
@@ -68,14 +62,10 @@ function Login({nameurl, setLoggedIn}) {
                 setError(genericErrorMessage)
             })
 
-        console.log(isLogin)
     };
 
 
     const responseGoogle = (response) => {
-        console.log(response);
-
-
         const googleResponse = {
             name: response.profileObj.name,
             email: response.profileObj.email,
@@ -84,37 +74,35 @@ function Login({nameurl, setLoggedIn}) {
             ProviderId: 'Google'
         };
         console.log(googleResponse);
-        fetch('http://localhost:3080/users/loginGoogle', {
+        fetch('https://class-room-midterm.herokuapp.com/users/loginGoogle', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 googleResponse
-            })
+            }),
+            mode: "cors",
         }).then(async res => {
             console.log('response: ', res);
             if (!res.ok) {
                 console.log(res.state)
             } else {
                 const data = await res.json()
-                console.log(data);
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", data.user._id)
-                setLogin(true)
-                console.log(isLogin)
-                
+                setLoggedIn(data.token);
+                if (history.action !== 'POP') {
+                    history.goBack();
+                } else {
+                    history.push("/home");
+                }
+
 
             }
         })
-            .catch(error => {
+            .catch(error => console.log('error', error));
 
-                
-            })
-
-        console.log(isLogin)
 
     }
-
-
     return (
         <form>
             <h2>Classroom</h2>
@@ -132,19 +120,16 @@ function Login({nameurl, setLoggedIn}) {
                     </div>
 
                     <div className="form-group">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                            <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                        </div>
-                    </div>
-                    <div className="form-group">
                         <p className="error">{error}</p>
                     </div>
 
-                    <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
+                    <div style={{ textAlign: "center" }} className="form-group">
+                        <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
+                    </div>
 
-                    <div className="form-group">
+                    <h6 style={{ textAlign: "center", marginTop: "10px" }}>Or</h6>
 
+                    <div style={{ textAlign: "center", marginTop: "10px" }} className="form-group">
                         <GoogleLogin
                             clientId="835120072786-tulnah1f5c8r5v0lq8gi4visd69topae.apps.googleusercontent.com"
                             buttonText="Login"
@@ -156,15 +141,10 @@ function Login({nameurl, setLoggedIn}) {
                     <p className="register">
                         You haven't an account? <Link to="/register">Create an new account</Link>
                     </p>
-                    <p className="forgot-password text-right">
-                        Forgot <a href="#">password?</a>
-                    </p>
                 </div>
             </div>
         </form>
-
-
     )
 }
 
-export default Login
+export default Login;

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { NavDropdown } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { NavLink, useHistory } from 'react-router-dom';
+import AddClassdModal from './AddClassModal';
 import Card from './Card';
-import { NavLink } from 'react-router-dom';
-
 
 import './index.css';
-import AddClassModal from './AddClassModal';
 
 function Home() {
-
+    const history=useHistory();
     const [students, setStudent] = useState([]);
     const [teachers, setTeacher] = useState([]);
     const [modalShow, setModalShow] = useState(false);
 
-    const handleModalShow=()=>{
+    const handleModalShow = () => {
         setModalShow(!modalShow);
     }
 
@@ -31,29 +31,35 @@ function Home() {
         };
 
         fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                console.log("hihi");
-                console.log(result)
-                setStudent(result.students);
-                setTeacher(result.teachers);
+            .then(async response => {
+                if (response.status === 401) {
+                    history.push("/");
+                }
+                else {
+                    const result = await response.json()
+                    setStudent(result.students);
+                    setTeacher(result.teachers);
+                }
             })
             .catch(error => console.log('error', error));
     }
 
     useEffect(() => {
         getListClass();
-    }, [])
+    })
     return (
         <Container>
-            <NavDropdown id="collasible-nav-dropdown" className="add">
-                <NavDropdown.Item onClick={() => handleModalShow()}>Add a class</NavDropdown.Item>
-                <AddClassModal show={modalShow} onHide={() => handleModalShow()} />
-                
-                <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
+            <div style={{ display: "flex", justifyContent: "end" }}>
+                <Button variant="primary" onClick={() => handleModalShow()}>
+                    <FontAwesomeIcon icon={faPlus} />Add
+                </Button>
+                <AddClassdModal
+                    show={modalShow}
+                    onHide={() => handleModalShow()}
+                />
+            </div>
 
-            </NavDropdown>
-            <h1 style={{ textAlign: "left", marginTop: "50px" }}>My Classes</h1>
+            <h1 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h1>
             <Row xs={1} md={2} lg={3} className="g-4">
                 {teachers && teachers.map((item, index) => (
                     <NavLink style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>

@@ -1,33 +1,39 @@
 import React, {useState, useEffect} from 'react';
 import { Form, Button, Modal, } from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
+
+
 
 function AddClassModal({ show, onHide }) {
-    const [snackbareopen, setSnack] = useState(false);
+    const history=useHistory();
     const [name, setName] = useState();
     const [category, setCategory] = useState();
     const [room, setRoom] = useState();
-    const [items, setItems] = useState({});
 
     const handleSubmit = (e) => {
-        console.log("click");
         e.preventDefault();
-        fetch('https://class-room-midterm.herokuapp.com/classes/', {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+        fetch('https://class-room-midterm.herokuapp.com/classes', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: myHeaders,
             body: JSON.stringify({
                 name: name,
                 category: category,
                 room: room,
-                
-            })
+            }),
+            mode:"cors"
         })
             .then(res => res.json())
             .then((result) => {
-                setSnack(true);
-                alert("Thêm thành công.");
+                if (result!=="Unauthorized"){
+                    alert("Adding class success.");
+                }
+                else{
+                    history('/')
+                }
             }, (error) => {
                 alert(error);
             });
@@ -71,4 +77,4 @@ function AddClassModal({ show, onHide }) {
     );
 }
 
-export default AddClassModal
+export default AddClassModal;

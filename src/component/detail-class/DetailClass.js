@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom"
+import { useParams,useHistory } from "react-router-dom"
 import './index.css'
 import { Tab, Tabs } from 'react-bootstrap';
 import ShowPeopleList from './ShowPeopleList';
@@ -8,9 +8,10 @@ import checkTeacher from '../../helper/helper';
 
 
 function DetailClass() {
+    const history=useHistory();
     const { id } = useParams()
     const [items, setItems] = useState({});
-    const [teacher,setTeacher]=useState(false);
+    const [teacher, setTeacher] = useState(false);
 
     const getDetail = () => {
         const myHeaders = new Headers();
@@ -25,11 +26,15 @@ function DetailClass() {
             mode: "cors",
         };
         fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                setItems(result);
-                setTeacher(checkTeacher(result.teachers,localStorage.getItem("user")));
-                console.log(" : "+checkTeacher(result.teachers,localStorage.getItem("user")))
+            .then(async response => {
+                if (response.status === 401) {
+                    history.push("/");
+                }
+                else {
+                    const result = await response.json()
+                    setItems(result);
+                    setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
+                }
             })
             .catch(error => console.log('error', error));
 
@@ -37,15 +42,15 @@ function DetailClass() {
 
     useEffect(() => {
         getDetail();
-        
+
     }, [])
     return (
         <div className="container-tab">
             <h3>{items.nameClass}</h3>
-            <Tabs defaultActiveKey="info-class" id="uncontrolled-tab-example" className="mb-3" style={{ justifyContent: "center" }}>
-                {teacher?<Tab eventKey="info-class" title="Information Class">
+            <Tabs defaultActiveKey="people" id="uncontrolled-tab-example" className="mb-3" style={{ justifyContent: "center" }}>
+                {teacher ? <Tab eventKey="info-class" title="Information Class">
                     <InfoClass items={items}></InfoClass>
-                </Tab>:<></>}
+                </Tab> : <></>}
                 <Tab eventKey="people" title="People">
                     <ShowPeopleList items={items} teacher={teacher}></ShowPeopleList>
                 </Tab>

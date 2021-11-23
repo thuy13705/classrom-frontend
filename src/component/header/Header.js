@@ -1,22 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Nav, NavDropdown } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import { Link,useHistory} from 'react-router-dom';
 import './header.css';
 
-function Header(isLogin) {
-  
-    const logout = () =>{
+function Header({loggedIn,setLoggedIn }) {
+    const history = useHistory();
+
+    const logout = () => {
         localStorage.clear();
-        window.location.href = '/';
+        setLoggedIn(null)
+        history.push('/');
     }
-    console.log(isLogin);
     let menu;
-    if(!isLogin){
-        
-        console.log("khong kiem tra duoc")
-    }
-    if (!isLogin) {
+    if (!loggedIn) {
 
         menu = (
             <Nav>
@@ -32,24 +29,14 @@ function Header(isLogin) {
         menu = (
             <Nav>
 
-//                 <Nav>
-//                 <Nav.Link>
-//                     <Link className="header-item" to=''>My info</Link>
-//                 </Nav.Link>
-//                 <Nav.Link>
-//                     <Link className="header-item" onClick={logout}>Logout</Link>
-//                 </Nav.Link>
-//             </Nav>
-=======
-                  <Nav.Link>
-                    <Link className="header-item" to='/addclass'>Add Class</Link>
-                </Nav.Link>
-                <NavDropdown title="Account" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1"><Link  to='/profile'>My Info</Link></NavDropdown.Item>
-
-                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
-                </NavDropdown>
-
+                <Nav>
+                    <Nav.Link>
+                        <Link className="header-item" to='/profile'>My info</Link>
+                    </Nav.Link>
+                    <Nav.Link>
+                        <Link className="header-item" onClick={logout}>Logout</Link>
+                    </Nav.Link>
+                </Nav>
             </Nav>
         )
     }
@@ -57,7 +44,7 @@ function Header(isLogin) {
         <div>
             <Navbar className="header-color">
                 <Container>
-                    <Navbar.Brand href="#home">Classroom</Navbar.Brand>
+                    <Navbar.Brand ><Link className="header-item" to='/home'>Classroom</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">

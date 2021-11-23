@@ -12,7 +12,6 @@ import { Redirect } from 'react-router';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
 import InviteStudent from './component/detail-class/InviteStudent';
-import AddClassModal from './component/home/AddClassModal';
 import InviteTeacher from './component/detail-class/InviteTeacher'
 
 
@@ -28,7 +27,7 @@ function App() {
   return (
     <BrowserRouter>
 
-//       <div className="App">
+{/* //       <div className="App">
 //         <Header loggedIn={loggedIn} />
 //         <Switch>
 //           <Route exact path="/"> <Login nameurl="/home"></Login></Route>
@@ -43,14 +42,14 @@ function App() {
 //           <Route exact path="/profile" component={Profile} />
           
 //         </Switch>
-//         <Footer loggedIn={loggedIn} />
+//         <Footer loggedIn={loggedIn} /> */}
 
 
       <div className="App"> 
        <>
-       <Header/><Switch>
+       <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}/><Switch>
             <Route exact path="/">
-            <Login nameurl="/home" setLoggedIn={setLoggedIn}></Login>
+            <Login setLoggedIn={setLoggedIn}></Login>
               </Route>
             <Route exact path="/register" component={Register} />
             {!loggedIn? <Redirect to="/" /> :null}

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import './profile.css'
 import { Container, Form, Button, Row, Col, Nav, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 function Profile() {
+    const history=useHistory();
     const [items, setItems] = useState({});
 
     const getUser = () => {
@@ -22,7 +24,13 @@ function Profile() {
         fetch("https://class-room-midterm.herokuapp.com/users/profile", requestOptions)
             .then(response => response.json())
             .then(result => {
-                setItems(result);
+                if (result!=="Unauthorized"){
+                    setItems(result);
+                }
+                else{
+                    history('/')
+                }
+                
             })
             .catch(error => console.log('error', error));
 

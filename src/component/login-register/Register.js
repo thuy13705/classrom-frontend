@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import './index.css';
 
 function Register() {
+    const history=useHistory();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -32,7 +33,21 @@ function Register() {
                     password
                 }),
                 mode: "cors",
-            });
+            }) .then(response => response.text())
+            .then(result =>{
+                console.log(result)
+                if (result==="username"){
+                    alert("Username exist!");
+                }
+                else if (result==="Email"){
+                    alert("Email exist!");
+                }
+                else{
+                    alert('Register success!');
+                    history.push('/');
+                }
+            })
+            .catch(error => console.log('error', error));
         
 
     }

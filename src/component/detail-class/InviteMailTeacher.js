@@ -2,7 +2,7 @@ import { Form, Button, Modal, } from 'react-bootstrap'
 import React, { useState } from 'react';
 import {useHistory} from 'react-router-dom';
 
-function InviteMailStudent({ id, show, onHide }) {
+function InviteMailTeacher({ id, show, onHide }) {
     const history=useHistory();
 
     const handleSubmit = (e) => {
@@ -22,7 +22,7 @@ function InviteMailStudent({ id, show, onHide }) {
             mode: "cors",
         };
 
-        fetch("https://class-room-midterm.herokuapp.com/classes/sendMailStudent/"+id, requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/classes/sendMailTeacher/"+id, requestOptions)
             .then(response => response.text())
             .then(result =>{
                 if (result!=="Unauthorized"){
@@ -67,4 +67,4 @@ function InviteMailStudent({ id, show, onHide }) {
     );
 }
 
-export default InviteMailStudent;
+export default InviteMailTeacher;
