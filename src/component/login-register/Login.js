@@ -2,13 +2,20 @@
 import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
+
 import { Redirect } from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import './index.css';
 
-
 function Login({ nameurl }) {
 
+import { Redirect,useHistory } from 'react-router-dom';
+
+import './index.css';
+
+
+function Login({nameurl, setLoggedIn}) {
+    const history=useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
@@ -46,8 +53,13 @@ function Login({ nameurl }) {
                     console.log(data);
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", data.user._id)
-                    setLogin(true);
-
+                    setLoggedIn(data.token);
+                    console.log(history.action);
+                    if (history.action !== 'POP') {
+                        history.goBack();
+                    } else {
+                        history.push("/home");
+                    }
                 }
             })
             .catch(error => {
@@ -101,10 +113,7 @@ function Login({ nameurl }) {
 
     }
 
-    console.log(isLogin);
-    if (isLogin) {
-        return <Redirect to={nameurl} />
-    }
+
     return (
         <form>
             <h2>Classroom</h2>

@@ -3,6 +3,17 @@ import { Container, Table} from 'react-bootstrap';
 
 
 function ShowPeopleList({items}){
+    let studentLink="";
+    let teacherLink="";
+    if (window.location.port!==null){
+        studentLink=window.location.protocol +"//"+ window.location.hostname +":"+window.location.port+"/invite/1/"+items._id;
+        teacherLink=window.location.protocol +"//"+ window.location.hostname +":"+window.location.port+"/invite/0/"+items._id;
+    }
+    else{
+        studentLink=window.location.protocol +"//"+ window.location.hostname +"/invite/1/"+items._id;
+        teacherLink=window.location.protocol +"//"+ window.location.hostname +"/invite/0/"+items._id;
+    }
+ 
 
     return(
         <div >
@@ -38,7 +49,7 @@ function ShowPeopleList({items}){
                                     Invite Teacher
                                 </td>
                                 <td className="list">
-                                    {items.room}
+                                    {teacherLink}
                                 </td>
                             </tr>
                             <tr>
@@ -46,7 +57,7 @@ function ShowPeopleList({items}){
                                 Invite Student
                                 </td>
                                 <td className="list">
-                                    {items.room}
+                                    {studentLink}
                                 </td>
                             </tr>
                     </tbody>

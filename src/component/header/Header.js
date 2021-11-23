@@ -31,14 +31,25 @@ function Header(isLogin) {
     } else {
         menu = (
             <Nav>
-                <Nav>
-                <Nav.Link>
-                    <Link className="header-item" to=''>My info</Link>
+
+//                 <Nav>
+//                 <Nav.Link>
+//                     <Link className="header-item" to=''>My info</Link>
+//                 </Nav.Link>
+//                 <Nav.Link>
+//                     <Link className="header-item" onClick={logout}>Logout</Link>
+//                 </Nav.Link>
+//             </Nav>
+=======
+                  <Nav.Link>
+                    <Link className="header-item" to='/addclass'>Add Class</Link>
                 </Nav.Link>
-                <Nav.Link>
-                    <Link className="header-item" onClick={logout}>Logout</Link>
-                </Nav.Link>
-            </Nav>
+                <NavDropdown title="Account" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1"><Link  to='/profile'>My Info</Link></NavDropdown.Item>
+
+                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+                </NavDropdown>
+
             </Nav>
         )
     }
