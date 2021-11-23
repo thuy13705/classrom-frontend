@@ -27,15 +27,13 @@ function Header(isLogin) {
     } else {
         menu = (
             <Nav>
-                <NavDropdown title="Add" id="collasible-nav-dropdown" className="">
-                    <NavDropdown.Item href="#action/3.1">Add a class</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
-
-                </NavDropdown>
+                  <Nav.Link>
+                    <Link className="header-item" to='/addclass'>Add Class</Link>
+                </Nav.Link>
                 <NavDropdown title="Account" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">My Info</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.1"><Link  to='/profile'>My Info</Link></NavDropdown.Item>
 
+                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
         )

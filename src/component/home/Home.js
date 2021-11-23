@@ -33,7 +33,7 @@ function Home() {
 
     useEffect(() => {
         getListClass();
-    }, [])
+    }, [students,teachers])
 
     return (
         <Container>
