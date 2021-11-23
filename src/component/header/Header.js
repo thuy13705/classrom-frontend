@@ -6,6 +6,10 @@ import './header.css';
 
 function Header(isLogin) {
   
+    const logout = () =>{
+        localStorage.clear();
+        window.location.href = '/';
+    }
     console.log(isLogin);
     let menu;
     if(!isLogin){
@@ -27,16 +31,14 @@ function Header(isLogin) {
     } else {
         menu = (
             <Nav>
-                <NavDropdown title="Add" id="collasible-nav-dropdown" className="">
-                    <NavDropdown.Item href="#action/3.1">Add a class</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Join a class</NavDropdown.Item>
-
-                </NavDropdown>
-                <NavDropdown title="Account" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">My Info</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
-
-                </NavDropdown>
+                <Nav>
+                <Nav.Link>
+                    <Link className="header-item" to=''>My info</Link>
+                </Nav.Link>
+                <Nav.Link>
+                    <Link className="header-item" onClick={logout}>Logout</Link>
+                </Nav.Link>
+            </Nav>
             </Nav>
         )
     }

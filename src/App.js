@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
 import InviteStudent from './component/detail-class/InviteStudent';
+import AddClassModal from './component/home/AddClassModal';
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
             <InviteStudent />
           </Route>
           <Route exact path="/profile" component={Profile} />
-
+          
         </Switch>
         <Footer loggedIn={loggedIn} />
 
