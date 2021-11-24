@@ -28,7 +28,7 @@ function DetailClass() {
         fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
             .then(async response => {
                 if (response.status === 401) {
-                    history.push("/");
+                    history.push("/signin");
                 }
                 else {
                     const result = await response.json()

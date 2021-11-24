@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Form, Button, Modal, } from 'react-bootstrap';
 import {useHistory} from 'react-router-dom';
 
@@ -32,7 +32,7 @@ function AddClassModal({ show, onHide }) {
                     alert("Adding class success.");
                 }
                 else{
-                    history('/')
+                    history('/signin')
                 }
             }, (error) => {
                 alert(error);

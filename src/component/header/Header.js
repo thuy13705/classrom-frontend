@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Nav, NavDropdown } from 'react-bootstrap';
+import React from 'react';
+import { Container, Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link,useHistory} from 'react-router-dom';
 import './header.css';
@@ -10,7 +10,7 @@ function Header({loggedIn,setLoggedIn }) {
     const logout = () => {
         localStorage.clear();
         setLoggedIn(null)
-        history.push('/');
+        history.push('/signin');
     }
     let menu;
     if (!loggedIn) {
@@ -18,7 +18,7 @@ function Header({loggedIn,setLoggedIn }) {
         menu = (
             <Nav>
                 <Nav.Link>
-                    <Link className="header-item" to='/'>Login</Link>
+                    <Link className="header-item" to='/signin'>Login</Link>
                 </Nav.Link>
                 <Nav.Link>
                     <Link className="header-item" to='/register'>Register</Link>
@@ -44,7 +44,7 @@ function Header({loggedIn,setLoggedIn }) {
         <div>
             <Navbar className="header-color">
                 <Container>
-                    <Navbar.Brand ><Link className="header-item" to='/home'>Classroom</Link></Navbar.Brand>
+                    <Navbar.Brand ><Link className="header-item" to='/'>Classroom</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">

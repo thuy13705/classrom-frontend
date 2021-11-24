@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import './index.css';
 
 import GoogleLogin from 'react-google-login';
-import './index.css';
 
 
 function Login({ setLoggedIn }) {
@@ -53,7 +52,7 @@ function Login({ setLoggedIn }) {
                     if (history.action !== 'POP') {
                         history.goBack();
                     } else {
-                        history.push("/home");
+                        history.push("/");
                     }
                 }
             })
@@ -93,7 +92,7 @@ function Login({ setLoggedIn }) {
                 if (history.action !== 'POP') {
                     history.goBack();
                 } else {
-                    history.push("/home");
+                    history.push("/");
                 }
 
 
@@ -104,8 +103,7 @@ function Login({ setLoggedIn }) {
 
     }
     return (
-        <form>
-            <h2>Classroom</h2>
+        <form style={{marginTop:"50px"}}>
             <div className="auth-wrapper">
                 <div className="auth-inner">
                     <h3>Login</h3>

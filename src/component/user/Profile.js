@@ -28,7 +28,7 @@ function Profile() {
                     setItems(result);
                 }
                 else{
-                    history('/')
+                    history('/signin')
                 }
                 
             })

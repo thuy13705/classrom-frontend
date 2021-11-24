@@ -9,7 +9,7 @@ import Card from './Card';
 import './index.css';
 
 function Home() {
-    const history=useHistory();
+    const history = useHistory();
     const [students, setStudent] = useState([]);
     const [teachers, setTeacher] = useState([]);
     const [modalShow, setModalShow] = useState(false);
@@ -33,7 +33,7 @@ function Home() {
         fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
             .then(async response => {
                 if (response.status === 401) {
-                    history.push("/");
+                    history.push("/signin");
                 }
                 else {
                     const result = await response.json()
@@ -48,45 +48,46 @@ function Home() {
         getListClass();
     })
     return (
-        <Container>
-            <div style={{ display: "flex", justifyContent: "end" }}>
-                <Button variant="primary" onClick={() => handleModalShow()}>
-                    <FontAwesomeIcon icon={faPlus} />Add
-                </Button>
-                <AddClassdModal
-                    show={modalShow}
-                    onHide={() => handleModalShow()}
-                />
-            </div>
+        <Container >
+            <div className="home">
+                <div style={{ display: "flex", justifyContent: "end" }}>
+                    <Button variant="primary" onClick={() => handleModalShow()}>
+                        <FontAwesomeIcon icon={faPlus} />Add
+                    </Button>
+                    <AddClassdModal
+                        show={modalShow}
+                        onHide={() => handleModalShow()}
+                    />
+                </div>
 
-            <h1 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h1>
-            <Row xs={1} md={2} lg={3} className="g-4">
-                {teachers && teachers.map((item, index) => (
-                    <NavLink style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
-                        <Card key={item._id + item._id} items={item}>
-                        </Card>
-                    </NavLink>
-                ))}
-            </Row>
-            {/* <div className="all-classes">
-              
-            </div> */}
-
-            <h1 style={{ textAlign: "left", marginTop: "50px" }}>My Join Classes</h1>
-
-            <Row xs={1} md={2} lg={3} className="g-4">
-                {students && students.map((item, index) => (
-                    <Col key={item._id} >
+                <h3 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h3>
+                <Row xs={1} md={2} lg={3} className="g-4">
+                    {teachers && teachers.map((item, index) => (
                         <NavLink style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
                             <Card key={item._id + item._id} items={item}>
                             </Card>
                         </NavLink>
+                    ))}
+                </Row>
 
-                    </Col>
-                ))}
-            </Row>
+                <h3 style={{ textAlign: "left", marginTop: "50px" }}>My Participatory Classes</h3>
+
+                <Row xs={1} md={2} lg={3} className="g-4">
+                    {students && students.map((item, index) => (
+                        <Col key={item._id} >
+                            <NavLink style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
+                                <Card key={item._id + item._id} items={item}>
+                                </Card>
+                            </NavLink>
+
+                        </Col>
+                    ))}
+                </Row>
+            </div>
+
 
         </Container>
+
     )
 }
 

@@ -44,7 +44,7 @@ function Register() {
                 }
                 else{
                     alert('Register success!');
-                    history.push('/');
+                    history.push('/signin');
                 }
             })
             .catch(error => console.log('error', error));

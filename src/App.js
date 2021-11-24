@@ -8,7 +8,7 @@ import Header from './component/header/Header';
 import Footer from './component/footer/Footer';
 import Home from './component/home/Home';
 import { useEffect, useState } from 'react';
-import { Redirect } from 'react-router'; 
+import { Redirect } from 'react-router';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
 import InviteStudent from './component/detail-class/InviteStudent';
@@ -27,33 +27,22 @@ function App() {
   return (
     <BrowserRouter>
 
-{/* //       <div className="App">
-//         <Header loggedIn={loggedIn} />
-//         <Switch>
-//           <Route exact path="/"> <Login nameurl="/home"></Login></Route>
-//           <Route exact path="/register" component={Register} />
-//           <Route exact path="/home"><Home/></Route>
-//           <Route path="/classdetail/:id">
-//             <DetailClass />
-//           </Route>
-//           <Route path="/invite/1/:id">
-//             <InviteStudent />
-//           </Route>
-//           <Route exact path="/profile" component={Profile} />
-          
-//         </Switch>
-//         <Footer loggedIn={loggedIn} /> */}
+      <div className="App">
+        <>
+          <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+          <Switch>
+          <Route exact path="/"><Home /></Route>
 
-
-      <div className="App"> 
-       <>
-       <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}/><Switch>
+            <Route exact path="/signin">
+              <Login setLoggedIn={setLoggedIn}></Login>
+            </Route>
+         
             <Route exact path="/">
-            <Login setLoggedIn={setLoggedIn}></Login>
-              </Route>
+              {loggedIn ? null: <Redirect to="/signin" />}
+              {/* <Login setLoggedIn={setLoggedIn}></Login> */}
+            </Route>
             <Route exact path="/register" component={Register} />
-            {!loggedIn? <Redirect to="/" /> :null}
-            <Route exact path="/home"><Home /></Route>
+            {!loggedIn ? <Redirect to="/signin" /> : null}
             <Route path="/classdetail/:id">
               <DetailClass />
             </Route>
@@ -66,7 +55,7 @@ function App() {
             <Route exact path="/profile" component={Profile} />
 
           </Switch>
-          <Footer/></>
+          <Footer /></>
 
 
       </div>

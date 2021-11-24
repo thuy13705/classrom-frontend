@@ -3,10 +3,8 @@ import { useParams, useHistory } from "react-router-dom"
 
 
 import './index.css'
-import { Container, Fade, Table } from 'react-bootstrap';
 import Login from '../login-register/Login';
 import DetailClass from './DetailClass';
-import InviteStudent from './InviteStudent';
 
 
 function InviteTeacher() {
@@ -31,12 +29,13 @@ function InviteTeacher() {
         fetch("https://class-room-midterm.herokuapp.com/classes/invite/0/"+id, requestOptions)
         .then(response => {
             if (response.ok) {
+                history.push('/classdetail/'+id);
                 return response.json();
             }
             else if (response.status === 401) {
                 alert("You need to login to join classs");
                 setError(false)
-                history.push('/')
+                history.push('/signin')
             }
           })
             .then(result => console.log(result))
@@ -50,8 +49,8 @@ function InviteTeacher() {
 
     return (
         <div >
-          { error?<DetailClass></DetailClass> :<><Login nameurl={link}></Login></>
-          }
+          {/* { error?<DetailClass></DetailClass> :<><Login nameurl={link}></Login></>
+          } */}
         </div>
     );
 }

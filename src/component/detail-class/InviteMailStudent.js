@@ -1,5 +1,4 @@
 import { Form, Button, Modal, } from 'react-bootstrap'
-import React, { useState } from 'react';
 import {useHistory} from 'react-router-dom';
 
 function InviteMailStudent({ id, show, onHide }) {
@@ -29,7 +28,7 @@ function InviteMailStudent({ id, show, onHide }) {
                     alert("success!");
                 }
                 else{
-                    history('/')
+                    history('/signin')
                 }
             })
             .catch(error => console.log('error', error));
