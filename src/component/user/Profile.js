@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 function Profile() {
-    const history=useHistory();
+    const history = useHistory();
     const [items, setItems] = useState({});
 
     const getUser = () => {
@@ -24,13 +24,13 @@ function Profile() {
         fetch("https://class-room-midterm.herokuapp.com/users/profile", requestOptions)
             .then(response => response.json())
             .then(result => {
-                if (result!=="Unauthorized"){
+                if (result !== "Unauthorized") {
                     setItems(result);
                 }
-                else{
+                else {
                     history('/signin')
                 }
-                
+
             })
             .catch(error => console.log('error', error));
 
@@ -53,7 +53,7 @@ function Profile() {
             const requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
-                body:urlencoded,
+                body: urlencoded,
                 redirect: 'follow'
             };
 
@@ -61,10 +61,10 @@ function Profile() {
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
-                    if (result==="wrong"){
+                    if (result === "wrong") {
                         alert("Password is wrong");
                     }
-                    else{
+                    else {
                         alert("Changing Password success!")
                     }
                 })
@@ -76,68 +76,63 @@ function Profile() {
 
     const changeProfile = (e) => {
         e.preventDefault();
-            const myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-            let gender=items.gender;
-            if (e.target.gender.value!==""){
-                gender=e.target.gender.value;
-            }
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        let gender = items.gender;
+        if (e.target.gender.value !== "") {
+            gender = e.target.gender.value;
+        }
 
-            const urlencoded = new URLSearchParams();
-            urlencoded.append("name", e.target.name.value);
-            urlencoded.append("gender", gender);
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("name", e.target.name.value);
+        urlencoded.append("gender", gender);
 
-            const requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body:urlencoded,
-                redirect: 'follow'
-            };
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
 
-            fetch("https://class-room-midterm.herokuapp.com/users/profile", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                        alert("Changing Profile success!")
-                })
-                .catch(error => console.log('error', error));
-        
+        fetch("https://class-room-midterm.herokuapp.com/users/profile", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                alert("Changing Profile success!")
+            })
+            .catch(error => console.log('error', error));
+
 
 
     }
 
     const changeStudentID = (e) => {
         e.preventDefault();
-            const myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-            const urlencoded = new URLSearchParams();
-            urlencoded.append("password", e.target.password.value);
-            urlencoded.append("studentID", e.target.studentID.value);
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("studentID", e.target.studentID.value);
 
-            const requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body:urlencoded,
-                redirect: 'follow'
-            };
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
 
-            fetch("https://class-room-midterm.herokuapp.com/users/studentID", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                    if (result==="wrong"){
-                        alert("Password is wrong");
-                    }
-                    else if (result==="Exist"){
-                        alert("StudentID exists");
-                    }
-                    else{
-                        alert("Success!")
-                    }
-                })
-                .catch(error => console.log('error', error));
+        fetch("https://class-room-midterm.herokuapp.com/users/studentID", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                if (result === "Exist") {
+                    alert("StudentID exists");
+                }
+                else {
+                    alert("Success!")
+                }
+            })
+            .catch(error => console.log('error', error));
 
 
     }
@@ -145,13 +140,13 @@ function Profile() {
 
     useEffect(() => {
         getUser();
-    }, [items])
+    })
 
     return (
         <div className="profile">
             <div className="profile-content">
                 <Container>
-                    <Tab.Container id="left-tabs-example"  defaultActiveKey="first">
+                    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                         <Row>
                             <Col sm={3}>
                                 <Nav variant="pills" className="flex-column">
@@ -256,23 +251,16 @@ function Profile() {
                                         </div>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="fourth">
-                                    <div className="profile-border" style={{ paddingTop: "20px" }}>
+                                        <div className="profile-border" style={{ paddingTop: "20px" }}>
                                             <h4>Student ID</h4>
                                             <Form style={{ padding: "20px" }} onSubmit={changeStudentID}>
-                                            <Form.Group as={Row} className="mb-1" controlId="password">
-                                                    <Form.Label column sm={3}>
-                                                        Password:
-                                                    </Form.Label>
-                                                    <Col sm={9}>
-                                                        <Form.Control type="password" placeholder="password"/>
-                                                    </Col>
-                                                </Form.Group>
+
                                                 <Form.Group as={Row} className="mb-1" controlId="studentID">
                                                     <Form.Label column sm={3}>
                                                         StudentID:
                                                     </Form.Label>
                                                     <Col sm={9}>
-                                                        <Form.Control type="studentID"  defaultValue={items.studentID} />
+                                                        <Form.Control type="studentID" defaultValue={items.studentID} />
                                                     </Col>
                                                 </Form.Group>
 
