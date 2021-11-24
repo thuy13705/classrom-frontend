@@ -8,22 +8,11 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
-    const [isconfirm, setIsconfirm] = useState(false);
-
-    let error = '';
-    const confirm = () => {
-        while (confirmPass !== password) {
-            error = 'Retype password does not match';
-        }
-        setIsconfirm(true);
-    }
 
     const clickSubmit = async (e) => {
+        e.preventDefault();
 
-        console.log(username, password, email)
-      
-            console.log('register')
-            e.preventDefault();
+        if (password===confirmPass){
             await fetch('https://class-room-midterm.herokuapp.com/users/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -44,11 +33,14 @@ function Register() {
                 }
                 else{
                     alert('Register success!');
-                    history.push('/signin');
                 }
             })
             .catch(error => console.log('error', error));
         
+        }
+        else{
+            alert("Password does not match!!!")
+        }
 
     }
 
@@ -74,8 +66,7 @@ function Register() {
                     </div>
                     <div className="form-group">
                         <label>Retype password</label>
-                        <input type="password" className="form-control" placeholder="Enter retype password" onChange={confirm} onChange={e => setConfirmPass(e.target.value)} />
-                        <p>{error}</p>
+                        <input type="password" className="form-control" placeholder="Enter retype password" onChange={e => setConfirmPass(e.target.value)} />
                     </div>
 
                     <button type="submit" className="btn btn-block" onClick={clickSubmit}>Sign Up</button>

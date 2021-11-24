@@ -29,7 +29,6 @@ function InviteStudent() {
         fetch("https://class-room-midterm.herokuapp.com/classes/invite/1/"+id, requestOptions)
         .then(response => {
             if (response.ok) {
-                history.push('/classdetail/'+id);
                 return response.json();
             }
             else if (response.status === 401) {
@@ -38,7 +37,10 @@ function InviteStudent() {
                 history.push('/signin')
             }
           })
-            .then(result => console.log(result))
+            .then(result =>{
+                console.log(result);
+                history.push('/classdetail/'+id);
+            })
             .catch(error => console.log('error', error));
     }
 
