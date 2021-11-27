@@ -11,15 +11,14 @@ import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
-import InviteStudent from './component/detail-class/InviteStudent';
-import InviteTeacher from './component/detail-class/InviteTeacher'
+import InviteStudent from './component/detail-class/invite/InviteStudent';
+import InviteTeacher from './component/detail-class/invite/InviteTeacher'
 
 
 function App() {
   // localStorage.removeItem("token");
-  const history = useHistory();
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
-  const [user, setUser] = useState(localStorage.getItem("user"));
+  // const [user, setUser] = useState(localStorage.getItem("user"));
 
   useEffect(() => {
   }, [])

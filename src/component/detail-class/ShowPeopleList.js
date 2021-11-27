@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Container, Table, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressBook, faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import InviteMailStudent from './InviteMailStudent';
-import InviteMailTeacher from './InviteMailTeacher';
+import InviteMailStudent from './invite/InviteMailStudent';
+import InviteMailTeacher from './invite/InviteMailTeacher';
 
 function ShowPeopleList({ items, teacher }) {
     const [modalShow, setModalShow] = useState(false);

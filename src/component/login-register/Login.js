@@ -13,11 +13,11 @@ function Login({ setLoggedIn }) {
     const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [redirect, setRedirect] = useState(false);
+    // const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState('');
 
-    const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
-    const [user, setUser] = useState(localStorage.getItem("user") != null);
+    // const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
+    // const [user, setUser] = useState(localStorage.getItem("user") != null);
 
 
     const genericErrorMessage = "Something went wrong! Please try again later."

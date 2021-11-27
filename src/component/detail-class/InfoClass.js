@@ -1,69 +1,92 @@
 import './index.css'
-import { Container, Table} from 'react-bootstrap';
+import {
+    Container, Table,
+    Row, Col, Accordion,
+    InputGroup, FormControl, Button
+} from 'react-bootstrap';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 
 
-function ShowPeopleList({items}){
-    let studentLink="";
-    let teacherLink="";
-    if (window.location.port!==null){
-        studentLink=window.location.protocol +"//"+ window.location.hostname +":"+window.location.port+"/invite/1/"+items._id;
-        teacherLink=window.location.protocol +"//"+ window.location.hostname +":"+window.location.port+"/invite/0/"+items._id;
+function ShowPeopleList({ teacher, items }) {
+    let studentLink = "";
+    let teacherLink = "";
+    if (window.location.port !== null) {
+        studentLink = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/invite/1/" + items._id;
+        teacherLink = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/invite/0/" + items._id;
     }
-    else{
-        studentLink=window.location.protocol +"//"+ window.location.hostname +"/invite/1/"+items._id;
-        teacherLink=window.location.protocol +"//"+ window.location.hostname +"/invite/0/"+items._id;
+    else {
+        studentLink = window.location.protocol + "//" + window.location.hostname + "/invite/1/" + items._id;
+        teacherLink = window.location.protocol + "//" + window.location.hostname + "/invite/0/" + items._id;
     }
- 
 
-    return(
-        <div >
-        <Container className="classinfo">
-        <Table responsive="sm" borderless="true">
-                    <tbody>
-                            <tr>
-                                <td className="list">
-                                    Name
+
+    return (
+        <div  className="classdetail">
+            <Container >
+                <div className="info">
+                    <h3>{items.nameClass}</h3>
+                    <h6>{items.category} _ room: {items.room}</h6>
+                </div>
+
+                {teacher ? <Accordion flush>
+                    <Accordion.Item eventKey="0">
+                        <Accordion.Header >Invite Link</Accordion.Header>
+                        <Accordion.Body>
+                            <div className="info-link">
+                                <p> <b>Invite Teacher: </b>{teacherLink}</p>
+                                <p> <b>Invite Student: </b>{studentLink}</p>
+                            </div>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion> : <></>}
+
+                <Row className="info-class" className="g-4" >
+                    <Col xs={12} md={4} lg={2} style={{ borderTop: "2px outset #e5ecf8" }}>
+                        <Table responsive="sm" borderless="true">
+                            <thead>
+                                <td>
+                                    <td >
+                                        <h6 style={{ color: "#272343", textAlign: "left", fontWeight: "500" }}>Grade Structure</h6>
+                                    </td>
                                 </td>
-                                <td className="list">
-                                    {items.nameClass}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="list">
-                                    Category
-                                </td>
-                                <td className="list">
-                                    {items.category}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="list">
-                                    Room
-                                </td>
-                                <td className="list">
-                                    {items.room}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="list">
-                                    Invite Teacher
-                                </td>
-                                <td className="list">
-                                    {teacherLink}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="list">
-                                Invite Student
-                                </td>
-                                <td className="list">
-                                    {studentLink}
-                                </td>
-                            </tr>
-                    </tbody>
-                </Table>
-        </Container>
-    </div>
+                            </thead>
+                            <tbody>
+                                {items.grades && items.grades.map((item, index) => (
+                                    <tr key={item._id}>
+
+                                        <td className="list">
+                                            {item.name}:
+                                        </td>
+                                        <td style={{ textAlign: 'center' }} className="list">
+                                            {item.point}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Col>
+
+                    <Col xs={12} md={8} lg={10}>
+                        <div className="stream">
+                            <InputGroup className="mb-3">
+                                <FormControl
+                                    placeholder="..."
+                                    aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2"
+                                  
+                                />
+                                <Button id="button-addon2" style={{marginTop:"0px"}}>
+                                    <FontAwesomeIcon icon={faAddressCard} />
+                                </Button>
+                            </InputGroup>
+
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 }
 

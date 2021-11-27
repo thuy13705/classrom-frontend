@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useHistory } from "react-router-dom"
 
 
-import './index.css'
-import Login from '../login-register/Login';
-import DetailClass from './DetailClass';
+import './../index.css'
 
 
 function InviteTeacher() {
@@ -12,7 +10,6 @@ function InviteTeacher() {
     const [result, setResult] =useState();
     const [error,setError]=useState(true);
     const history=useHistory();
-    const link="/invite/1/"+id
 
     const getInviteStudent = () => {
         var myHeaders = new Headers();
