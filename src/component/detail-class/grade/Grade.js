@@ -21,6 +21,9 @@ function Grade({ items }) {
                                     <td >
                                         <h6 style={{ color: "#272343", textAlign: "left", fontWeight: "500" }}>Total</h6>
                                     </td>
+                                    <td >
+                                        <h6 style={{ color: "#272343", textAlign: "left", fontWeight: "500" }}>{items.totalGrade}</h6>
+                                    </td>
                                 </td>
                             </thead>
                             <tbody>

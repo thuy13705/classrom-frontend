@@ -50,6 +50,9 @@ function ShowPeopleList({ teacher, items }) {
                                     <td >
                                         <h6 style={{ color: "#272343", textAlign: "left", fontWeight: "500" }}>Grade Structure</h6>
                                     </td>
+                                    <td >
+                                        <h6 style={{ color: "#272343", textAlign: "left", fontWeight: "500" }}>{items.totalGrade}</h6>
+                                    </td>
                                 </td>
                             </thead>
                             <tbody>
