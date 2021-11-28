@@ -4,11 +4,50 @@ import {
 } from 'react-bootstrap';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react';
 import ItemGrade from './ItemGrade';
+import { Redirect } from 'react-router';
+import {useHistory} from 'react-router-dom';
 
 
 
 function Grade({ items }) {
+    const history=useHistory();
+    const [name, setName] = useState();
+    const [point, setPoint] = useState(0);
+
+    console.log(items._id);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(name + point);
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+        fetch('http://localhost:3080/grade/add/' + items._id, {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+                name: name,
+                point: point,
+            }),
+            mode:"cors",
+            
+        })
+            .then((message) => {
+                console.log(message);
+                if (message!=="success"){
+                    alert("Adding grade success.");
+                    
+                }
+                else{
+                    history('/signin')
+                }
+            }, (error) => {
+                alert(error);
+            });
+    }
     return (
         <div className="classdetail">
             <Container>
@@ -42,21 +81,21 @@ function Grade({ items }) {
                         </Table>
                     </div>
                     <div className="item-inner">
-                        <Form >
-                            <Form.Group as={Row} className="mb-1" controlId="studentID">
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group as={Row} className="mb-1" controlId="namseID">
                                 <Form.Label column sm={3}>
                                     Name:
                                 </Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control type="text" />
+                                    <Form.Control type="text" required onChange={e => setName(e.target.value)}/>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row} className="mb-1" controlId="studentID">
+                            <Form.Group as={Row} className="mb-1" controlId="pointID">
                                 <Form.Label column sm={3}>
                                     Point:
                                 </Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control type="number" />
+                                    <Form.Control type="number" required onChange={e => setPoint (Number(e.target.value))}/>
                                 </Col>
                             </Form.Group>
 
