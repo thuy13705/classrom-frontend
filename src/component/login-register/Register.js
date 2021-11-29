@@ -3,7 +3,6 @@ import { Link,useHistory } from 'react-router-dom';
 import './index.css';
 
 function Register() {
-    const history=useHistory();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

@@ -42,7 +42,7 @@ function Header({loggedIn,setLoggedIn }) {
     }
     return (
         <div>
-            <Navbar className="header-color">
+            <Navbar className="header-color" >
                 <Container>
                     <Navbar.Brand ><Link className="header-item" to='/'>Classroom</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -55,7 +55,7 @@ function Header({loggedIn,setLoggedIn }) {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-        </div>
+        </div >
     )
 }
 

@@ -5,6 +5,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import ShowPeopleList from './ShowPeopleList';
 import InfoClass from './InfoClass';
 import checkTeacher from '../../helper/helper';
+import Grade from './grade/Grade';
 
 
 function DetailClass() {
@@ -48,16 +49,20 @@ function DetailClass() {
         <div className="container-tab">
             <h3>{items.nameClass}</h3>
             <Tabs defaultActiveKey="people" id="uncontrolled-tab-example" className="mb-3" style={{ justifyContent: "center" }}>
-                {teacher ? <Tab eventKey="info-class" title="Information Class">
-                    <InfoClass items={items}></InfoClass>
-                </Tab> : <></>}
+                <Tab eventKey="info-class" title="Information Class">
+                    <InfoClass teacher={teacher} items={items}></InfoClass>
+                </Tab>
                 <Tab eventKey="people" title="People">
                     <ShowPeopleList items={items} teacher={teacher}></ShowPeopleList>
                 </Tab>
-                <Tab eventKey="stream" title="Stream">
-                </Tab>
                 <Tab eventKey="classwork" title="Classwork" >
                 </Tab>
+                {
+                    teacher? <Tab eventKey="grade" title="Grades">
+                    <Grade items={items}></Grade>
+                </Tab>:<></>
+                }
+               
             </Tabs>
         </div>
 

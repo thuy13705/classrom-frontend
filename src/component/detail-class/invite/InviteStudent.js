@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useHistory } from "react-router-dom"
 
 
-import './index.css'
-import Login from '../login-register/Login';
-import DetailClass from './DetailClass';
+import './../index.css'
 
 
 function InviteStudent() {
