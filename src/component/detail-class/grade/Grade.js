@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ItemGrade from './ItemGrade';
 import { Redirect } from 'react-router';
 import {useHistory} from 'react-router-dom';
+import {SortableContainer, arrayMove} from 'react-sortable-hoc';
 
 
 
@@ -15,6 +16,7 @@ function Grade({ items }) {
     const history=useHistory();
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
+    const [grades, setGrades] = useState(items.grades);
 
     console.log(items._id);
     const handleSubmit = (e) => {
@@ -48,6 +50,51 @@ function Grade({ items }) {
                 alert(error);
             });
     }
+
+    const SortableList = SortableContainer(({items}) => {
+        let list_items = items.map((item, index) => {
+            return <ItemGrade grade={item} index={index} key={index} />;
+          });
+    
+          return (
+            <div style={{background: '#FF0'}}>{list_items}</div>
+          );
+    });
+
+    function sort(){
+        console.log(grades);
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+        fetch('http://localhost:3080/grade/sort/' + items._id, {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+                grades: grades
+            }),
+            mode:"cors",
+            
+        })
+            .then((message) => {
+                console.log(message);
+                if (message!=="success"){
+                    alert("Adding grade success.");
+                    
+                }
+                else{
+                    history('/signin')
+                }
+            }, (error) => {
+                alert(error);
+            });
+    }
+
+    function onSortEnd({oldIndex, newIndex}) {
+        setGrades(arrayMove(grades, oldIndex, newIndex));
+        
+      }
+
     return (
         <div className="classdetail">
             <Container>
@@ -87,7 +134,7 @@ function Grade({ items }) {
                                     Name:
                                 </Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control type="text" required onChange={e => setName(e.target.value)}/>
+                                    <Form.Control type="text" required onChange={e => {setName(e.target.value);console.log(e)}}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-1" controlId="pointID">
@@ -108,12 +155,10 @@ function Grade({ items }) {
                     </div>
 
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
-                        {items.grades && items.grades.map((item, index) => (
-                            <ItemGrade grade={item} />
-                        ))}
+                        {grades ? <SortableList items={grades} onSortEnd={onSortEnd}/> : <></>}
                     </div>
                 </div>
-
+                                    <button onClick={sort}>save</button>
             </Container>
         </div>
     );
