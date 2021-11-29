@@ -15,13 +15,13 @@ function ItemGrade({ grade, index }) {
     const [edit, setEdit] = useState(false);
     const [name, setName] = useState(grade.name);
     const [point, setPoint] = useState(grade.point);
+
     const deleteGrade = () =>{
-         console.log(grade._id)
          const myHeaders = new Headers();
          myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
          myHeaders.append("Accept", "application/json");
          myHeaders.append("Content-Type", "application/json");
-         fetch('http://localhost:3080/grade/delete/' + id , {
+         fetch('https://class-room-midterm.herokuapp.com/grade/delete/' + id , {
              method: 'POST',
              headers: myHeaders,
              body: JSON.stringify({
@@ -31,30 +31,37 @@ function ItemGrade({ grade, index }) {
              
          })
              .then((message) => {
+                 console.log(message);
                  if (message!=="success"){
                     alert("Delete grade success.");
                  }
                  else{
-                    history('/signin')
+                    history.push('/signin')
                  }
              }, (error) => {
                  alert(error);
              });
      }
 
+     const handleEdit=()=>{
+         setEdit(!edit);
+         console.log(edit);
+     }
 
-     const editGrade = () =>{
+
+     const editGrade = (e) =>{
+        e.preventDefault();
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/edit/' + grade._id , {
+        fetch('https://class-room-midterm.herokuapp.com/grade/edit/' + grade._id , {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
                 id: grade._id,
-                name: name,
-                point: point, 
+                name: e.target.nameGrade.value,
+                point:e.target.pointGrade.value, 
             }),
             mode:"cors",
             
@@ -62,10 +69,10 @@ function ItemGrade({ grade, index }) {
             .then((message) => {
                 if (message!=="success"){
                    alert("Edit grade success.");
-                   setEdit(false);
+                   setEdit(!edit);
                 }
                 else{
-                   history('/signin')
+                   history.push('/signin')
                 }
             }, (error) => {
                 alert(error);
@@ -77,13 +84,14 @@ function ItemGrade({ grade, index }) {
         return (
             <div className="item-inner item-grade">
                 <div>
-                    { edit ?<p><b>Name</b>: <input value={name} type="text" onChange={e=> setName(e.target.value)}/></p> : <p><b>Name</b>: {item.name}</p> }
-                    { edit ?<p><b>Point</b>: <input value={point} type="number" onChange={e => setPoint(e.target.value)} /></p>: <p><b>Point</b>: {item.point}</p>}
+                    { edit ?<p><b>Name</b>: <input defaultValue={item.name} name="nameGrade" type="text"/></p> : <p><b>Name</b>: {item.name}</p> }
+                    { edit ?<p><b>Point</b>: <input defaultValue={item.point} name="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
                 </div>
                 <div>
-                    { edit ? <Button className="btn-edit" onClick={editGrade}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={e=>setEdit(true)} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
-                    { edit ? <Button className="btn-trash" onClick={e=>setEdit(true)}><FontAwesomeIcon icon={faWindowClose} /></Button> :
-                    <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>}
+                    { edit ? <Button className="btn-edit" onClick={editGrade}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={handleEdit} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
+                    {/* { edit ? <Button className="btn-trash" onClick={e=>setEdit(true)}><FontAwesomeIcon icon={faWindowClose} /></Button> :
+                    <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>} */}
+                    <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>
                 </div> 
             </div>
         );

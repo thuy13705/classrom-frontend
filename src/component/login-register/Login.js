@@ -19,6 +19,10 @@ function Login({ setLoggedIn }) {
     // const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
     // const [user, setUser] = useState(localStorage.getItem("user") != null);
 
+    var myheaders = new Headers();
+    myheaders.append('Access-Control-Allow-Origin', '*');
+    myheaders.append('Access-Control-Allow-Credentials', 'true');
+    myheaders.append('Content-Type', 'application/json')
 
     const genericErrorMessage = "Something went wrong! Please try again later."
     const clickSubmit = async (e) => {
@@ -27,7 +31,7 @@ function Login({ setLoggedIn }) {
 
         fetch('https://class-room-midterm.herokuapp.com/users/login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: myheaders,
             body: JSON.stringify({
                 username,
                 password

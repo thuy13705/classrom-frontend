@@ -44,7 +44,7 @@ function DetailClass() {
     useEffect(() => {
         getDetail();
 
-    }, [])
+    },[])
     return (
         <div className="container-tab">
             <h3>{items.nameClass}</h3>

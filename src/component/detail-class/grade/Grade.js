@@ -18,7 +18,6 @@ function Grade({ items }) {
     const [point, setPoint] = useState(0);
     const [grades, setGrades] = useState(items.grades);
 
-    console.log(items._id);
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -27,7 +26,7 @@ function Grade({ items }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/add/' + items._id, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/add/' + items._id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -47,7 +46,7 @@ function Grade({ items }) {
                     alert("Failed");
                     
                 } else{
-                    history('/signin')
+                    history.push('/signin')
                 }
             }, (error) => {
                 alert(error);
@@ -65,7 +64,6 @@ function Grade({ items }) {
     });
 
     function sort(){
-        console.log(grades);
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
@@ -86,7 +84,7 @@ function Grade({ items }) {
                     
                 }
                 else{
-                    history('/signin')
+                    history.push('/signin')
                 }
             }, (error) => {
                 alert(error);
@@ -137,7 +135,7 @@ function Grade({ items }) {
                                     Name:
                                 </Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control type="text" required onChange={e => {setName(e.target.value);console.log(e)}}/>
+                                    <Form.Control type="text" required onChange={e => {setName(e.target.value)}}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-1" controlId="pointID">
