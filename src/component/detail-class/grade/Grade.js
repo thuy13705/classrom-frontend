@@ -37,11 +37,14 @@ function Grade({ items }) {
         })
             .then((message) => {
                 console.log(message);
-                if (message!=="success"){
+                if (message==="success"){
                     alert("Adding grade success.");
                     
                 }
-                else{
+                else  if (message==="fail"){
+                    alert("Failed");
+                    
+                } else{
                     history('/signin')
                 }
             }, (error) => {
