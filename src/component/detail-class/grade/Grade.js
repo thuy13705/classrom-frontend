@@ -36,21 +36,24 @@ function Grade({ items }) {
             mode:"cors",
             
         })
-            .then((message) => {
-                console.log(message);
-                if (message==="success"){
+        .then(async response => {
+            if (response.status === 401) {
+                history.push("/signin");
+            }
+            else {
+                const result = await response.json()
+                console.log(result);
+                if (result==="success"){
                     alert("Adding grade success.");
                     
                 }
-                else  if (message==="fail"){
+                else  if (result==="fail"){
                     alert("Failed");
                     
-                } else{
-                    history.push('/signin')
                 }
-            }, (error) => {
-                alert(error);
-            });
+            }
+        })
+        .catch(error => console.log('error', error));
     }
 
     const SortableList = SortableContainer(({items}) => {
@@ -77,18 +80,21 @@ function Grade({ items }) {
             mode:"cors",
             
         })
-            .then((message) => {
-                console.log(message);
-                if (message!=="success"){
-                    alert("Adding grade success.");
-                    
+        .then(async response => {
+            if (response.status === 401) {
+                history.push("/signin");
+            }
+            else {
+                const result = await response.json()
+                if (result==="success"){
+                    alert('Add Success');
                 }
                 else{
-                    history.push('/signin')
+                    alert('Add Success');
                 }
-            }, (error) => {
-                alert(error);
-            });
+            }
+        })
+        .catch(error => console.log('error', error));
     }
 
     function onSortEnd({oldIndex, newIndex}) {

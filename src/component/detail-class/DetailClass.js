@@ -43,7 +43,6 @@ function DetailClass() {
 
     useEffect(() => {
         getDetail();
-
     },[])
     return (
         <div className="container-tab">
