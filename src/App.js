@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,7 +7,7 @@ import Register from './component/login-register/Register';
 import Header from './component/header/Header';
 import Footer from './component/footer/Footer';
 import Home from './component/home/Home';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Redirect } from 'react-router';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
@@ -20,8 +20,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [user, setUser] = useState(localStorage.getItem("user"));
 
-  useEffect(() => {
-  }, [])
 
   return (
     <BrowserRouter>

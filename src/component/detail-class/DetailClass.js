@@ -14,11 +14,11 @@ function DetailClass() {
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
 
-    const getDetail = () => {
+
+    const getDetail=async()=>{
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
 
         var requestOptions = {
             method: 'GET',
@@ -26,23 +26,24 @@ function DetailClass() {
             redirect: 'follow',
             mode: "cors",
         };
-        fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
+        return fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");
                 }
-                else {
-                    const result = await response.json()
-                    setItems(result);
-                    setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
-                }
+                // else {
+                //     const result = await response.json()
+                //     setItems(result);
+                //     setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
+                // }
+                return response.json();
             })
-            .catch(error => console.log('error', error));
-
     }
 
-    useEffect(() => {
-        getDetail();
+    useEffect(async() => {
+       const result=await getDetail();
+        setItems(result);
+        setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
     },[])
     return (
         <div className="container-tab">
@@ -58,7 +59,7 @@ function DetailClass() {
                 </Tab>
                 {
                     teacher? <Tab eventKey="grade" title="Grades">
-                    <Grade items={items}></Grade>
+                    <Grade items={items} setItems={setItems} getDetail={getDetail}></Grade>
                 </Tab>:<></>
                 }
                

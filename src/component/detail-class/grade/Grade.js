@@ -4,15 +4,14 @@ import {
 } from 'react-bootstrap';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react';
+import {useState } from 'react';
 import ItemGrade from './ItemGrade';
-import { Redirect } from 'react-router';
 import {useHistory} from 'react-router-dom';
 import {SortableContainer, arrayMove} from 'react-sortable-hoc';
 
 
 
-function Grade({ items }) {
+function Grade({ items,setItems,getDetail}) {
     const history=useHistory();
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
@@ -21,7 +20,6 @@ function Grade({ items }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(name + point);
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
@@ -36,29 +34,27 @@ function Grade({ items }) {
             mode:"cors",
             
         })
-        .then(async response => {
-            if (response.status === 401) {
-                history.push("/signin");
-            }
-            else {
-                const result = await response.json()
-                console.log(result);
-                if (result==="success"){
+            .then(async(message) => {
+                if (message!="success"){ 
                     alert("Adding grade success.");
-                    
+                    const result=await getDetail();
+                    setItems(result)
+                    items=result;
+                    setGrades(items.grades);
                 }
-                else  if (result==="fail"){
+                else  if (message==="fail"){
                     alert("Failed");
-                    
+                } else{
+                    history.push('/signin')
                 }
-            }
-        })
-        .catch(error => console.log('error', error));
+            }, (error) => {
+                alert(error);
+            });
     }
 
-    const SortableList = SortableContainer(({items}) => {
-        let list_items = items.map((item, index) => {
-            return <ItemGrade grade={item} index={index} key={index} />;
+    const SortableList = SortableContainer(({grades}) => {
+        let list_items = grades.map((item, index) => {
+            return <ItemGrade key={`item-${item}`} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} key={index} />;
           });
     
           return (
@@ -71,7 +67,7 @@ function Grade({ items }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/sort/' + items._id, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/sort/' + items._id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -80,27 +76,29 @@ function Grade({ items }) {
             mode:"cors",
             
         })
-        .then(async response => {
-            if (response.status === 401) {
-                history.push("/signin");
-            }
-            else {
-                const result = await response.json()
-                if (result==="success"){
-                    alert('Add Success');
+            .then(async(message) => {
+                console.log(message);
+                if (message!=="success"){
+                    alert("Sort grade success.");
+                    const result=await getDetail();
+                    setItems(result)
+                    items=result;                  
                 }
                 else{
-                    alert('Add Success');
+                    history.push('/signin')
                 }
-            }
-        })
-        .catch(error => console.log('error', error));
+            }, (error) => {
+                alert(error);
+            });
     }
 
     function onSortEnd({oldIndex, newIndex}) {
         setGrades(arrayMove(grades, oldIndex, newIndex));
         
-      }
+      
+    }
+
+
 
     return (
         <div className="classdetail">
@@ -162,14 +160,13 @@ function Grade({ items }) {
                     </div>
 
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
-                        {grades ? <SortableList items={grades} onSortEnd={onSortEnd}/> : <></>}
+                        {grades ? <SortableList grades={grades} onSortEnd={onSortEnd}/> : <></>}
                     </div>
                 </div>
-                                    <button onClick={sort}>save</button>
+            <button onClick={sort}>save</button>
             </Container>
         </div>
     );
 }
 
 export default Grade;
-

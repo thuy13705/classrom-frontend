@@ -1,20 +1,15 @@
 import './../index.css'
 import {Button} from 'react-bootstrap';
 import {useHistory, useParams} from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faEdit, faCheck, faClosedCaptioning, faWindowClose } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons'
 import {SortableElement} from 'react-sortable-hoc';
-import {
-     Form
-} from 'react-bootstrap';
 
-function ItemGrade({ grade, index }) {
+function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
     const history=useHistory();
     const { id } = useParams();
     const [edit, setEdit] = useState(false);
-    const [name, setName] = useState(grade.name);
-    const [point, setPoint] = useState(grade.point);
 
     const deleteGrade = () =>{
          const myHeaders = new Headers();
@@ -30,10 +25,13 @@ function ItemGrade({ grade, index }) {
              mode:"cors",
              
          })
-             .then((message) => {
-                 console.log(message);
+             .then(async (message) => {
                  if (message!=="success"){
                     alert("Delete grade success.");
+                    const result=await getDetail();
+                    setItems(result)
+                    grade=result.grades;
+                    setGrades(grade);
                  }
                  else{
                     history.push('/signin')
@@ -45,7 +43,6 @@ function ItemGrade({ grade, index }) {
 
      const handleEdit=()=>{
          setEdit(!edit);
-         console.log(edit);
      }
 
 
@@ -55,20 +52,24 @@ function ItemGrade({ grade, index }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://class-room-midterm.herokuapp.com/grade/edit/' + grade._id , {
+        fetch('https://class-room-midterm.herokuapp.com/grade/edit/' + id , {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
                 id: grade._id,
-                name: e.target.nameGrade.value,
-                point:e.target.pointGrade.value, 
+                name: document.getElementById('nameGrade').value,
+                point:document.getElementById('pointGrade').value, 
             }),
             mode:"cors",
             
         })
-            .then((message) => {
+            .then(async(message) => {
                 if (message!=="success"){
                    alert("Edit grade success.");
+                   const result=await getDetail();
+                   setItems(result)
+                   grade=result.grades;
+                   setGrades(grade);
                    setEdit(!edit);
                 }
                 else{
@@ -84,8 +85,8 @@ function ItemGrade({ grade, index }) {
         return (
             <div className="item-inner item-grade">
                 <div>
-                    { edit ?<p><b>Name</b>: <input defaultValue={item.name} name="nameGrade" type="text"/></p> : <p><b>Name</b>: {item.name}</p> }
-                    { edit ?<p><b>Point</b>: <input defaultValue={item.point} name="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
+                    { edit ?<p><b>Name</b>: <input defaultValue={item.name} id="nameGrade" type="text"/></p> : <p><b>Name</b>: {item.name}</p> }
+                    { edit ?<p><b>Point</b>: <input defaultValue={item.point} id="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
                 </div>
                 <div>
                     { edit ? <Button className="btn-edit" onClick={editGrade}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={handleEdit} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
@@ -115,4 +116,3 @@ function ItemGrade({ grade, index }) {
 }
 
 export default ItemGrade;
-
