@@ -14,11 +14,11 @@ function DetailClass() {
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
 
-    const getDetail = () => {
+
+    function getDetail  ()  {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
 
         var requestOptions = {
             method: 'GET',
@@ -59,7 +59,7 @@ function DetailClass() {
                 </Tab>
                 {
                     teacher? <Tab eventKey="grade" title="Grades">
-                    <Grade items={items}></Grade>
+                    <Grade items={items} refreshDetail={getDetail}></Grade>
                 </Tab>:<></>
                 }
                

@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react';
+import {useEffect, useState } from 'react';
 import ItemGrade from './ItemGrade';
 import { Redirect } from 'react-router';
 import {useHistory} from 'react-router-dom';
@@ -12,12 +12,15 @@ import {SortableContainer, arrayMove} from 'react-sortable-hoc';
 
 
 
-function Grade({ items }) {
+function Grade({ items, refreshDetail }) {
     const history=useHistory();
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
     const [grades, setGrades] = useState(items.grades);
 
+    const setGr = (()=>{
+        setGrades(items.grades);
+    })
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -36,15 +39,15 @@ function Grade({ items }) {
             mode:"cors",
             
         })
-            .then((message) => {
+            .then(async(message) => {
                 console.log(message);
-                if (message==="success"){
+                if (message!="success"){ 
+                    refreshDetail();
                     alert("Adding grade success.");
-                    
+                    setGrades(items.grades);
                 }
                 else  if (message==="fail"){
                     alert("Failed");
-                    
                 } else{
                     history.push('/signin')
                 }
@@ -55,7 +58,7 @@ function Grade({ items }) {
 
     const SortableList = SortableContainer(({items}) => {
         let list_items = items.map((item, index) => {
-            return <ItemGrade grade={item} index={index} key={index} />;
+            return <ItemGrade grade={item} index={index} refreshDetail={refreshDetail} setGr={setGr} key={index} />;
           });
     
           return (
@@ -68,7 +71,7 @@ function Grade({ items }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/sort/' + items._id, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/sort/' + items._id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -80,7 +83,7 @@ function Grade({ items }) {
             .then((message) => {
                 console.log(message);
                 if (message!=="success"){
-                    alert("Adding grade success.");
+                    alert("Sort grade success.");
                     
                 }
                 else{
