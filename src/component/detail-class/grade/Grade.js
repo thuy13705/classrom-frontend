@@ -54,7 +54,7 @@ function Grade({ items,setItems,getDetail}) {
 
     const SortableList = SortableContainer(({grades}) => {
         let list_items = grades.map((item, index) => {
-            return <ItemGrade key={`item-${item}`} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} key={index} />;
+            return <ItemGrade key={`item-${index}`} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} />;
           });
     
           return (
