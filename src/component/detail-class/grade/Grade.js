@@ -77,7 +77,6 @@ function Grade({ items,setItems,getDetail}) {
             
         })
             .then(async(message) => {
-                console.log(message);
                 if (message!=="success"){
                     alert("Sort grade success.");
                     const result=await getDetail();

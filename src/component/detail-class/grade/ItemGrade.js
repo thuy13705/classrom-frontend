@@ -89,10 +89,10 @@ function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
                     { edit ?<p><b>Point</b>: <input defaultValue={item.point} id="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
                 </div>
                 <div>
-                    { edit ? <Button className="btn-edit" onClick={editGrade}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={handleEdit} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
+                    { edit ? <Button className="btn-edit" onClick={()=>editGrade()}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={()=>handleEdit()} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
                     {/* { edit ? <Button className="btn-trash" onClick={e=>setEdit(true)}><FontAwesomeIcon icon={faWindowClose} /></Button> :
                     <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>} */}
-                    <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>
+                    <Button className="btn-trash" onClick={()=>deleteGrade()}><FontAwesomeIcon icon={faTrash} /></Button>
                 </div> 
             </div>
         );

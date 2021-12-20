@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useParams,useHistory } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import './index.css'
 import { Tab, Tabs } from 'react-bootstrap';
 import ShowPeopleList from './ShowPeopleList';
 import InfoClass from './InfoClass';
 import checkTeacher from '../../helper/helper';
 import Grade from './grade/Grade';
+import GradeDetail from './grade/GradeDetail';
 
 
 function DetailClass() {
-    const history=useHistory();
+    const history = useHistory();
     const { id } = useParams()
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
 
 
-    const getDetail=async()=>{
+    const getDetail = async () => {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -40,11 +41,11 @@ function DetailClass() {
             })
     }
 
-    useEffect(async() => {
-       const result=await getDetail();
+    useEffect(async () => {
+        const result = await getDetail();
         setItems(result);
         setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
-    },[])
+    }, [])
     return (
         <div className="container-tab">
             <h3>{items.nameClass}</h3>
@@ -55,14 +56,16 @@ function DetailClass() {
                 <Tab eventKey="people" title="People">
                     <ShowPeopleList items={items} teacher={teacher}></ShowPeopleList>
                 </Tab>
-                <Tab eventKey="classwork" title="Classwork" >
+
+                <Tab eventKey="classword" title="Classwork">
+                    <Grade items={items} setItems={setItems} getDetail={getDetail} teacher={teacher}></Grade>
                 </Tab>
                 {
-                    teacher? <Tab eventKey="grade" title="Grades">
-                    <Grade items={items} setItems={setItems} getDetail={getDetail}></Grade>
-                </Tab>:<></>
+                    teacher ? <Tab eventKey="grade" title="Grade" >
+                        <GradeDetail items={items} setItems={setItems} getDetail={getDetail} ></GradeDetail>
+                    </Tab> : <></>
                 }
-               
+
             </Tabs>
         </div>
 
