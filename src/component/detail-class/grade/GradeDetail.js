@@ -10,18 +10,62 @@ import './../index.css'
 function GradeDetail({ items, setItems, getDetail }) {
     const history = useHistory();
 
-    const [headers, setHeader] = useState([]);
-    const [data, setData] = useState([]);
-    const [csvReport, setCSVReport] = useState([]);
+    const [studentHeaders, setStudentHeaders] = useState([]);
+    const [studentData, setStudentData] = useState([]);
 
-    const handleData = () => {
+    const [templateHeaders, setTemplateHeaders] = useState([]);
+    const [templateData,setTemplateData]=useState([]);
+
+    // const [studentHeaders, setStudentHeaders] = useState([]);
+    // const [studentData, setStudentData] = useState([]);
+    // const [listStudent, setListStudent] = useState([]);
+
+    const handleTemplateData = () => {
+
+        let headers = [
+            { label: "ID", key: "id" },
+            { label: "Average", key: "average" },
+        ];
+
+        let headertmp=[];
+
+        if (items.grades) {
+            headertmp = items.grades.map((grade, index) => {
+                const tmp = { label: `${grade.name}`, key:  `${index}`}
+                return tmp;
+            });
+        }
+
+        let headersConcat = headers.concat(headertmp);
+        setTemplateHeaders(headersConcat);
+       
+
+        let data1 = []
+
+        if (items.teachers) {
+            data1 = items.teachers.map((student, index) => {
+                let tmp = { id: `${student.studentID}`,average:""}
+                if (items.grades) {
+                    const dataTmp = items.grades.map((grade, index) => {
+                        tmp[`${index}`]="";
+                        return grade;
+                    });
+                }
+        
+                return tmp;
+            });
+        }
+        setTemplateData(data1);
+    }
+
+    const handleStudentsData = () => {
 
         const headers = [
             { label: "ID", key: "id" },
             { label: "Name", key: "name" },
         ];
 
-        setHeader(headers);
+        setStudentHeaders(headers);
 
         let dataTmp = []
 
@@ -31,17 +75,12 @@ function GradeDetail({ items, setItems, getDetail }) {
                 return tmp;
             });
         }
-        setData(dataTmp);
+        setStudentData(dataTmp);
     }
 
     useEffect(() => {
-        handleData();
-        const report = {
-            data: data,
-            headers: headers,
-            filename: 'StudentList.csv'
-        };
-        setCSVReport(report)
+        handleStudentsData();
+        handleTemplateData();
     }, [])
     
     return (
@@ -67,16 +106,16 @@ function GradeDetail({ items, setItems, getDetail }) {
 
                         <Dropdown.Menu>
                             <Dropdown.Menu>
-                                <Dropdown.Item as="Label">
-                                    <CSVLink style={{ textDecoration: "none", color: "#272343" }} {...csvReport}>Export student list</CSVLink>
+                                <Dropdown.Item as="div">
+                                <CSVLink style={{textDecoration:"none",color:"#272343"}}  asyncOnClick={true} data={studentData} headers={studentHeaders} filename='StudentList.csv'>Export student list</CSVLink>
                                 </Dropdown.Item>
-                                <Dropdown.Item as="Label">
-                                    <CSVLink style={{ textDecoration: "none", color: "#272343" }}  {...csvReport}>Export template grade list</CSVLink>
+                                <Dropdown.Item as="div">
+                                <CSVLink style={{textDecoration:"none",color:"#272343"}} asyncOnClick={true} data={templateData} headers={templateHeaders} filename='GradeTemplate.csv'>Export template grade</CSVLink>
                                 </Dropdown.Item>
-                                <Dropdown.Item as="Label">
-                                    <CSVLink style={{ textDecoration: "none", color: "#272343" }}  {...csvReport}>Export grade board</CSVLink>
+                                {/* <Dropdown.Item as="div">
+                                    <CSVLink style={{ textDecoration: "none", color: "#272343" }} {...listStudent} >Export grade board</CSVLink>
 
-                                </Dropdown.Item>
+                                </Dropdown.Item> */}
                             </Dropdown.Menu>
                         </Dropdown.Menu>
                     </Dropdown>
