@@ -244,19 +244,24 @@ function GradeDetail({ items, setItems, getDetail }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.boardGrade && items.boardGrade.map((student, index) => (
+                        {items.students && items.students.map((student, index) => (
                             <tr key={student.studentID}>
                                 <td style={{ width: "100px",verticalAlign:"middle" }}>{student.studentID}</td>
                                 <td style={{ width: "200px",verticalAlign:"middle" }}>{student.name}</td>
                                 <td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
                                 </td>
-                                {student.point && student.point.map((point, index) => (
+                                <td><td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
+                                        {/* {point.point} */}
+                                    </td>
+                                        <div style={{ display: 'inline' }}>/100</div>
+                                    </td>
+                                {/* {student.point && student.point.map((point, index) => (
                                     <td><td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
                                         {point.point}
                                     </td>
                                         <div style={{ display: 'inline' }}>/{point.pointGrade}</div>
                                     </td>
-                                ))}
+                                ))} */}
                             </tr>
                         ))}
                     </tbody>

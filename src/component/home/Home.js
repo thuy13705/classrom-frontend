@@ -30,23 +30,23 @@ function Home() {
             mode: "cors",
         };
 
-        fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
+        return fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");
                 }
                 else {
-                    const result = await response.json()
-                    setStudent(result.students);
-                    setTeacher(result.teachers);
+                    return response.json();
                 }
             })
             .catch(error => console.log('error', error));
     }
+    useEffect(async () => {
+        const result = await getListClass();
+        setStudent(result.students);
+        setTeacher(result.teachers);
+    }, []);
 
-    useEffect(() => {
-        getListClass();
-    })
     return (
         <Container >
             <div className="home">
@@ -55,6 +55,9 @@ function Home() {
                         <FontAwesomeIcon icon={faPlus} />Add
                     </Button>
                     <AddClassdModal
+                        getListClass={getListClass}
+                        setStudent={setStudent}
+                        setTeacher={setTeacher}
                         show={modalShow}
                         onHide={() => handleModalShow()}
                     />
@@ -63,7 +66,7 @@ function Home() {
                 <h3 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h3>
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {teachers && teachers.map((item, index) => (
-                        <NavLink style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
+                        <NavLink key={item._id+index}style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
                             <Card key={item._id + item._id} items={item}>
                             </Card>
                         </NavLink>
@@ -79,7 +82,6 @@ function Home() {
                                 <Card key={item._id + item._id} items={item}>
                                 </Card>
                             </NavLink>
-
                         </Col>
                     ))}
                 </Row>
