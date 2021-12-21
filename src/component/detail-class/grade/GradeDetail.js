@@ -159,6 +159,16 @@ function GradeDetail({ items, setItems, getDetail }) {
         setData(dataTmp);
     }
 
+    const getStudentPoint = (studentId, objs) => {
+         let obj = objs.find(o => o.studentID === studentId);
+         console.log(obj.point)
+         return(
+         <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
+                                            {obj.point}
+                                        </td>
+         ) 
+    }
+
     useEffect(() => {
         handleData();
         const report = {
@@ -216,17 +226,17 @@ function GradeDetail({ items, setItems, getDetail }) {
                 <Table id="emp" bordered hover>
                     <thead>
                         <tr>
-                            <th style={{ width: "100px",verticalAlign:"middle" }}><p style={{fontWeight:"normal"}}>ID</p></th>
-                            <th style={{ width: "200px",verticalAlign:"middle" }}><p style={{fontWeight:"normal"}}>Name</p></th>
-                            <th style={{ width: "100px",verticalAlign:"middle" }}><p style={{fontWeight:"normal"}}>Average</p></th>
+                            <th style={{ width: "100px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>ID</p></th>
+                            <th style={{ width: "200px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>Name</p></th>
+                            <th style={{ width: "100px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>Average</p></th>
                             {items.grades && items.grades.map((item, index) => (
-                                <th style={{ width: "100px",verticalAlign:"top"}} key={item._id}>
-                                    <div style={{display:"flex",justifyContent:"space-between"}} >
-                                        <p style={{fontWeight:"normal"}}>{item.name}</p>
+                                <th style={{ width: "100px", verticalAlign: "top" }} key={item._id}>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }} >
+                                        <p style={{ fontWeight: "normal" }}>{item.name}</p>
                                         <Dropdown style={{ display: "inline", marginLeft: "50px", marginRight: "0px" }}>
-                                            <Dropdown.Toggle 
-                                            style={{padding:"0",backgroundColor:"white", border:"none",alignItems:"flex-start"}}>
-                                                <FontAwesomeIcon style={{color:"black"}} icon={faEllipsisV} />
+                                            <Dropdown.Toggle
+                                                style={{ padding: "0", backgroundColor: "white", border: "none", alignItems: "flex-start" }}>
+                                                <FontAwesomeIcon style={{ color: "black" }} icon={faEllipsisV} />
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
@@ -244,17 +254,20 @@ function GradeDetail({ items, setItems, getDetail }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.boardGrade && items.boardGrade.map((student, index) => (
+                        {items.students && items.students.map((student, index) => (
                             <tr key={student.studentID}>
-                                <td style={{ width: "100px",verticalAlign:"middle" }}>{student.studentID}</td>
-                                <td style={{ width: "200px",verticalAlign:"middle" }}>{student.name}</td>
-                                <td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
+                                <td style={{ width: "100px", verticalAlign: "middle" }}>{student.studentID}</td>
+                                <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>
+                                <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
                                 </td>
-                                {student.point && student.point.map((point, index) => (
-                                    <td><td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
-                                        {point.point}
-                                    </td>
-                                        <div style={{ display: 'inline' }}>/{point.pointGrade}</div>
+                                {items.grades && items.grades.map((point, index) => (
+                                    <td>
+                                        {/* <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
+                                            {point.pointStudent.point}
+                                            {log(point.pointStudent)}
+                                        </td> */}
+                                        {getStudentPoint(student.studentID, point.pointStudent)}
+                                        <div style={{ display: 'inline' }}>/{point.point}</div>
                                     </td>
                                 ))}
                             </tr>
