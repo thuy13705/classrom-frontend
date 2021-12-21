@@ -1,7 +1,7 @@
 import './../index.css'
 import {Button} from 'react-bootstrap';
 import {useHistory, useParams} from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons'
 import {SortableElement} from 'react-sortable-hoc';
@@ -31,6 +31,7 @@ function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
                     const result=await getDetail();
                     setItems(result)
                     grade=result.grades;
+
                     setGrades(grade);
                  }
                  else{
@@ -80,7 +81,6 @@ function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
             });
     }
 
-
     const SortableItem = SortableElement(({item}) => {
         return (
             <div className="item-inner item-grade">
@@ -90,27 +90,25 @@ function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
                 </div>
                 <div>
                     { edit ? <Button className="btn-edit" onClick={()=>editGrade()}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={()=>handleEdit()} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
-                    {/* { edit ? <Button className="btn-trash" onClick={e=>setEdit(true)}><FontAwesomeIcon icon={faWindowClose} /></Button> :
-                    <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>} */}
                     <Button className="btn-trash" onClick={()=>deleteGrade()}><FontAwesomeIcon icon={faTrash} /></Button>
                 </div> 
             </div>
         );
     })
 
-    /*
-    return (
-        <div className="item-inner item-grade">
-            <div>
-                <p><b>Name</b>: {grade.name}</p>
-                <p><b>Point</b>: {grade.point}</p>
-            </div>
-            <div>
-                <Button className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>
-                <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>
-            </div>
-        </div>
-    );*/
+    
+    // return (
+    //     <div className="item-inner item-grade">
+    //         <div>
+    //             <p><b>Name</b>: {grade.name}</p>
+    //             <p><b>Point</b>: {grade.point}</p>
+    //         </div>
+    //         <div>
+    //             <Button className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>
+    //             <Button className="btn-trash" onClick={deleteGrade}><FontAwesomeIcon icon={faTrash} /></Button>
+    //         </div>
+    //     </div>
+    // );
 
     return <SortableItem index={index} item={grade} />;
 }

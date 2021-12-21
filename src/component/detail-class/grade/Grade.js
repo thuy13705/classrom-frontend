@@ -4,14 +4,14 @@ import {
 } from 'react-bootstrap';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import {useState } from 'react';
+import {useState} from 'react';
 import ItemGrade from './ItemGrade';
 import {useHistory} from 'react-router-dom';
 import {SortableContainer, arrayMove} from 'react-sortable-hoc';
 
 
 
-function Grade({ items,setItems,getDetail}) {
+function Grade({teacher, items,setItems,getDetail}) {
     const history=useHistory();
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
@@ -61,6 +61,10 @@ function Grade({ items,setItems,getDetail}) {
             <div style={{background: '#FF0'}}>{list_items}</div>
           );
     });
+
+    // useEffect(async () => {
+    //     console.log(grades);
+    // }, [])
 
     function sort(){
         const myHeaders = new Headers();
@@ -131,7 +135,7 @@ function Grade({ items,setItems,getDetail}) {
                             </tbody>
                         </Table>
                     </div>
-                    <div className="item-inner">
+                    {teacher ?  <div className="item-inner">
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} className="mb-1" controlId="namseID">
                                 <Form.Label column sm={3}>
@@ -156,8 +160,8 @@ function Grade({ items,setItems,getDetail}) {
                                 </Col>
                             </Form.Group>
                         </Form>
-                    </div>
-
+                    </div>:<></>
+                    }
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
                         {grades ? <SortableList grades={grades} onSortEnd={onSortEnd}/> : <></>}
                     </div>
