@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import ItemGrade from './ItemGrade';
 import {useHistory} from 'react-router-dom';
 import {SortableContainer, arrayMove} from 'react-sortable-hoc';
@@ -54,7 +54,7 @@ function Grade({teacher, items,setItems,getDetail}) {
 
     const SortableList = SortableContainer(({grades}) => {
         let list_items = grades.map((item, index) => {
-            return <ItemGrade key={`item-${index}`} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} />;
+            return <ItemGrade key={`item-${index}`} teacher={teacher} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} />;
           });
     
           return (
@@ -62,9 +62,12 @@ function Grade({teacher, items,setItems,getDetail}) {
           );
     });
 
-    // useEffect(async () => {
-    //     console.log(grades);
-    // }, [])
+    useEffect(async () => {
+        const result=await getDetail();
+                    setItems(result)
+                    items=result;
+                    setGrades(items.grades);
+    }, [])
 
     function sort(){
         const myHeaders = new Headers();

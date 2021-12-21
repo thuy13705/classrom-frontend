@@ -160,13 +160,13 @@ function GradeDetail({ items, setItems, getDetail }) {
     }
 
     const getStudentPoint = (studentId, objs) => {
-         let obj = objs.find(o => o.studentID === studentId);
-         console.log(obj.point)
-         return(
-         <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
-                                            {obj.point}
-                                        </td>
-         ) 
+        let obj = objs.find(o => o.studentID === studentId);
+        console.log(obj.point)
+        return (
+            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
+                {obj.point}
+            </td>
+        )
     }
 
     useEffect(() => {
@@ -260,6 +260,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                                 <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>
                                 <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
                                 </td>
+
                                 {items.grades && items.grades.map((point, index) => (
                                     <td>
                                         {/* <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
@@ -268,9 +269,26 @@ function GradeDetail({ items, setItems, getDetail }) {
                                         </td> */}
                                         {getStudentPoint(student.studentID, point.pointStudent)}
                                         <div style={{ display: 'inline' }}>/{point.point}</div>
+
+                                        <td>
+                                            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
+                                                {/* {point.point} */}
+                                            </td>
+                                            <div style={{ display: 'inline' }}>/100</div>
+                                        </td>
+                                        {/* {student.point && student.point.map((point, index) => (
+                                    <td><td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
+                                        {point.point}
+                                    </td>
+                                        <div style={{ display: 'inline' }}>/{point.pointGrade}</div>
+
+                                    </td>
+                                ))} */}
+
+                                        {/* ))} */}
                                     </td>
                                 ))}
-                            </tr>
+                                   </tr> 
                         ))}
                     </tbody>
                 </Table>

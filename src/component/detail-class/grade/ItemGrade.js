@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons'
 import {SortableElement} from 'react-sortable-hoc';
 
-function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
+function ItemGrade({ teacher,grade, index,setItems,getDetail, setGrades }) {
     const history=useHistory();
     const { id } = useParams();
     const [edit, setEdit] = useState(false);
@@ -88,15 +88,23 @@ function ItemGrade({ grade, index,setItems,getDetail, setGrades }) {
                     { edit ?<p><b>Name</b>: <input defaultValue={item.name} id="nameGrade" type="text"/></p> : <p><b>Name</b>: {item.name}</p> }
                     { edit ?<p><b>Point</b>: <input defaultValue={item.point} id="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
                 </div>
-                <div>
+                {teacher?<div>
                     { edit ? <Button className="btn-edit" onClick={()=>editGrade()}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={()=>handleEdit()} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}
                     <Button className="btn-trash" onClick={()=>deleteGrade()}><FontAwesomeIcon icon={faTrash} /></Button>
-                </div> 
+                </div>:<></>
+                }
+                
             </div>
         );
     })
 
-    
+    useEffect(async() => {
+        const result=await getDetail();
+                   setItems(result)
+                   grade=result.grades;
+                   setGrades(grade);
+    }, [])
+
     // return (
     //     <div className="item-inner item-grade">
     //         <div>
