@@ -62,7 +62,7 @@ function DetailClass() {
                 </Tab>
                 {
                     teacher ? <Tab eventKey="grade" title="Grade" >
-                        <GradeDetail items={items} setItems={setItems} getDetail={getDetail} ></GradeDetail>
+                        <GradeDetail items={items} setItems={setItems} getDetail={getDetail} teacher={teacher}></GradeDetail>
                     </Tab> : <></>
                 }
 

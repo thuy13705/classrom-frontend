@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Modal, } from 'react-bootstrap';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 
-function AddClassModal({ show, onHide }) {
-    const history=useHistory();
+function AddClassModal({ getListClass, setStudent, setTeacher, show, onHide }) {
+    const history = useHistory();
     const [name, setName] = useState();
     const [category, setCategory] = useState();
     const [room, setRoom] = useState();
@@ -24,14 +24,17 @@ function AddClassModal({ show, onHide }) {
                 category: category,
                 room: room,
             }),
-            mode:"cors"
+            mode: "cors"
         })
             .then(res => res.json())
-            .then((result) => {
-                if (result!=="Unauthorized"){
+            .then(async (result) => {
+                if (result !== "Unauthorized") {
                     alert("Adding class success.");
+                    const result = await getListClass();
+                    setStudent(result.students);
+                    setTeacher(result.teachers);
                 }
-                else{
+                else {
                     history('/signin')
                 }
             }, (error) => {
@@ -56,20 +59,20 @@ function AddClassModal({ show, onHide }) {
                 <Form>
                     <Form.Group className="mb-3" controlId="name"  >
                         <Form.Label>Class's name:</Form.Label>
-                        <Form.Control type="text" required onChange={e => setName(e.target.value)}/>
+                        <Form.Control type="text" required onChange={e => setName(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="category" >
                         <Form.Label>Categoty:</Form.Label>
-                        <Form.Control type="text" required  onChange={e => setCategory(e.target.value)}/>
+                        <Form.Control type="text" required onChange={e => setCategory(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="room"  >
                         <Form.Label>Room:</Form.Label>
-                        <Form.Control type="text" required onChange={e => setRoom(e.target.value)}/>
+                        <Form.Control type="text" required onChange={e => setRoom(e.target.value)} />
                     </Form.Group>
 
                 </Form>
             </Modal.Body>
-            <Modal.Footer> 
+            <Modal.Footer>
                 <Button className="btnAdd" type="submit" onClick={handleSubmit}>Create</Button>
                 <Button className="btnAdd" onClick={onHide}>Cancel</Button>
             </Modal.Footer>
