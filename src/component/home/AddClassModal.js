@@ -10,13 +10,13 @@ function AddClassModal({ getListClass, setStudent, setTeacher, show, onHide }) {
     const [category, setCategory] = useState();
     const [room, setRoom] = useState();
 
-    const handleSubmit = (e) => {
+    const handleSubmit =async (e) => {
         e.preventDefault();
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://class-room-midterm.herokuapp.com/classes', {
+        await fetch('https://class-room-midterm.herokuapp.com/classes', {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -29,10 +29,10 @@ function AddClassModal({ getListClass, setStudent, setTeacher, show, onHide }) {
             .then(res => res.json())
             .then(async (result) => {
                 if (result !== "Unauthorized") {
-                    alert("Adding class success.");
-                    const result = await getListClass();
-                    setStudent(result.students);
-                    setTeacher(result.teachers);
+                    getListClass().then((items) => {
+                        setStudent(items.students);
+                        setTeacher(items.teachers);
+                    }).catch(error => console.log('error', error));  
                 }
                 else {
                     history('/signin')

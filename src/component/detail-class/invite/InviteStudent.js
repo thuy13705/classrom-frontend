@@ -7,7 +7,6 @@ import './../index.css'
 
 function InviteStudent() {
     const { id } = useParams();
-    const [result, setResult] =useState();
     const [error,setError]=useState(true);
     const history=useHistory();
     const link="/invite/1/"+id

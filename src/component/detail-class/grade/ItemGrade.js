@@ -29,10 +29,9 @@ function ItemGrade({ teacher,grade, index,setItems,getDetail, setGrades }) {
                  if (message!=="success"){
                     alert("Delete grade success.");
                     const result=await getDetail();
-                    setItems(result)
-                    grade=result.grades;
-
-                    setGrades(grade);
+                   setItems(result)
+                   grade=result.grades;
+                   setGrades(grade);        
                  }
                  else{
                     history.push('/signin')
@@ -70,8 +69,8 @@ function ItemGrade({ teacher,grade, index,setItems,getDetail, setGrades }) {
                    const result=await getDetail();
                    setItems(result)
                    grade=result.grades;
-                   setGrades(grade);
-                   setEdit(!edit);
+                   setGrades(grade);  
+                  
                 }
                 else{
                    history.push('/signin')
@@ -98,12 +97,13 @@ function ItemGrade({ teacher,grade, index,setItems,getDetail, setGrades }) {
         );
     })
 
-    useEffect(async() => {
-        const result=await getDetail();
-                   setItems(result)
-                   grade=result.grades;
-                   setGrades(grade);
-    }, [])
+    // useEffect(() => {
+    //     getDetail().then((result) => {
+    //         setItems(result)
+    //         grade=result.grades;
+    //         setGrades(grade);
+    //     }).catch(error => console.log('error', error));                  
+    // }, [])
 
     // return (
     //     <div className="item-inner item-grade">
