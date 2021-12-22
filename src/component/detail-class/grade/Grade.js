@@ -11,7 +11,7 @@ import {SortableContainer, arrayMove} from 'react-sortable-hoc';
 
 
 
-function Grade({teacher, items,setItems,getDetail}) {
+function Grade({teacher, items,setItems,getDetail,currentPoint}) {
     const history=useHistory();
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
@@ -54,7 +54,7 @@ function Grade({teacher, items,setItems,getDetail}) {
 
     const SortableList = SortableContainer(({grades}) => {
         let list_items = grades.map((item, index) => {
-            return <ItemGrade key={`item-${index}`} teacher={teacher} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} />;
+            return <ItemGrade key={`item-${index}`} teacher={teacher} grade={item} index={index} setItems={setItems} getDetail={getDetail} setGrades={setGrades} currentPoint={currentPoint} />;
           });
     
           return (

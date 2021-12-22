@@ -14,6 +14,7 @@ function DetailClass() {
     const { id } = useParams()
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
+    const [currentPoint, setCurrentPoint]  = useState([]);
 
 
     const getDetail =async() => {
@@ -41,9 +42,26 @@ function DetailClass() {
             })
     }
 
+    const setPCurrentPoint = async (result) =>{
+        if (result.boardGrade)
+        for (let i of result.boardGrade){
+            if (i.isFinal)
+                setCurrentPoint(i.point);
+        }
+    }
+
+    const setItem = async (result) =>{
+        await setItems(result);
+        console.log(result)
+        await setCurrentPoint([]);
+        if (result)
+            await setPCurrentPoint(result);
+        console.log(currentPoint)
+    }
+
     const handleData=async()=>{
         const result=await getDetail();
-        setItems(result);
+        setItem(result);
         setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
     }
 
@@ -62,11 +80,11 @@ function DetailClass() {
                 </Tab>
 
                 <Tab eventKey="classword" title="Classwork">
-                    <Grade items={items} setItems={setItems} getDetail={getDetail} teacher={teacher}></Grade>
+                    <Grade items={items} setItems={setItems} getDetail={getDetail} teacher={teacher} currentPoint={currentPoint}></Grade>
                 </Tab>
                 {
                     teacher ? <Tab eventKey="grade" title="Grade" >
-                        <GradeDetail items={items} setItems={setItems} getDetail={getDetail} ></GradeDetail>
+                        <GradeDetail items={items} setItems={setItem} getDetail={getDetail} ></GradeDetail>
                     </Tab> : <></>
                 }
             </Tabs>

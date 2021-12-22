@@ -32,8 +32,39 @@ function GradeDetail({ items, setItems, getDetail }) {
     const [onHide, setOnHide] = useState(false);
     const [gradeDropDown, setGradeDropDown] = useState(false);
     const [grade, setGrade] = useState();
+    const [curPoint, setCurPoint] = useState();
 
 
+    const mark = (item) =>{
+        console.log(item);
+        const myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Accept", "application/json");
+            myHeaders.append("Content-Type", "application/json");
+            fetch('https://class-room-midterm.herokuapp.com/grade/markFinal/' + item._id, {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify({
+                }),
+                mode: "cors",
+
+            })
+                .then(async (message) => {
+                    if (message !== "success") {
+                        const result = await getDetail();
+                        setItems(result);
+                        handleStudentsData();
+                        handleGradeData();
+                        alert("Succes");
+                    }
+                    else {
+                        history.push('/signin')
+                    }
+                }, (error) => {
+                    alert(error);
+                })
+
+    }
     const setStudentList = (input) => {
         setFileStudentList(input.files[0]);
         var reader = new FileReader();
@@ -344,26 +375,19 @@ function GradeDetail({ items, setItems, getDetail }) {
     }
 
 
-    const sendPoint = (indexPoint, studentId) => {
-        console.log(indexPoint);
+    const sendPoint = (idGrade, studentId) => {
+        console.log(idGrade);
         console.log(studentId)
-        let idPoint;
-        {
-            items.grades && items.grades.map((grade, index) => {
-                if (indexPoint === index) {
-                    idPoint = grade._id;
-                }
-            })
-        }
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/sendPoint/' + idPoint, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/sendPoint/' + idGrade, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
-                student: studentId
+                studentID: studentId,
+                point: curPoint
             }),
             mode: "cors",
 
@@ -372,6 +396,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                 if (message !== "success") {
                     const result = await getDetail();
                     setItems(result)
+                    alert("success")
                 }
                 else {
                     history.push('/signin')
@@ -381,8 +406,9 @@ function GradeDetail({ items, setItems, getDetail }) {
             })
     }
 
-    const handleInputGrade = (e, point) => {
+    const handleInputGrade = async (e, point) => {
         console.log(e.target.textContent);
+        await setCurPoint(parseInt(e.target.textContent));
     }
 
 
@@ -458,6 +484,9 @@ function GradeDetail({ items, setItems, getDetail }) {
                                                 <Dropdown.Item as="div">
                                                     <CSVLink style={{ textDecoration: "none", color: "#272343" }} asyncOnClick={true} data={templateData} headers={templateHeaders} onClick={() => handleTemplateData(index)} filename='GradeTemplate.csv'>Export template grade</CSVLink>
                                                 </Dropdown.Item>
+                                                <Dropdown.Item >
+                                                    <div onClick={() => { mark(item) }}>Mark a grade composition as finalized</div>
+                                                </Dropdown.Item>
 
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -489,7 +518,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                                                 {point ? point.point : 0}
                                             </td>
                                             <div style={{ display: 'inline' }}></div>
-                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(indexPoint, student.studentID)} />
+                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(point.idGrade, student.studentID)} />
                                         </div>
                                     </td>
                                 ))}
