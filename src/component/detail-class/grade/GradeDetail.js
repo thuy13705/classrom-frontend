@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-    Container, Dropdown, Table
+    Container, Dropdown, Table, Form
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
@@ -8,6 +8,10 @@ import { CSVLink } from "react-csv";
 import { useHistory } from 'react-router-dom';
 import './../index.css'
 import ImportFile from './ImportFile';
+import { Button } from 'react-bootstrap';
+
+import { faShare } from '@fortawesome/free-solid-svg-icons'
+import { render } from '@testing-library/react';
 
 
 function GradeDetail({ items, setItems, getDetail }) {
@@ -28,6 +32,7 @@ function GradeDetail({ items, setItems, getDetail }) {
     const [onHide, setOnHide] = useState(false);
     const [gradeDropDown, setGradeDropDown] = useState(false);
     const [grade, setGrade] = useState();
+
 
     const setStudentList = (input) => {
         setFileStudentList(input.files[0]);
@@ -107,6 +112,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                 let Data = {
                     studentID: lines[i],
                     point: parseInt(lines[i + 1]),
+                    isComplete: false
                 }
                 if (lines[i] && lines[i + 1])
                     arrData.push(Data);
@@ -151,6 +157,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             setStudentList(input);
         setOnHide(!onHide);
     }
+
 
 
 
@@ -215,6 +222,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         }
 
         let headersConcat = headers.concat(headertmp);
+
         setGradeHeaders(headersConcat);
         let data1 = []
         if (items.boardGrade.length === 0) {
@@ -267,6 +275,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         setGradeData(data1);
     }
 
+
     const handleStudentsData = () => {
 
         const headers = [
@@ -295,6 +304,27 @@ function GradeDetail({ items, setItems, getDetail }) {
         }
         setStudentData(dataTmp);
     }
+
+
+    const sumTotal = (id) => {
+        let sum = 0;
+        {
+            items.boardGrade && items.boardGrade.map((student, index) => {
+                if (id === student.studentID) {
+                    {
+                        student.point && student.point.map((point, index) => {
+                            sum = sum + Number(point.point)
+                        }
+                        )
+                    }
+                }
+            }
+
+            )
+        }
+        return (
+            <td style={{ width: "100px", verticalAlign: "middle" }}>
+                {sum}
 
     const sumTotalGrade=(id)=>{
         let sum=0;
@@ -328,10 +358,54 @@ function GradeDetail({ items, setItems, getDetail }) {
         return (
             <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
                 {obj ? obj.point : 0}
+
             </td>
 
         )
     }
+
+    const tableChange = (event) => {
+        console.log("hello");
+    }
+
+    const sendPoint = (indexPoint, studentId) => {
+        console.log(indexPoint);
+        console.log(studentId)
+        let idPoint;
+        {items.grades && items.grades.map((grade, index) => {
+            if (indexPoint === index){
+                idPoint = grade._id;
+            }
+        })}
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+        fetch('http://localhost:3080/grade/sendPoint/' + idPoint, {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+                student: studentId
+            }),
+            mode: "cors",
+
+        })
+            .then(async (message) => {
+                if (message !== "success") {
+                    const result = await getDetail();
+                    setItems(result)
+                }
+                else {
+                    history.push('/signin')
+                }
+            }, (error) => {
+                alert(error);
+            })
+    }
+
+
+
+
 
     useEffect(() => {
         handleStudentsData();
@@ -369,6 +443,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                                 </Dropdown.Item>
 
                                 <Dropdown.Item as="div">
+
                                     <CSVLink style={{ textDecoration: "none", color: "#272343" }} asyncOnClick={true} data={gradeData} headers={gradeHeaders} filename='GradeBoard.csv' >Export grade board</CSVLink>
                                 </Dropdown.Item>
                             </Dropdown.Menu>
@@ -383,13 +458,13 @@ function GradeDetail({ items, setItems, getDetail }) {
                 <Table id="emp" bordered hover>
                     <thead>
                         <tr>
-                            <th style={{ width: "100px", verticalAlign: "top" }}><p style={{ fontWeight: "normal" }}>ID</p></th>
-                            <th style={{ width: "200px", verticalAlign: "top" }}><p style={{ fontWeight: "normal" }}>Name</p></th>
-                            <th style={{ width: "100px", verticalAlign: "top" }}><p style={{ fontWeight: "normal" }}>Average</p></th>
+                            <th style={{ width: "100px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>ID</p></th>
+                            <th style={{ width: "200px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>Name</p></th>
+                            <th style={{ width: "100px", verticalAlign: "middle" }}><p style={{ fontWeight: "normal" }}>Average ({items.totalGrade})</p></th>
                             {items.grades && items.grades.map((item, index) => (
                                 <th style={{ width: "100px", verticalAlign: "top" }} key={item._id}>
                                     <div style={{ display: "flex", justifyContent: "space-between" }} >
-                                        <p style={{ fontWeight: "normal" }}>{item.name}</p>
+                                        <p style={{ fontWeight: "normal" }}>{item.name} ({item.point})</p>
                                         <Dropdown style={{ display: "inline", marginLeft: "50px", marginRight: "0px" }}>
                                             <Dropdown.Toggle
                                                 style={{ padding: "0", backgroundColor: "white", marginTop: "0", border: "none", alignItems: "flex-start" }}>
@@ -412,44 +487,43 @@ function GradeDetail({ items, setItems, getDetail }) {
                             ))}
                         </tr>
                     </thead>
+
                     <tbody>
-                        {items.students && items.students.map((student, index) => (
+
+
+                        {items.boardGrade && items.boardGrade.map((student, index) => (
                             <tr key={student.studentID}>
+
                                 <td style={{ width: "100px", verticalAlign: "middle" }}>{student.studentID}</td>
-                                <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>
-                                <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
-                                </td>
-
-                                {items.grades && items.grades.map((point, index) => (
-                                    <td >
-                                        {/* <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
-                                            {point.pointStudent.point}
-                                            {log(point.pointStudent)}
-                                        </td> */}
-                                        <div style={{ display: "flex",justifyContent:"center" }}>
-                                            {getStudentPoint(student.studentID, point.pointStudent)}
-                                            <p style={{ display: 'inline' }}>/{point.point}</p>
-                                        </div>
+                                <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>{sumTotal(student.studentID)}
 
 
+                                {student.point && student.point.map((point, indexPoint) => (
+                                    <td contentEditable="true" display="flex" onChange={() => tableChange()}>
+                                        {point ? point.point : 0}
 
-                                        {/* {student.point && student.point.map((point, index) => (
-                                    <td><td contentEditable="true" style={{ width: "100px",verticalAlign:"middle" }}>
-                                        {point.point}
-                                    </td>
-                                        <div style={{ display: 'inline' }}>/{point.pointGrade}</div>
-                                    </td>
-                                ))} */}
-
-                                        {/* ))} 
                                         
-                                        */}
+                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(indexPoint, student.studentID)} />
+
+                                        
+                                        {/* <td>
+
+                                            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
+                                                
+                                            </td>
+                                            <div style={{ display: 'inline' }}>/100</div>
+                                        </td> */}
 
                                     </td>
                                 ))}
+
+
+
                             </tr>
                         ))}
+
                     </tbody>
+
                 </Table>
             </Container>
         </>

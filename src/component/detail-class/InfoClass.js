@@ -4,12 +4,16 @@ import {
     Row, Col, Accordion,
     InputGroup, FormControl, Button
 } from 'react-bootstrap';
-
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 
 
 function ShowPeopleList({ teacher, items }) {
+    const history = useHistory();
+
+    const [points, setPoints] = useState();
     let studentLink = "";
     let teacherLink = "";
     if (window.location.port !== null) {
@@ -20,6 +24,35 @@ function ShowPeopleList({ teacher, items }) {
         studentLink = window.location.protocol + "//" + window.location.hostname + "/invite/1/" + items._id;
         teacherLink = window.location.protocol + "//" + window.location.hostname + "/invite/0/" + items._id;
     }
+
+    const getDetail = async () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+            mode: "cors",
+        };
+        return fetch("http://localhost:3080/grade/getPoint/",teacher._id, requestOptions)
+            .then(async response => {
+                // if (response.status === 401) {
+                //     history.push("/signin");
+                // }
+                
+                return response.json();
+            })
+    }
+
+    useEffect(async () => {
+        if(!teacher)
+            {
+                const result = await getDetail();
+                setPoints(result);
+            }
+    }, [])
 
 
     return (
@@ -84,7 +117,7 @@ function ShowPeopleList({ teacher, items }) {
                                     <FontAwesomeIcon icon={faAddressCard} />
                                 </Button>
                             </InputGroup>
-
+                            {teacher ? <></>:<div>My point</div>}
                         </div>
                     </Col>
                 </Row>
