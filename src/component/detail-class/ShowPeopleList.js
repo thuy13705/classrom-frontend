@@ -42,7 +42,7 @@ function ShowPeopleList({ items, teacher }) {
                         </thead>
                         <tbody>
                             {items.teachers && items.teachers.map((item, index) => (
-                                <tr key={items._id}>
+                                <tr key={items._id+index+index}>
                                     <td className="list">
                                         <FontAwesomeIcon icon={faUserCircle} />
                                         <span>{item.name}</span>

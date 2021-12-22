@@ -16,7 +16,7 @@ function DetailClass() {
     const [teacher, setTeacher] = useState(false);
 
 
-    const getDetail = async () => {
+    const getDetail =async() => {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -27,7 +27,7 @@ function DetailClass() {
             redirect: 'follow',
             mode: "cors",
         };
-        return fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
+        return await fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");
@@ -37,14 +37,18 @@ function DetailClass() {
                 //     setItems(result);
                 //     setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
                 // }
-                return response.json();
+                return await response.json();
             })
     }
 
-    useEffect(async () => {
-        const result = await getDetail();
+    const handleData=async()=>{
+        const result=await getDetail();
         setItems(result);
         setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
+    }
+
+    useEffect( () => {
+        handleData();
     }, [])
     return (
         <div className="container-tab">
@@ -65,7 +69,6 @@ function DetailClass() {
                         <GradeDetail items={items} setItems={setItems} getDetail={getDetail} ></GradeDetail>
                     </Tab> : <></>
                 }
-
             </Tabs>
         </div>
 

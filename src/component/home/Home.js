@@ -18,7 +18,7 @@ function Home() {
         setModalShow(!modalShow);
     }
 
-    const getListClass = () => {
+    const getListClass = async () => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -30,21 +30,24 @@ function Home() {
             mode: "cors",
         };
 
-        return fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
+        return await fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");
                 }
                 else {
-                    return response.json();
+                    return await response.json();
                 }
             })
             .catch(error => console.log('error', error));
     }
-    useEffect(async () => {
+    const handleData = async () => {
         const result = await getListClass();
         setStudent(result.students);
         setTeacher(result.teachers);
+    }
+    useEffect(() => {
+        handleData();
     }, []);
 
     return (
@@ -66,7 +69,7 @@ function Home() {
                 <h3 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h3>
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {teachers && teachers.map((item, index) => (
-                        <NavLink key={item._id+index}style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
+                        <NavLink key={item._id + index} style={{ textDecorationLine: "none", color: "#282c34" }} to={`/classdetail/${item._id}`}>
                             <Card key={item._id + item._id} items={item}>
                             </Card>
                         </NavLink>

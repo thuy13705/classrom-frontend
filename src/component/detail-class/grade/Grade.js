@@ -62,11 +62,13 @@ function Grade({teacher, items,setItems,getDetail}) {
           );
     });
 
-    useEffect(async () => {
-        const result=await getDetail();
-                    setItems(result)
+    useEffect(() => {
+        getDetail().then((result) => {
+            setItems(result)
                     items=result;
                     setGrades(items.grades);
+        }).catch(error => console.log('error', error));   
+                
     }, [])
 
     function sort(){
