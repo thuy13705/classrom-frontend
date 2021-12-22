@@ -228,38 +228,39 @@ function GradeDetail({ items, setItems, getDetail }) {
         if (items.boardGrade.length === 0) {
             if (items.students) {
                 data1 = items.students.map((student, index) => {
-                    let tmp = { id: `${student.studentID}`,name:student.name,average:""}
+                    let tmp = { id: `${student.studentID}`, name: student.name }
+                    tmp["average"] = sumTotalGrade(student.studentID);
                     if (items.grades) {
                         const dataTmp = items.grades.map((grade, index) => {
-                            let obj=studentPoint(student.studentID,grade.pointStudent)
-                            if (obj){
-                                tmp[`${index}`]=obj.point;
+                            let obj = studentPoint(student.studentID, grade.pointStudent)
+                            if (obj) {
+                                tmp[`${index}`] = obj.point;
                             }
-                            else{
-                                tmp[`${index}`]="";
+                            else {
+                                tmp[`${index}`] = "";
                             }
                             return grade;
                         });
                     }
-            
+
                     return tmp;
                 });
-                   
+
             }
         }
         else {
             if (items.boardGrade) {
                 data1 = items.boardGrade.map((student, index) => {
-                    let tmp = { id: `${student.studentID}`,name:student.name};
-                    tmp["average"]=sumTotalGrade(student.studentID);
+                    let tmp = { id: `${student.studentID}`, name: student.name };
+                    tmp["average"] = sumTotalGrade(student.studentID);
                     if (items.grades) {
                         const dataTmp = items.grades.map((grade, index) => {
-                            let obj=studentPoint(student.studentID,grade.pointStudent)
-                            if (obj){
-                                tmp[`${index}`]=obj.point;
+                            let obj = studentPoint(student.studentID, grade.pointStudent)
+                            if (obj) {
+                                tmp[`${index}`] = obj.point;
                             }
-                            else{
-                                tmp[`${index}`]="";
+                            else {
+                                tmp[`${index}`] = "";
                             }
                             return grade;
                         });
@@ -269,7 +270,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             }
         }
 
-      
+
 
 
         setGradeData(data1);
@@ -308,32 +309,21 @@ function GradeDetail({ items, setItems, getDetail }) {
 
     const sumTotal = (id) => {
         let sum = 0;
+        sum = sumTotalGrade(id);
+        return (
+            <td style={{ width: "100px", verticalAlign: "middle" }}>
+                {sum}
+            </td>)
+    }
+
+    const sumTotalGrade = (id) => {
+        let sum = 0;
         {
             items.boardGrade && items.boardGrade.map((student, index) => {
                 if (id === student.studentID) {
                     {
                         student.point && student.point.map((point, index) => {
-                            sum = sum + Number(point.point)
-                        }
-                        )
-                    }
-                }
-            }
-
-            )
-        }
-        return (
-            <td style={{ width: "100px", verticalAlign: "middle" }}>
-                {sum}
-
-    const sumTotalGrade=(id)=>{
-        let sum=0;
-        {
-            items.boardGrade && items.boardGrade.map((student,index)=>{
-                if (id===student.studentID){
-                    {
-                        student.point && student.point.map((point,index)=>{
-                            sum=sum+Number(point.point);
+                            sum = sum + Number(point.point);
                         })
                     }
                 }
@@ -342,7 +332,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         return sum;
     }
 
-    const studentPoint= (studentId, objs) => {
+    const studentPoint = (studentId, objs) => {
         let obj = null;
         if (objs.length === 0) {
             obj = null;
@@ -353,30 +343,18 @@ function GradeDetail({ items, setItems, getDetail }) {
         return obj;
     }
 
-    const getStudentPoint = (studentId, objs) => {
-        let obj = studentPoint(studentId,objs);
-        return (
-            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
-                {obj ? obj.point : 0}
-
-            </td>
-
-        )
-    }
-
-    const tableChange = (event) => {
-        console.log("hello");
-    }
 
     const sendPoint = (indexPoint, studentId) => {
         console.log(indexPoint);
         console.log(studentId)
         let idPoint;
-        {items.grades && items.grades.map((grade, index) => {
-            if (indexPoint === index){
-                idPoint = grade._id;
-            }
-        })}
+        {
+            items.grades && items.grades.map((grade, index) => {
+                if (indexPoint === index) {
+                    idPoint = grade._id;
+                }
+            })
+        }
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
@@ -403,7 +381,9 @@ function GradeDetail({ items, setItems, getDetail }) {
             })
     }
 
-
+    const handleInputGrade = (e, point) => {
+        console.log(e.target.textContent);
+    }
 
 
 
@@ -496,29 +476,23 @@ function GradeDetail({ items, setItems, getDetail }) {
 
                                 <td style={{ width: "100px", verticalAlign: "middle" }}>{student.studentID}</td>
                                 <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>{sumTotal(student.studentID)}
-
+                                {/* {items.grades && items.grades.map((grade, index) => (
+                                    <>
+                                       
+                                    </>
+                                ))} */}
 
                                 {student.point && student.point.map((point, indexPoint) => (
-                                    <td contentEditable="true" display="flex" onChange={() => tableChange()}>
-                                        {point ? point.point : 0}
-
-                                        
-                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(indexPoint, student.studentID)} />
-
-                                        
-                                        {/* <td>
-
-                                            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }}>
-                                                
+                                    <td >
+                                        <div style={{ display: "flex", justifyContent: "center" }}>
+                                            <td contentEditable="true" style={{ width: "100px", verticalAlign: "middle" }} onBlur={(e) => handleInputGrade(e, point)}>
+                                                {point ? point.point : 0}
                                             </td>
-                                            <div style={{ display: 'inline' }}>/100</div>
-                                        </td> */}
-
+                                            <div style={{ display: 'inline' }}></div>
+                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(indexPoint, student.studentID)} />
+                                        </div>
                                     </td>
                                 ))}
-
-
-
                             </tr>
                         ))}
 
