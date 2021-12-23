@@ -43,8 +43,10 @@ function Home() {
     }
     const handleData = async () => {
         const result = await getListClass();
-        setStudent(result.students);
-        setTeacher(result.teachers);
+        if (result){
+            setStudent(result.students);
+            setTeacher(result.teachers);
+        }
     }
     useEffect(() => {
         handleData();
