@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
-import { Form, Button, Modal } from 'react-bootstrap';
+import React, {useState, useEffect} from 'react';
+import {  Button, Modal } from 'react-bootstrap';
 
-function AddClassModal({ show, onHide, setFile }) {
+function ImportFile({ show, onHide, setFile }) {
     
     const [fileInput, setFileInput] = useState();
     const [selectedFile, setSelectedFile] = useState(false);
+
+    useEffect(() =>{
+        if (!fileInput)
+            setSelectedFile(false);
+    })
     return (
         <Modal
             show={show}
@@ -28,10 +33,10 @@ function AddClassModal({ show, onHide, setFile }) {
             </Modal.Body>
             <Modal.Footer> 
                 {selectedFile ? <Button className="btnAdd" type="submit" onClick={() =>{setFile(fileInput); setSelectedFile(false)}}>OK</Button>:<></>}
-                <Button className="btnAdd" onClick={() => {onHide(!show); setSelectedFile(false)}}>Cancel</Button>
+                <Button className="btnAdd" onClick={() => {onHide(false); setSelectedFile(false)}}>Cancel</Button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default AddClassModal;
+export default ImportFile;
