@@ -9,7 +9,10 @@ import { useHistory } from 'react-router-dom';
 import './../index.css'
 import ImportFile from './ImportFile';
 
-import { faShare } from '@fortawesome/free-solid-svg-icons'
+import { faShare } from '@fortawesome/free-solid-svg-icons';
+import Loading from 'react-loading';
+import Point from './Point';
+
 
 
 function GradeDetail({ items, setItems, getDetail }) {
@@ -31,8 +34,15 @@ function GradeDetail({ items, setItems, getDetail }) {
     const [gradeDropDown, setGradeDropDown] = useState(false);
     const [grade, setGrade] = useState();
     const [curPoint, setCurPoint] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
+    const [stID, setStID] = useState();
+    const [onOne, setOnOne] = useState(null);
 
+    const selectStudentID = (studentID) =>{
+        setOnOne(true);
+        setStID(studentID);
+    }
     const mark = (item) =>{
         console.log(item);
         const myHeaders = new Headers();
@@ -53,7 +63,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                         setItems(result);
                         handleStudentsData();
                         handleGradeData();
-                        alert("Succes");
+                        alert("success");
                     }
                     else {
                         history.push('/signin')
@@ -63,12 +73,13 @@ function GradeDetail({ items, setItems, getDetail }) {
                 })
 
     }
+
     const setStudentList = (input) => {
         setFileStudentList(input.files[0]);
         var reader = new FileReader();
         reader.readAsText(input.files[0]);
 
-        reader.onload = function () {
+        reader.onload = async function() {
             const strData = reader.result;
             let arrData = [];
             let lines = strData.split(/\r\n|\n|,/);
@@ -90,11 +101,14 @@ function GradeDetail({ items, setItems, getDetail }) {
                 i = i + 2;
             }
             console.log(arrData);
+
+            await setIsLoading(true);
+
             const myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('https://class-room-midterm.herokuapp.com/classes/boardGrade/' + items._id, {
+            fetch('http://localhost:3080/classes/gradeBoard/' + items._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -109,13 +123,15 @@ function GradeDetail({ items, setItems, getDetail }) {
                         setItems(result);
                         handleStudentsData();
                         handleGradeData();
-                        alert("Succes");
+                        //alert("success");
+                        await setIsLoading(false);
                     }
                     else {
                         history.push('/signin')
                     }
-                }, (error) => {
+                }, async (error) => {
                     alert(error);
+                    await setIsLoading(false);
                 })
         }
     }
@@ -125,7 +141,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         var reader = new FileReader();
         reader.readAsText(input.files[0]);
 
-        reader.onload = function () {
+        reader.onload = async function () {
             const strData = reader.result;
             let arrData = [];
             let lines = strData.split(/\r\n|\n|,/);
@@ -148,12 +164,12 @@ function GradeDetail({ items, setItems, getDetail }) {
                 i = i + 2;
             }
             console.log(arrData);
-
+            await setIsLoading(true);
             const myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('https://class-room-midterm.herokuapp.com/grade/pushAllPoint/' + grade._id, {
+            fetch('http://localhost:3080/grade/pushAllPoint/' + grade._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -165,16 +181,18 @@ function GradeDetail({ items, setItems, getDetail }) {
                 .then(async (message) => {
                     if (message !== "success") {
                         const result = await getDetail();
-                        setItems(result);
+                        await setIsLoading(false);
+                        await setItems(result);
                         handleStudentsData();
                         handleGradeData();
-                        alert("Succes");
+                        //alert("success");
                     }
                     else {
                         history.push('/signin')
                     }
-                }, (error) => {
+                }, async (error) => {
                     alert(error);
+                    await setIsLoading(false);
                 })
         }
     }
@@ -207,7 +225,7 @@ function GradeDetail({ items, setItems, getDetail }) {
 
         let data1 = []
 
-        if (items.boardGrade.length === 0) {
+        if (items.gradeBoard.length === 0) {
             if (items.students) {
                 data1 = items.students.map((student, index) => {
                     let tmp = { id: `${student.studentID}` }
@@ -219,8 +237,8 @@ function GradeDetail({ items, setItems, getDetail }) {
             }
         }
         else {
-            if (items.boardGrade) {
-                data1 = items.boardGrade.map((student, index) => {
+            if (items.gradeBoard) {
+                data1 = items.gradeBoard.map((student, index) => {
                     let tmp = { id: `${student.studentID}` }
                     if (items.grades.length > index) {
                         tmp[`${index}`] = "";
@@ -254,7 +272,7 @@ function GradeDetail({ items, setItems, getDetail }) {
 
         setGradeHeaders(headersConcat);
         let data1 = []
-        if (items.boardGrade.length === 0) {
+        if (items.gradeBoard.length === 0) {
             if (items.students) {
                 data1 = items.students.map((student, index) => {
                     let tmp = { id: `${student.studentID}`, name: student.name }
@@ -278,8 +296,8 @@ function GradeDetail({ items, setItems, getDetail }) {
             }
         }
         else {
-            if (items.boardGrade) {
-                data1 = items.boardGrade.map((student, index) => {
+            if (items.gradeBoard) {
+                data1 = items.gradeBoard.map((student, index) => {
                     let tmp = { id: `${student.studentID}`, name: student.name };
                     tmp["average"] = sumTotalGrade(student.studentID);
                     if (items.grades) {
@@ -316,7 +334,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         setStudentHeaders(headers);
 
         let dataTmp = []
-        if (items.boardGrade.length === 0) {
+        if (items.gradeBoard.length === 0) {
             if (items.students) {
                 dataTmp = items.students.map((student, index) => {
                     const tmp = { id: `${student.studentID}`, name: `${student.name}`, }
@@ -325,8 +343,8 @@ function GradeDetail({ items, setItems, getDetail }) {
             }
         }
         else {
-            if (items.boardGrade) {
-                dataTmp = items.boardGrade.map((student, index) => {
+            if (items.gradeBoard) {
+                dataTmp = items.gradeBoard.map((student, index) => {
                     const tmp = { id: `${student.studentID}`, name: `${student.name}`, }
                     return tmp;
                 });
@@ -348,7 +366,7 @@ function GradeDetail({ items, setItems, getDetail }) {
     const sumTotalGrade = (id) => {
         let sum = 0;
         {
-            items.boardGrade && items.boardGrade.map((student, index) => {
+            items.gradeBoard && items.gradeBoard.map((student, index) => {
                 if (id === student.studentID) {
                     {
                         student.point && student.point.map((point, index) => {
@@ -373,14 +391,13 @@ function GradeDetail({ items, setItems, getDetail }) {
     }
 
 
-    const sendPoint = (idGrade, studentId) => {
-        console.log(idGrade);
-        console.log(studentId)
+    const sendPoint = async(idGrade, studentId) => {
+        await setIsLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://class-room-midterm.herokuapp.com/grade/sendPoint/' + idGrade, {
+        fetch('http://localhost:3080/grade/sendPoint/' + idGrade, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -393,14 +410,16 @@ function GradeDetail({ items, setItems, getDetail }) {
             .then(async (message) => {
                 if (message !== "success") {
                     const result = await getDetail();
-                    setItems(result)
-                    alert("success")
+                    await setItems(result)
+                    await setIsLoading(false);
+                    //alert("success");
                 }
                 else {
                     history.push('/signin')
                 }
-            }, (error) => {
+            }, async (error) => {
                 alert(error);
+                await setIsLoading(false);
             })
     }
 
@@ -412,13 +431,14 @@ function GradeDetail({ items, setItems, getDetail }) {
 
 
     useEffect(() => {
+        console.log(items);
         handleStudentsData();
         handleGradeData();
     }, [])
 
     return (
         <>
-
+            {onOne ? <Point teacher={true} gradeBoard={items.gradeBoard} studentID={stID} setOnOne={setOnOne}></Point>:
             <Container>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
                     <Dropdown style={{ marginRight: "10px" }}>
@@ -428,7 +448,7 @@ function GradeDetail({ items, setItems, getDetail }) {
 
                         <Dropdown.Menu>
                             <Dropdown.Item >
-                                <div onClick={() => { setOnHide(!onHide); setGradeDropDown(false) }}>Import student list</div>
+                                <div onClick={() => { setOnHide(true); setGradeDropDown(false) }}>Import student list</div>
                             </Dropdown.Item>
                             <Dropdown.Item >Another action</Dropdown.Item>
                             <Dropdown.Item >Something else</Dropdown.Item>
@@ -477,7 +497,7 @@ function GradeDetail({ items, setItems, getDetail }) {
 
                                             <Dropdown.Menu>
                                                 <Dropdown.Item >
-                                                    <div onClick={() => { setOnHide(!onHide); setGradeDropDown(true); setGrade(item) }}>Import grade list</div>
+                                                    <div onClick={() => { setOnHide(true); setGradeDropDown(true); setGrade(item) }}>Import grade list</div>
                                                 </Dropdown.Item>
                                                 <Dropdown.Item as="div">
                                                     <CSVLink style={{ textDecoration: "none", color: "#272343" }} asyncOnClick={true} data={templateData} headers={templateHeaders} onClick={() => handleTemplateData(index)} filename='GradeTemplate.csv'>Export template grade</CSVLink>
@@ -496,16 +516,15 @@ function GradeDetail({ items, setItems, getDetail }) {
                     </thead>
 
                     <tbody>
+                    { isLoading ? <Loading style={{left: '47%', width: '100px', position:'absolute'}} type={'spin'} color={'blue'}/> :<></>}
 
-
-                        {items.boardGrade && items.boardGrade.map((student, index) => (
+                        {items.gradeBoard && items.gradeBoard.map((student, index) => (
                             <tr key={student.studentID}>
 
-                                <td style={{ width: "100px", verticalAlign: "middle" }}>{student.studentID}</td>
+                                <td style={{ width: "100px", verticalAlign: "middle", cursor: 'pointer'}} onClick={() => {selectStudentID(student.studentID)}}>{student.studentID}</td>
                                 <td style={{ width: "200px", verticalAlign: "middle" }}>{student.name}</td>{sumTotal(student.studentID)}
                                 {/* {items.grades && items.grades.map((grade, index) => (
                                     <>
-                                       
                                     </>
                                 ))} */}
 
@@ -516,7 +535,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                                                 {point ? point.point : 0}
                                             </td>
                                             <div style={{ display: 'inline' }}></div>
-                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(point.idGrade, student.studentID)} />
+                                            <FontAwesomeIcon icon={faShare} onClick={() => sendPoint(point.grade._id, student.studentID)} />
                                         </div>
                                     </td>
                                 ))}
@@ -526,7 +545,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                     </tbody>
 
                 </Table>
-            </Container>
+            </Container>}
         </>
     );
 }

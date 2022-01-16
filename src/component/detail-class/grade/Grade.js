@@ -8,6 +8,8 @@ import {useState,useEffect} from 'react';
 import ItemGrade from './ItemGrade';
 import {useHistory} from 'react-router-dom';
 import {SortableContainer, arrayMove} from 'react-sortable-hoc';
+import Loading from 'react-loading'
+import Point from './Point';
 
 
 
@@ -16,6 +18,7 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
     const [name, setName] = useState();
     const [point, setPoint] = useState(0);
     const [grades, setGrades] = useState(items.grades);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -63,53 +66,56 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
     });
 
     useEffect(() => {
+        console.log(currentPoint);
         getDetail().then((result) => {
             setItems(result)
                     items=result;
                     setGrades(items.grades);
         }).catch(error => console.log('error', error));   
-                
     }, [])
 
-    function sort(){
+    async function sort(tmpGrades){
+        await setIsLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://class-room-midterm.herokuapp.com/grade/sort/' + items._id, {
+        fetch('http://localhost:3080/grade/sort/' + items._id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
-                grades: grades
+                grades: tmpGrades
             }),
             mode:"cors",
-            
         })
             .then(async(message) => {
                 if (message!=="success"){
-                    alert("Sort grade success.");
                     const result=await getDetail();
-                    setItems(result)
-                    items=result;                  
+                    await setItems(result)
+                    items=result;
+                    console.log(items)
+                    await setIsLoading(false);
                 }
                 else{
                     history.push('/signin')
                 }
-            }, (error) => {
+            }, async(error) => {
                 alert(error);
+                await setIsLoading(false);
             });
     }
 
-    function onSortEnd({oldIndex, newIndex}) {
-        setGrades(arrayMove(grades, oldIndex, newIndex));
-        
-      
+    async function onSortEnd({oldIndex, newIndex}) {
+        const tmp = await arrayMove(grades, oldIndex, newIndex)
+        await setGrades(tmp);
+        sort(tmp);
     }
-
 
 
     return (
         <div className="classdetail">
+            {!teacher ? <Point teacher ={teacher} gradeBoard={items.gradeBoard}/> 
+            :
             <Container>
                 <div className="classesdetail">
                     <div className="item-inner total-grade">
@@ -167,12 +173,12 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
                         </Form>
                     </div>:<></>
                     }
+                    { isLoading ? <Loading style={{left: '47%', width: '100px', position:'absolute'}} type={'spin'} color={'blue'}/> :<></>}
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
                         {grades ? <SortableList grades={grades} onSortEnd={onSortEnd}/> : <></>}
                     </div>
                 </div>
-            <button onClick={sort}>save</button>
-            </Container>
+            </Container>}
         </div>
     );
 }
