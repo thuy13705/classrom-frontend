@@ -14,7 +14,6 @@ function DetailClass() {
     const { id } = useParams()
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
-    const [currentPoint, setCurrentPoint]  = useState([]);
 
 
     const getDetail =async() => {
@@ -28,7 +27,7 @@ function DetailClass() {
             redirect: 'follow',
             mode: "cors",
         };
-        return await fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
+        return await fetch("http://localhost:3080/classes/" + id, requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");
@@ -42,21 +41,10 @@ function DetailClass() {
             })
     }
 
-    const setPCurrentPoint = async (result) =>{
-        if (result.boardGrade)
-        for (let i of result.boardGrade){
-            if (i.isFinal)
-                setCurrentPoint(i.point);
-        }
-    }
 
     const setItem = async (result) =>{
         await setItems(result);
         console.log(result)
-        await setCurrentPoint([]);
-        if (result)
-            await setPCurrentPoint(result);
-        console.log(currentPoint)
     }
 
     const handleData=async()=>{
@@ -80,7 +68,7 @@ function DetailClass() {
                 </Tab>
 
                 <Tab eventKey="classword" title="Classwork">
-                    <Grade items={items} setItems={setItems} getDetail={getDetail} teacher={teacher} currentPoint={currentPoint}></Grade>
+                    <Grade items={items} setItems={setItems} getDetail={getDetail} teacher={teacher}></Grade>
                 </Tab>
                 {
                     teacher ? <Tab eventKey="grade" title="Grade" >
