@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './index.css';
 
 function Register() {
@@ -7,6 +8,7 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
+    const history = useHistory();
 
     const clickSubmit = async (e) => {
         e.preventDefault();
@@ -32,6 +34,7 @@ function Register() {
                 }
                 else{
                     alert('Register success!');
+                    history.pushState("/");
                 }
             })
             .catch(error => console.log('error', error));

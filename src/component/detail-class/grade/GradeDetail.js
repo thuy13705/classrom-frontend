@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-    Container, Dropdown, Table, Form
+    Container, Dropdown, Table
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
@@ -8,10 +8,8 @@ import { CSVLink } from "react-csv";
 import { useHistory } from 'react-router-dom';
 import './../index.css'
 import ImportFile from './ImportFile';
-import { Button } from 'react-bootstrap';
 
 import { faShare } from '@fortawesome/free-solid-svg-icons'
-import { render } from '@testing-library/react';
 
 
 function GradeDetail({ items, setItems, getDetail }) {

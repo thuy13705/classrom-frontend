@@ -10,6 +10,15 @@
     background: #272343;
 }
 
+.noty-count{
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    border-radius: 70%;
+    padding: 1px 5px;
+    background-color: red;
+    font-size: 12px;
+}
 
 
 .header-item{

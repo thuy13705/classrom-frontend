@@ -1,7 +1,7 @@
 import './../index.css'
 import {Button} from 'react-bootstrap';
 import {useHistory, useParams} from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons'
 import {SortableElement} from 'react-sortable-hoc';
@@ -93,7 +93,7 @@ function ItemGrade({ teacher,grade, index,setItems,getDetail, setGrades, current
                 <div>
                     { edit ?<p><b>Name</b>: <input defaultValue={item.name} id="nameGrade" type="text"/></p> : <p><b>Name</b>: {item.name}</p> }
                     { edit ?<p><b>Point</b>: <input defaultValue={item.point} id="pointGrade" type="number" /></p>: <p><b>Point</b>: {item.point}</p>}
-                    { curPoint ? <p><b>Current Point</b>: {curPoint}</p>:<></>}
+                    { curPoint ? <p><b>Your Point</b>: {curPoint}</p>:<></>}
                 </div>
                 {teacher?<div>
                     { edit ? <Button className="btn-edit" onClick={()=>editGrade()}><FontAwesomeIcon icon={faCheck}/></Button>:<Button onClick={()=>handleEdit()} className="btn-edit"><FontAwesomeIcon icon={faEdit} /></Button>}

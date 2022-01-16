@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 
 
-function AddClassModal({ getListClass, setStudent, setTeacher, show, onHide }) {
+function AddClassModal({ isCreate,setIsCreate, show, onHide }) {
     const history = useHistory();
     const [name, setName] = useState();
     const [category, setCategory] = useState();
@@ -29,10 +29,7 @@ function AddClassModal({ getListClass, setStudent, setTeacher, show, onHide }) {
             .then(res => res.json())
             .then(async (result) => {
                 if (result !== "Unauthorized") {
-                    getListClass().then((items) => {
-                        setStudent(items.students);
-                        setTeacher(items.teachers);
-                    }).catch(error => console.log('error', error));  
+                    setIsCreate(!isCreate);
                 }
                 else {
                     history('/signin')

@@ -53,11 +53,7 @@ function Login({ setLoggedIn }) {
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", data.user._id)
                     setLoggedIn(data.token);
-                    if (history.action !== 'POP') {
-                        history.goBack();
-                    } else {
-                        history.push("/");
-                    }
+                    history.pushState("/");
                 }
             })
             .catch(error => {
