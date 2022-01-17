@@ -1,4 +1,5 @@
 
+
     export default async function postAPI(api,myBody) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
@@ -18,4 +19,4 @@
                 }
                 return await response.json();
             })
-    }
+    };

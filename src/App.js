@@ -7,16 +7,13 @@ import Register from './component/login-register/Register';
 import Header from './component/header/Header';
 import Footer from './component/footer/Footer';
 import Home from './component/home/Home';
-import HomeCreate from './component/home/HomeCreate';
 import { useState } from 'react';
 import { Redirect } from 'react-router';
 import DetailClass from './component/detail-class/DetailClass';
 import Profile from './component/user/Profile';
 import InviteStudent from './component/detail-class/invite/InviteStudent';
 import InviteTeacher from './component/detail-class/invite/InviteTeacher'
-import HomeJoin from './component/home/HomeJoin';
-
-
+import GradeReview from './component/detail-class/grade/GradeReview';
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
 
@@ -35,13 +32,16 @@ function App() {
             </Route>
 
             <Route exact path="/">
-              {loggedIn ? null : <Redirect to="/signin" />}
+              {loggedIn ? <Home></Home> : <Redirect to="/signin" />}
               {/* <Login setLoggedIn={setLoggedIn}></Login> */}
             </Route>
             <Route exact path="/register" component={Register} />
             {!loggedIn ? <Redirect to="/signin" /> : null}
             <Route path="/classdetail/:id">
               <DetailClass />
+            </Route>
+            <Route path="/notification/:idGrade/:studentID">
+              <GradeReview />
             </Route>
             <Route path="/invite/1/:id">
               <InviteStudent />
