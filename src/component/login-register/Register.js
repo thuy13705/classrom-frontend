@@ -67,7 +67,7 @@ function Register() {
             return false;
 
         if (password===confirmPass){
-            await fetch('https://class-room-midterm.herokuapp.com/users/sendMailCodeAccount?email='+email, {
+            await fetch('http://127.0.0.1:3080/users/sendMailCodeAccount?email='+email, {
                 method: 'Get',
                 headers: { 'Content-Type': 'application/json' },
                 mode: "cors",
