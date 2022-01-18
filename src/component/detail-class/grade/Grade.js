@@ -66,7 +66,6 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
     });
 
     useEffect(() => {
-        console.log(currentPoint);
         getDetail().then((result) => {
             setItems(result)
                     items=result;
@@ -114,7 +113,7 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
 
     return (
         <div className="classdetail" >
-            {!teacher ? <Point teacher ={teacher} gradeBoard={items.gradeBoard}/> 
+            {!teacher ? <Point teacher ={teacher} gradeBoard={items.gradeBoard} gradeList={items.grades}/> 
             :
             <Container>
                 <div className="classesdetail">
