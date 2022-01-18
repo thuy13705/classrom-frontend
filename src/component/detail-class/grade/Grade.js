@@ -113,7 +113,7 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
 
 
     return (
-        <div className="classdetail">
+        <div className="classdetail" >
             {!teacher ? <Point teacher ={teacher} gradeBoard={items.gradeBoard}/> 
             :
             <Container>

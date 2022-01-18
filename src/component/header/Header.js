@@ -19,9 +19,10 @@ function Header({ loggedIn, setLoggedIn }) {
         const api = "http://localhost:3080/notification"
         const result = await getAPI(api);
         if (result === "401") {
-            history.pushSate('/signin');
+            history.push('/signin');
         }
         else if (result) {
+            console.log(result)
             setNoti(result);
             getCount(result);
         }
@@ -76,17 +77,15 @@ function Header({ loggedIn, setLoggedIn }) {
                                 style={{ margin: "auto 10px", position: "relative", border: "none" }}>
                                 <FontAwesomeIcon
                                     style={{ fontSize: "20px", margin: "auto 0" }}
-                                    className="header-item"
                                     icon={faBell} />
-                                {count != 0 ? <div className="header-item noty-count">{count}</div> : <></>}
+                                {count != 0 ? <div className="noty-count">{count}</div> : <></>}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu style={{ maxHeight: "300px", overflow: "auto" }}>
 
                                 {notification && notification.map((noty, index) => (
-                                    <Dropdown.Item onClick={handleClickNoty(noty._id)} key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
-
-                                        <NavLink className="header-item" to={`/notification/${noty.grade._id}/${noty.userRecieve.studentID}`}>
+                                    <Dropdown.Item key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
+                                        <NavLink to={`/review/detail/${noty.grade._id}/${noty.userRecieve.studentID}`}>
                                             <p style={{ fontWeight: "bold", marginBottom: "3px" }}>{noty.user.name}</p>
                                             <p style={{ marginBottom: "0" }}>{noty.grade.name + " " + noty.description}</p>
                                         </NavLink>
@@ -107,7 +106,8 @@ function Header({ loggedIn, setLoggedIn }) {
     }
 
     useEffect(() => {
-        getNoti();
+        //hiện tại đang lỗi. mở ra nó bị xung đột.
+        // getNoti();
     }, [])
 
     return (

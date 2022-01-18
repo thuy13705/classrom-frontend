@@ -7,14 +7,14 @@ import { useHistory } from 'react-router-dom';
 import './index.css';
 
 import GoogleLogin from 'react-google-login';
-
-
 function Login({ setLoggedIn }) {
     const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState('');
+
+
 
     // const [isLogin, setLogin] = useState(localStorage.getItem("token") != null);
     // const [user, setUser] = useState(localStorage.getItem("user") != null);
@@ -50,8 +50,9 @@ function Login({ setLoggedIn }) {
                 } else {
                     const data = await response.json()
                     console.log(data);
-                    localStorage.setItem("token", data.token)
-                    localStorage.setItem("user", data.user._id)
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", data.user._id);
+                    localStorage.setItem("studentID", data.user.studentID)
                     setLoggedIn(data.token);
                     history.pushState("/");
                 }
@@ -122,7 +123,7 @@ function Login({ setLoggedIn }) {
                     </div>
 
                     <div style={{ textAlign: "center" }} className="form-group">
-                        <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
+                        <button type="submit" className="btn" onClick={clickSubmit}>Login</button>
                     </div>
 
                     <h6 style={{ textAlign: "center", marginTop: "10px" }}>Or</h6>

@@ -3,8 +3,10 @@
     export default async function postAPI(api,myBody) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
+        myheaders.append('Access-Control-Allow-Origin', '*');
+        myheaders.append('Access-Control-Allow-Credentials', 'true');
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -14,7 +16,7 @@
         };
         return await fetch(api, requestOptions)
             .then(async response => {
-                if (response.status === 401) {
+                if (response.status >= 400) {
                     return await "401";
                 }
                 return await response.json();

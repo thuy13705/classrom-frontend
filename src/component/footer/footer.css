@@ -12,13 +12,12 @@
 
 .column-layout {
     margin-top: 40px;
-   
     padding: 12px 0;
     width: 100%;
     background-color: #272343;
     display: flex;
     color: #fff;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
    
     
@@ -26,9 +25,9 @@
 
 
 .column-item {
-    padding: 0, 16px;
-    margin: 10px 50px;
-    text-align: left;
+    padding: 0 16px;
+    margin: 0 10px;
+    text-align: center;
 } 
 .column-one {
     flex: 1;
