@@ -149,7 +149,7 @@ function UserList  () {
                 <tr> 
                      <th><div style={{cursor: 'pointer'}} onClick={() => {setAccount(item); setIsDetail(true)}}>{item.username}</div></th>
                      <th>{item.name}</th>
-                     <th>{item.email}</th>
+                     <th><div style={{cursor: 'pointer'}} onClick={() => {setAccount(item); setIsDetail(true)}}>{item.email}</div></th>
                      <th>{item.date}</th>
                 </tr>
              ))}
