@@ -25,7 +25,7 @@ function CreateAdmin({show, setShow, getData }) {
             alert("Password cannot exceed 32 characters!!!");
             return false;
         }
-        if (password.length < 8)
+        if (password.length < 6)
         {
             alert("Password no shorter than 6 characters!!!");
             return false;
