@@ -14,7 +14,7 @@ function InviteClassByCode({isShowInvite, setIsShowInvite }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/classes/InviteByCode/'+code, {
+        await fetch('https://class-room-midterm.herokuapp.com/classes/InviteByCode/'+code, {
             method: 'get',
             headers: myHeaders,
             mode: "cors"

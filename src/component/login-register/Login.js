@@ -35,7 +35,7 @@ function Login({ setLoggedIn }) {
         e.preventDefault();
         setError("");
 
-        fetch('http://localhost:3080/users/login', {
+        fetch('https://class-room-midterm.herokuapp.com/users/login', {
             method: 'POST',
             headers: myheaders,
             body: JSON.stringify({
@@ -75,7 +75,7 @@ function Login({ setLoggedIn }) {
 
     const sendCode = async (e) => {
         e.preventDefault();
-        await fetch('http://localhost:3080/users/sendMailCodeForgetPassword?username=' + usernameForgot, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/sendMailCodeForgetPassword?username=' + usernameForgot, {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
             mode: "cors",
@@ -97,7 +97,7 @@ function Login({ setLoggedIn }) {
             return false;
         }
         e.preventDefault();
-        await fetch('http://localhost:3080/users/sendMailNewPassword?username=' + usernameForgot, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/sendMailNewPassword?username=' + usernameForgot, {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
             mode: "cors",
@@ -114,7 +114,7 @@ function Login({ setLoggedIn }) {
             ProviderId: 'Google'
         };
         console.log(googleResponse);
-        fetch('http://localhost:3080/users/loginGoogle', {
+        fetch('https://class-room-midterm.herokuapp.com/users/loginGoogle', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

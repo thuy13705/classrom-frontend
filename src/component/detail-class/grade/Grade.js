@@ -80,7 +80,7 @@ function Grade({teacher, items,setItems,getDetail,currentPoint}) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/sort/' + items._id, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/sort/' + items._id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({

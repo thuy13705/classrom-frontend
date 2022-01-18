@@ -28,7 +28,7 @@ function DetailClass() {
             redirect: 'follow',
             mode: "cors",
         };
-        return await fetch("http://localhost:3080/classes/" + id, requestOptions)
+        return await fetch("https://class-room-midterm.herokuapp.com/classes/" + id, requestOptions)
             .then(async response => {
                 if (response.status === 401) {
                     history.push("/signin");

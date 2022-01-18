@@ -20,7 +20,7 @@ function ClassList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name , {
+        await fetch('https://class-room-midterm.herokuapp.com/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name , {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
@@ -45,7 +45,7 @@ function ClassList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+sName , {
+        await fetch('https://class-room-midterm.herokuapp.com/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+sName , {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
@@ -70,7 +70,7 @@ function ClassList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sSort+'&name='+name , {
+        await fetch('https://class-room-midterm.herokuapp.com/classes/getAllClass?page='+page+'&perPage='+perPage+'&sort='+sSort+'&name='+name , {
             method: 'get',
             headers: myHeaders,
             mode: "cors",

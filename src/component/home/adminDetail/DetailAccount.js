@@ -23,7 +23,7 @@ function DetailAccount({show, setShow, item , getData}) {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:3080/users/changeStudentID/"+item._id, requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/users/changeStudentID/"+item._id, requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result === "Exist") {
@@ -51,7 +51,7 @@ function DetailAccount({show, setShow, item , getData}) {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:3080/users/"+str+"/"+item._id, requestOptions)
+        fetch("https://class-room-midterm.herokuapp.com/users/"+str+"/"+item._id, requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result === "success") {

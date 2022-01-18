@@ -48,7 +48,7 @@ function CreateAdmin({show, setShow, getData }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/users/createAdmin', {
+        await fetch('https://class-room-midterm.herokuapp.com/users/createAdmin', {
             method: 'Post',
             headers: myHeaders,
             body: JSON.stringify({

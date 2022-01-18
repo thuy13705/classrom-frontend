@@ -49,7 +49,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('http://localhost:3080/grade/markFinal/' + item._id, {
+            fetch('https://class-room-midterm.herokuapp.com/grade/markFinal/' + item._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -108,7 +108,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('http://localhost:3080/classes/gradeBoard/' + items._id, {
+            fetch('https://class-room-midterm.herokuapp.com/classes/gradeBoard/' + items._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -169,7 +169,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('http://localhost:3080/grade/pushAllPoint/' + grade._id, {
+            fetch('https://class-room-midterm.herokuapp.com/grade/pushAllPoint/' + grade._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -397,7 +397,7 @@ function GradeDetail({ items, setItems, getDetail }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('http://localhost:3080/grade/sendPoint/' + idGrade, {
+        fetch('https://class-room-midterm.herokuapp.com/grade/sendPoint/' + idGrade, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({

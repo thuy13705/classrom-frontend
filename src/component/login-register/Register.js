@@ -67,7 +67,7 @@ function Register() {
             return false;
 
         if (password===confirmPass){
-            await fetch('http://localhost:3080/users/sendMailCodeAccount?email='+email, {
+            await fetch('https://class-room-midterm.herokuapp.com/users/sendMailCodeAccount?email='+email, {
                 method: 'Get',
                 headers: { 'Content-Type': 'application/json' },
                 mode: "cors",
@@ -91,7 +91,7 @@ function Register() {
             return false;
         }
         e.preventDefault();
-        await fetch('http://localhost:3080/users/signup', {
+        await fetch('https://class-room-midterm.herokuapp.com/users/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

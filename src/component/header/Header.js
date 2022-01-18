@@ -16,7 +16,7 @@ function Header({ loggedIn, setLoggedIn }) {
     const [count, setCount] = useState(0);
 
     const getNoti = async () => {
-        const api = "http://localhost:3080/notification"
+        const api = "https://class-room-midterm.herokuapp.com/notification"
         const result = await getAPI(api);
         if (result === "401") {
             history.push('/signin');
@@ -39,7 +39,7 @@ function Header({ loggedIn, setLoggedIn }) {
     }
 
     const handleClickNoty = async (id) => {
-        const api = "http://localhost:3080/notification/edit/" + id
+        const api = "https://class-room-midterm.herokuapp.com/notification/edit/" + id
         const result = await postAPI(api, "");
         if (result === "401") {
             history.push('/signin');
@@ -106,8 +106,7 @@ function Header({ loggedIn, setLoggedIn }) {
     }
 
     useEffect(() => {
-        //hiện tại đang lỗi. mở ra nó bị xung đột.
-        // getNoti();
+        getNoti();
     }, [])
 
     return (

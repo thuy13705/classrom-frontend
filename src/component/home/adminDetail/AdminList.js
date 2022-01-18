@@ -28,7 +28,7 @@ function AdminList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name+'&email='+email, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name+'&email='+email, {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
@@ -49,7 +49,7 @@ function AdminList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name+'&email='+sEmail, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+name+'&email='+sEmail, {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
@@ -71,7 +71,7 @@ function AdminList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+sName+'&email='+email, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sort+'&name='+sName+'&email='+email, {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
@@ -93,7 +93,7 @@ function AdminList  () {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sSort+'&name='+name+'&email='+email, {
+        await fetch('https://class-room-midterm.herokuapp.com/users/listAccountAdmin?page='+page+'&perPage='+perPage+'&sort='+sSort+'&name='+name+'&email='+email, {
             method: 'get',
             headers: myHeaders,
             mode: "cors",
