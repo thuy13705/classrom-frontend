@@ -16,7 +16,7 @@ function AddClassModal({ isCreate,setIsCreate, show, onHide }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('https://class-room-midterm.herokuapp.com/classes', {
+        await fetch('http://localhost:3080/classes', {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -30,6 +30,7 @@ function AddClassModal({ isCreate,setIsCreate, show, onHide }) {
             .then(async (result) => {
                 if (result !== "Unauthorized") {
                     setIsCreate(!isCreate);
+                    onHide();
                 }
                 else {
                     history('/signin')

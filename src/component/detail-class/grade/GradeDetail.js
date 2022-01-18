@@ -431,14 +431,13 @@ function GradeDetail({ items, setItems, getDetail }) {
 
 
     useEffect(() => {
-        console.log(items);
         handleStudentsData();
         handleGradeData();
     }, [])
 
     return (
         <>
-            {onOne ? <Point teacher={true} gradeBoard={items.gradeBoard} studentID={stID} setOnOne={setOnOne}></Point>:
+            {onOne ? <Point teacher={true} gradeBoard={items.gradeBoard} gradeList={items.grades} studentID={stID} setOnOne={setOnOne}></Point>:
             <Container>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
                     <Dropdown style={{ marginRight: "10px" }}>

@@ -4,20 +4,30 @@ import {
 } from 'react-bootstrap';
 import {useState,useEffect} from 'react';
 
-function Point({ teacher, gradeBoard, studentID, setOnOne}) {
+function Point({ teacher, gradeBoard, gradeList, studentID, setOnOne}) {
     const [isMark, setIsMark ] = useState(false);
-    const [grades, setGrades] = useState(()=>{
-        if (!gradeBoard || gradeBoard.length < 1) return null;
+    const [grades, setGrades] = useState();
+
+    const setG = () => {
+        if (gradeBoard && gradeBoard.length > 0){
         if (teacher)
             for (let _gradeBoard of gradeBoard)
                 if (_gradeBoard.studentID === studentID)
                     return _gradeBoard;
         for (let _gradeBoard of gradeBoard)
-            if (_gradeBoard.isOwner)
+            if (_gradeBoard.isOwner){
                 return _gradeBoard;
-    });
-
+            }
+        }
+        let gr = {studentID: '', name: '', point: []};
+        if (gradeList && gradeList.length>0)
+        for (let grade of gradeList){
+            gr.point.push({grade: grade, point: 0});
+        }
+        return gr;
+    }
     useEffect(() =>{
+        setGrades(setG);
         if (teacher)
             setIsMark(true);
         else
