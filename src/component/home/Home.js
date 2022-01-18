@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, useHistory } from 'react-router-dom';
 import AddClassdModal from './AddClassModal';
 import Card from './Card';
@@ -28,8 +28,6 @@ function Home() {
         }
         else if (result) {
             setStudent(result.students);
-
-            setTeacher(result.teachers);
           
         }
     }
@@ -65,6 +63,7 @@ function Home() {
                         </NavLink>
                     ))}
                 </Row>
+
 
                 {/* class join */}
                 <h3 style={{ textAlign: "left", marginTop: "50px" }}>My Participatory Classes</h3>

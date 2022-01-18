@@ -7,6 +7,7 @@ import InfoClass from './InfoClass';
 import checkTeacher from '../../helper/helper';
 import Grade from './grade/Grade';
 import GradeDetail from './grade/GradeDetail';
+import Review from './grade/review/Review';
 
 
 function DetailClass() {
@@ -75,6 +76,9 @@ function DetailClass() {
                         <GradeDetail items={items} setItems={setItem} getDetail={getDetail} ></GradeDetail>
                     </Tab> : <></>
                 }
+                 <Tab eventKey="review" title="Review">
+                     <Review items={items} teacher={teacher}></Review>
+                </Tab>
             </Tabs>
         </div>
 

@@ -2,12 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Container, Nav, Dropdown } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
-import './header.css';
 import getAPI from '../../helper/getAPI';
 import postAPI from '../../helper/postAPI';
+import './header.css';
+
 
 function Header({ loggedIn, setLoggedIn }) {
     const history = useHistory();
@@ -21,8 +22,8 @@ function Header({ loggedIn, setLoggedIn }) {
             history.push('/signin');
         }
         else if (result) {
+            console.log(result)
             setNoti(result);
-            console.log(result);
             getCount(result);
         }
     }
@@ -37,9 +38,9 @@ function Header({ loggedIn, setLoggedIn }) {
         setCount(tmpCount);
     }
 
-    const handleClickNoty= async(id)=>{
-        const api = "http://localhost:3080/notification/edit/"+id
-        const result = await postAPI(api,"");
+    const handleClickNoty = async (id) => {
+        const api = "http://localhost:3080/notification/edit/" + id
+        const result = await postAPI(api, "");
         if (result === "401") {
             history.push('/signin');
         }
@@ -71,23 +72,24 @@ function Header({ loggedIn, setLoggedIn }) {
                 <Nav>
                     <Nav.Item >
                         <Dropdown>
-                            <Dropdown.Toggle 
+                            <Dropdown.Toggle className="btn-noty"
                                 id="dropdown-autoclose-true"
-                                style={{ margin: "auto 10px", position: "relative", border: "none"}}>
+                                style={{ margin: "auto 10px", position: "relative", border: "none" }}>
                                 <FontAwesomeIcon
                                     style={{ fontSize: "20px", margin: "auto 0" }}
-                                    className="header-item"
                                     icon={faBell} />
-                                {count !== 0 ? <div className="header-item noty-count">{count}</div> : <></>}
+                                {count != 0 ? <div className="noty-count">{count}</div> : <></>}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu style={{maxHeight:"300px",overflow:"auto"}}>
-                                  
-                                {notification && notification.map((noty,index)=>(
-                                     <Dropdown.Item onClick={handleClickNoty(noty._id)} key={noty._id+index} href="#" style={{margin:"5px 0px",border:"0.5px solid rgba(0,0,0,.1)",borderRadius:"5px"}}>
-                                         <p style={{fontWeight:"bold",marginBottom:"3px"}}>{noty.user.name}</p>
-                                         <p style={{marginBottom:"0"}}>{noty.grade.name+" "+ noty.description}</p>
-                                         </Dropdown.Item>
+                            <Dropdown.Menu style={{ maxHeight: "300px", overflow: "auto" }}>
+
+                                {notification && notification.map((noty, index) => (
+                                    <Dropdown.Item key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
+                                        <NavLink to={`/review/detail/${noty.grade._id}/${noty.userRecieve.studentID}`}>
+                                            <p style={{ fontWeight: "bold", marginBottom: "3px" }}>{noty.user.name}</p>
+                                            <p style={{ marginBottom: "0" }}>{noty.grade.name + " " + noty.description}</p>
+                                        </NavLink>
+                                    </Dropdown.Item>
                                 ))}
                             </Dropdown.Menu>
                         </Dropdown>
@@ -104,7 +106,8 @@ function Header({ loggedIn, setLoggedIn }) {
     }
 
     useEffect(() => {
-        getNoti();
+        //hiện tại đang lỗi. mở ra nó bị xung đột.
+        // getNoti();
     }, [])
 
     return (

@@ -40,7 +40,7 @@ h5{
 }
 
 .classdetail{
-    min-height: 500px;
+    /* min-height: 500px; */
 }
 
 table,th.list,tr {
@@ -54,9 +54,6 @@ tr.title-list{
     border-bottom: 2px solid black;
 }
 
-table{
-    margin-bottom: 40px!important;
-}
 
 .classdetail .classesdetail{
     padding: 30px 200px;
@@ -130,11 +127,21 @@ table{
 
 .item-inner {
     max-width: 500px;
-    margin: auto;
+    margin:20px auto;
     background: #fff;
     box-shadow: 1px 2px 10px rgb(73 76 136 / 20%);
     padding: 20px;
     border-radius: 5px;
+    transition: all .3s;
+  }
+
+  .item-cmt {
+    max-width: 500px;
+    margin:10px auto;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #272343;
     transition: all .3s;
   }
 
@@ -151,7 +158,6 @@ table{
   .total-grade {
     padding: 10px 50px;
     background-image: linear-gradient(rgba(12, 17, 121, 0.2),rgba(72, 39, 190, 0.2));
-    margin-bottom: 40px;
   }
 
 .btn-edit{
@@ -187,7 +193,7 @@ table{
     }
 
     .classdetail .classesdetail{
-        padding: 30px 100px;
+        padding: 30px 50px;
     }
   }
 

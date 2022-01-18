@@ -20,6 +20,11 @@
     font-size: 12px;
 }
 
+.btn-noty:hover{
+    color: #272343;
+    background-color: #fff;
+    border: 1px  solid #272343;
+}
 
 .header-item{
     text-decoration: none;
@@ -27,5 +32,5 @@
 }
 
 .header-item:hover{
-    color: rgb(206, 200, 200);
+    color: #DBDAFF;
 }

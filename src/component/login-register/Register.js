@@ -10,39 +10,61 @@ function Register() {
     const [confirmPass, setConfirmPass] = useState('');
     const history = useHistory();
 
+    const formEmailValidate=(email)=>{
+        var regExp = /^[A-Za-z][\w$.]+@[\w]+\.\w+$/;
+        if (regExp.test(email)) 
+            return true;
+          else 
+            return false;
+      }
+
+      const formEmailPassword=(password)=>{
+        var regExp = /? =. {8,}/;
+        if (regExp.test(password)) 
+            return true;
+          else 
+            return false;
+      }
+
     const clickSubmit = async (e) => {
         e.preventDefault();
-
-        if (password===confirmPass){
-            await fetch('https://class-room-midterm.herokuapp.com/users/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password
-                }),
-                mode: "cors",
-            }) .then(response => response.text())
-            .then(result =>{
-                console.log(result)
-                if (result==="username"){
-                    alert("Username exist!");
-                }
-                else if (result==="Email"){
-                    alert("Email exist!");
-                }
-                else{
-                    alert('Register success!');
-                    history.pushState("/");
-                }
-            })
-            .catch(error => console.log('error', error));
-        
+        const validatePass=formEmailPassword(password);
+        const validateEmail=formEmailValidate(email);
+        if (validateEmail && validatePass){
+            if (password===confirmPass){
+                await fetch('https://class-room-midterm.herokuapp.com/users/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password
+                    }),
+                    mode: "cors",
+                }) .then(response => response.text())
+                .then(result =>{
+                    console.log(result)
+                    if (result==="username"){
+                        alert("Username exist!");
+                    }
+                    else if (result==="Email"){
+                        alert("Email exist!");
+                    }
+                    else{
+                        alert('Register success!');
+                        history.pushState("/");
+                    }
+                })
+                .catch(error => console.log('error', error));
+            
+            }
+            else{
+                alert("Password does not match!!!")
+            }
         }
-        else{
-            alert("Password does not match!!!")
-        }
+      else {
+          alert("Password and email must be at least 8 characters.")
+      }
 
     }
 
