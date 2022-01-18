@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './index.css';
 import { useHistory } from 'react-router-dom';
 
@@ -9,11 +10,35 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
+
     const [enterCode, setEnterCode] = useState(false);
     const [code, setCode] = useState("");
     const [eCode, setECode] = useState("");
 
+    const history = useHistory();
+
+    const formEmailValidate=(email)=>{
+        var regExp = /^[A-Za-z][\w$.]+@[\w]+\.\w+$/;
+        if (regExp.test(email)) 
+            return true;
+          else 
+            return false;
+      }
+
+      const formEmailPassword=(password)=>{
+        var regExp = /? =. {8,}/;
+        if (regExp.test(password)) 
+            return true;
+          else 
+            return false;
+      }
+
     const checkUser = () =>{
+      if (!formEmailValidate(email))
+        {
+            alert("Email is wrong.");
+            return false;
+        }
         if (username.length > 32)
         {
             alert("Username cannot exceed 32 characters!!!");
@@ -43,6 +68,7 @@ function Register() {
             }
             return true;
     }
+    
     const clickSubmit = async (e) => {
         e.preventDefault();
 
@@ -100,6 +126,7 @@ function Register() {
                 }
             })
             .catch(error => console.log('error', error));
+        
     }
 
     return (

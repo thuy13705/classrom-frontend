@@ -10,7 +10,21 @@
     background: #272343;
 }
 
+.noty-count{
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    border-radius: 70%;
+    padding: 1px 5px;
+    background-color: red;
+    font-size: 12px;
+}
 
+.btn-noty:hover{
+    color: #272343;
+    background-color: #fff;
+    border: 1px  solid #272343;
+}
 
 .header-item{
     text-decoration: none;
@@ -18,5 +32,5 @@
 }
 
 .header-item:hover{
-    color: rgb(206, 200, 200);
+    color: #DBDAFF;
 }

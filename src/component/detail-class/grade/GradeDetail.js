@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-    Container, Dropdown, Table, Form
+    Container, Dropdown, Table
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
@@ -49,7 +49,7 @@ function GradeDetail({ items, setItems, getDetail }) {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Content-Type", "application/json");
-            fetch('https://class-room-midterm.herokuapp.com/grade/markFinal/' + item._id, {
+            fetch('http://localhost:3080/grade/markFinal/' + item._id, {
                 method: 'POST',
                 headers: myHeaders,
                 body: JSON.stringify({
@@ -279,7 +279,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                     tmp["average"] = sumTotalGrade(student.studentID);
                     if (items.grades) {
                         const dataTmp = items.grades.map((grade, index) => {
-                            let obj = studentPoint(student.studentID, grade.pointStudent)
+                            let obj = studentPoint(student.studentID, grade.studentPointList)
                             if (obj) {
                                 tmp[`${index}`] = obj.point;
                             }
@@ -302,7 +302,7 @@ function GradeDetail({ items, setItems, getDetail }) {
                     tmp["average"] = sumTotalGrade(student.studentID);
                     if (items.grades) {
                         const dataTmp = items.grades.map((grade, index) => {
-                            let obj = studentPoint(student.studentID, grade.pointStudent)
+                            let obj = studentPoint(student.studentID, grade.studentPointList)
                             if (obj) {
                                 tmp[`${index}`] = obj.point;
                             }
@@ -450,8 +450,6 @@ function GradeDetail({ items, setItems, getDetail }) {
                             <Dropdown.Item >
                                 <div onClick={() => { setOnHide(true); setGradeDropDown(false) }}>Import student list</div>
                             </Dropdown.Item>
-                            <Dropdown.Item >Another action</Dropdown.Item>
-                            <Dropdown.Item >Something else</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown>

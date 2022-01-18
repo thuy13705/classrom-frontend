@@ -14,34 +14,38 @@ import Profile from './component/user/Profile';
 import InviteStudent from './component/detail-class/invite/InviteStudent';
 import InviteTeacher from './component/detail-class/invite/InviteTeacher'
 
+import GradeReview from './component/detail-class/grade/review/GradeReview';
+import AllGradeReview from './component/detail-class/grade/review/AllGradeReview';
 
 function App() {
-  // localStorage.removeItem("token");
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
-  // const [user, setUser] = useState(localStorage.getItem("user"));
-
 
   return (
     <BrowserRouter>
-
+    {/* Chuyển các router bị lỗi. */}
       <div className="App">
         <>
           <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           <Switch>
-          <Route exact path="/"><Home /></Route>
-
+            <Route exact path="/"><Home /></Route>
             <Route exact path="/signin">
               <Login setLoggedIn={setLoggedIn}></Login>
             </Route>
-         
+
             <Route exact path="/">
-              {loggedIn ? null: <Redirect to="/signin" />}
+              {loggedIn ? <Home></Home> : <Redirect to="/signin" />}
               {/* <Login setLoggedIn={setLoggedIn}></Login> */}
             </Route>
             <Route exact path="/register" component={Register} />
             {!loggedIn ? <Redirect to="/signin" /> : null}
             <Route path="/classdetail/:id">
               <DetailClass />
+            </Route>
+            <Route path="/review/detail/:idGrade/:studentID">
+              <GradeReview />
+            </Route>
+            <Route path="/review/detail/:idGrade/">
+              <AllGradeReview/>
             </Route>
             <Route path="/invite/1/:id">
               <InviteStudent />

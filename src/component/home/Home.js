@@ -9,6 +9,7 @@ import getAPI from '../../helper/getAPI';
 import InviteClassByCode from './InviteClassByCode';
 import Admin from './Admin';
 
+
 import './index.css';
 
 function Home() {
@@ -33,7 +34,9 @@ function Home() {
         else if (result) {
             setStudent(result.students);
 
+
             setTeacher(result.teachers);
+
           
         }
     }
@@ -83,6 +86,7 @@ function Home() {
                         </NavLink>
                     ))}
                 </Row>
+
 
                 {/* class join */}
                 <h3 style={{ textAlign: "left", marginTop: "50px" }}>My Participatory Classes</h3>
