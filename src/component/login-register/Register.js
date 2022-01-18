@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import './index.css';
-import { useHistory } from 'react-router-dom';
 
 function Register() {
     const history = useHistory();
@@ -15,7 +14,6 @@ function Register() {
     const [code, setCode] = useState("");
     const [eCode, setECode] = useState("");
 
-    const history = useHistory();
 
     const formEmailValidate=(email)=>{
         var regExp = /^[A-Za-z][\w$.]+@[\w]+\.\w+$/;
@@ -25,13 +23,6 @@ function Register() {
             return false;
       }
 
-      const formEmailPassword=(password)=>{
-        var regExp = /? =. {8,}/;
-        if (regExp.test(password)) 
-            return true;
-          else 
-            return false;
-      }
 
     const checkUser = () =>{
       if (!formEmailValidate(email))
