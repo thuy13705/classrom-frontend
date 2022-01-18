@@ -28,7 +28,7 @@ function Home() {
         }
         else if (result) {
             setStudent(result.students);
-            setTeacher(result.teachers);
+          
         }
     }
        
