@@ -28,6 +28,7 @@ function ShowPeopleList({ teacher, items }) {
                 <div className="info">
                     <h3>{items.nameClass}</h3>
                     <h6>{items.category} _ room: {items.room}</h6>
+                    <h6>Code: {items.code}</h6>
                 </div>
 
                 {teacher ? <Accordion flush>

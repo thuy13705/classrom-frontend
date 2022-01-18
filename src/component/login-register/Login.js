@@ -13,6 +13,12 @@ function Login({ setLoggedIn }) {
     const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [eCode, setECode] = useState('');
+    const [code, setCode] = useState('');
+    const [isForgot, setIsForgot] = useState(false);
+    const [usernameForgot, setUsernameForgot] = useState('');
+    const [isUsernameForgot, setIsUsernameForgot] = useState(false);
+
     // const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState('');
 
@@ -29,7 +35,7 @@ function Login({ setLoggedIn }) {
         e.preventDefault();
         setError("");
 
-        fetch('https://class-room-midterm.herokuapp.com/users/login', {
+        fetch('http://localhost:3080/users/login', {
             method: 'POST',
             headers: myheaders,
             body: JSON.stringify({
@@ -52,6 +58,7 @@ function Login({ setLoggedIn }) {
                     console.log(data);
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", data.user._id)
+                    localStorage.setItem("roleUser", data.user.role)
                     setLoggedIn(data.token);
                     if (history.action !== 'POP') {
                         history.goBack();
@@ -67,6 +74,38 @@ function Login({ setLoggedIn }) {
 
     };
 
+    const sendCode = async (e) => {
+            e.preventDefault();
+            await fetch('http://localhost:3080/users/sendMailCodeForgetPassword?username='+usernameForgot, {
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: "cors",
+                }) .then(async response =>{
+                    const rs = await response.json();
+                    if (rs.code != ''){
+                    await setECode(rs.code);
+                    await setIsUsernameForgot(true);
+                    }
+                    else
+                    alert('username not exists')
+                })
+                .catch(error => console.log('error', error));
+        }
+
+    const clickSubmitCode = async (e) => {
+        if (code!= eCode)
+            {
+                alert('wrong code');
+                return false;
+            }
+            e.preventDefault();
+            await fetch('http://localhost:3080/users/sendMailNewPassword?username='+usernameForgot, {
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: "cors",
+                }) .then(async response =>{await setIsForgot(false); setCode('')})
+                .catch(error => console.log('error', error));
+        }
 
     const responseGoogle = (response) => {
         const googleResponse = {
@@ -77,7 +116,7 @@ function Login({ setLoggedIn }) {
             ProviderId: 'Google'
         };
         console.log(googleResponse);
-        fetch('https://class-room-midterm.herokuapp.com/users/loginGoogle', {
+        fetch('http://localhost:3080/users/loginGoogle', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -92,12 +131,11 @@ function Login({ setLoggedIn }) {
                 const data = await res.json()
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("user", data.user._id)
+                localStorage.setItem("roleUser", data.user.role)
                 setLoggedIn(data.token);
-                if (history.action !== 'POP') {
-                    history.goBack();
-                } else {
+                
                     history.push("/");
-                }
+                
 
 
             }
@@ -107,6 +145,41 @@ function Login({ setLoggedIn }) {
 
     }
     return (
+        <>
+        { isForgot ? 
+        <>
+        { !isUsernameForgot ?
+        <form>
+        <h2>Classroom</h2>
+        <div className="auth-wrapper">
+            <div className="auth-inner">
+                <h3>Forgot</h3>
+                <div className="form-group">
+                    <label>Username</label>
+                    <input value={usernameForgot} className="form-control" placeholder="Enter your username" onChange={e => setUsernameForgot(e.target.value)} />
+                </div>
+                <button type="submit" className="btn btn-block" onClick={sendCode}>Get code</button>
+                <button className="btn btn-block" onClick={()=>{setIsForgot(false); setCode(""); setIsUsernameForgot(false); setUsernameForgot('')}}>Cancel</button>
+            </div>
+        </div>
+        </form>
+        :
+        <form>
+            <h2>Classroom</h2>
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <h3>Forgot</h3>
+                    <div className="form-group">
+                        <label>Please enter the confirmation code from email</label>
+                        <input value={code} className="form-control" placeholder="Enter your code" onChange={e => setCode(e.target.value)} />
+                    </div>
+                    <button type="submit" className="btn btn-block" onClick={clickSubmitCode}>Confirm</button>
+                    <button className="btn btn-block" onClick={()=>{setIsForgot(false); setCode("");setIsUsernameForgot(false); setUsernameForgot('')}}>Cancel</button>
+                </div>
+            </div>
+        </form>}
+        </>
+        :
         <form style={{marginTop:"50px"}}>
             <div className="auth-wrapper">
                 <div className="auth-inner">
@@ -127,6 +200,7 @@ function Login({ setLoggedIn }) {
 
                     <div style={{ textAlign: "center" }} className="form-group">
                         <button type="submit" className="btn btn-block" onClick={clickSubmit}>Login</button>
+                        <button type="submit" className="btn btn-block" onClick={()=>setIsForgot(true)}>Forgot password</button>
                     </div>
 
                     <h6 style={{ textAlign: "center", marginTop: "10px" }}>Or</h6>
@@ -145,7 +219,8 @@ function Login({ setLoggedIn }) {
                     </p>
                 </div>
             </div>
-        </form>
+        </form>}
+        </>
     )
 }
 

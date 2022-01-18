@@ -1,38 +1,63 @@
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import './index.css';
+import { useHistory } from 'react-router-dom';
 
 function Register() {
+    const history = useHistory();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
+    const [enterCode, setEnterCode] = useState(false);
+    const [code, setCode] = useState("");
+    const [eCode, setECode] = useState("");
 
+    const checkUser = () =>{
+        if (username.length > 32)
+        {
+            alert("Username cannot exceed 32 characters!!!");
+            return false;
+        }
+        for (let i = 0; i< username.length ;i++)
+        if (!("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_").includes(username[i]))
+            {
+                alert("Username illegal!!!");
+                return false;
+            }
+        if (password.length > 32)
+        {
+            alert("Password cannot exceed 32 characters!!!");
+            return false;
+        }
+        if (password.length < 8)
+        {
+            alert("Password no shorter than 6 characters!!!");
+            return false;
+        }
+        for (let i = 0; i< password.length ;i++)
+        if (!("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_").includes(password[i]))
+            {
+                alert("Password illegal!!!");
+                return false;
+            }
+            return true;
+    }
     const clickSubmit = async (e) => {
         e.preventDefault();
 
+        if (!checkUser())
+            return false;
+
         if (password===confirmPass){
-            await fetch('https://class-room-midterm.herokuapp.com/users/signup', {
-                method: 'POST',
+            await fetch('http://localhost:3080/users/sendMailCodeAccount?email='+email, {
+                method: 'Get',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password
-                }),
                 mode: "cors",
-            }) .then(response => response.text())
-            .then(result =>{
-                console.log(result)
-                if (result==="username"){
-                    alert("Username exist!");
-                }
-                else if (result==="Email"){
-                    alert("Email exist!");
-                }
-                else{
-                    alert('Register success!');
-                }
+            }) .then(async response => {
+                const result = await response.json();
+                await setECode(result.code);
+                await setEnterCode(true);
             })
             .catch(error => console.log('error', error));
         
@@ -42,8 +67,59 @@ function Register() {
         }
 
     }
+    const clickSubmitCode = async (e) => {
+    if (code!= eCode)
+        {
+            alert('wrong code');
+            return false;
+        }
+        e.preventDefault();
+        await fetch('http://localhost:3080/users/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                }),
+                mode: "cors",
+            }) .then(response => response.text())
+            .then(async result =>{
+                console.log(result)
+                if (result==="username"){
+                    alert("Username exist!");
+                }
+                else if (result==="Email"){
+                    alert("Email exist!");
+                }
+                else{
+                    alert('Register success!');
+                    await setEnterCode(false);
+                    await setCode("");
+                    history.push("/login");
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
 
     return (
+        <>
+        { enterCode ? 
+        <form>
+            <h2>Classroom</h2>
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <h3>Register</h3>
+                    <div className="form-group">
+                        <label>Please enter the confirmation code from email</label>
+                        <input value={code} className="form-control" placeholder="Enter your code" onChange={e => setCode(e.target.value)} />
+                    </div>
+                    <button type="submit" className="btn btn-block" onClick={clickSubmitCode}>Confirm</button>
+                    <button className="btn btn-block" onClick={()=>{setEnterCode(false); setCode("")}}>Cancel</button>
+                </div>
+            </div>
+        </form>
+        :
         <form>
             <h2>Classroom</h2>
             <div className="auth-wrapper">
@@ -74,7 +150,8 @@ function Register() {
                     </p>
                 </div>
             </div>
-        </form>
+        </form>}
+        </>
     )
 }
 

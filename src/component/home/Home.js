@@ -1,71 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, useHistory } from 'react-router-dom';
 import AddClassdModal from './AddClassModal';
 import Card from './Card';
+import getAPI from '../../helper/getAPI';
+import InviteClassByCode from './InviteClassByCode';
+import Admin from './Admin';
 
 import './index.css';
 
 function Home() {
     const history = useHistory();
+    const [isCreate, setIsCreate] = useState(true);
     const [students, setStudent] = useState([]);
     const [teachers, setTeacher] = useState([]);
     const [modalShow, setModalShow] = useState(false);
+    const [isShowInvite, setIsShowInvite] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const handleModalShow = () => {
         setModalShow(!modalShow);
     }
-
-    const getListClass = async () => {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow',
-            mode: "cors",
-        };
-
-        return await fetch("https://class-room-midterm.herokuapp.com/classes", requestOptions)
-            .then(async response => {
-                if (response.status === 401) {
-                    history.push("/signin");
-                }
-                else {
-                    return await response.json();
-                }
-            })
-            .catch(error => console.log('error', error));
-    }
+        
     const handleData = async () => {
-        const result = await getListClass();
-        setStudent(result.students);
-        setTeacher(result.teachers);
+        const api="https://class-room-midterm.herokuapp.com/classes";
+        const result = await getAPI(api);
+        if (result === "401") {
+            history.push('/signin');
+        }
+        else if (result) {
+            setStudent(result.students);
+
+            setTeacher(result.teachers);
+          
+        }
     }
+       
     useEffect(() => {
         handleData();
-    }, []);
+        if (localStorage.getItem('roleUser') === 'admin'){
+            setIsAdmin(true);
+        }
+        else setIsAdmin(false);
+    }, [isCreate]);
 
     return (
+        <>
+        {isAdmin ? <Admin></Admin>
+        :
         <Container >
             <div className="home">
+
+                {/* add class*/}
                 <div style={{ display: "flex", justifyContent: "end" }}>
                     <Button variant="primary" onClick={() => handleModalShow()}>
                         <FontAwesomeIcon icon={faPlus} />Add
                     </Button>
                     <AddClassdModal
-                        getListClass={getListClass}
-                        setStudent={setStudent}
-                        setTeacher={setTeacher}
+                        isCreate={isCreate}
+                        setIsCreate={setIsCreate}
                         show={modalShow}
                         onHide={() => handleModalShow()}
                     />
+                    <Button variant="primary" onClick={() => setIsShowInvite(true)}>
+                        Invite By Code
+                    </Button>
+                    <InviteClassByCode
+                        isShowInvite={isShowInvite}
+                        setIsShowInvite={setIsShowInvite}
+                    />
                 </div>
 
+                {/* my class */}
                 <h3 style={{ textAlign: "left", marginTop: "10px" }}>My Classes</h3>
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {teachers && teachers.map((item, index) => (
@@ -76,6 +84,7 @@ function Home() {
                     ))}
                 </Row>
 
+                {/* class join */}
                 <h3 style={{ textAlign: "left", marginTop: "50px" }}>My Participatory Classes</h3>
 
                 <Row xs={1} md={2} lg={3} className="g-4">
@@ -88,10 +97,12 @@ function Home() {
                         </Col>
                     ))}
                 </Row>
+
             </div>
 
 
-        </Container>
+        </Container>}
+        </>
 
     )
 }
