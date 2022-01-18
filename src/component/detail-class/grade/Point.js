@@ -79,7 +79,7 @@ function Point({ teacher, gradeBoard, studentID, setOnOne}) {
                             :<></>}
                             </tbody>
                         </Table>
-                        <Button onClick={back} background_color={'blue'}>back</Button>
+                        {teacher? <Button onClick={back} background_color={'blue'}>back</Button>:<></>}
                     </div>
                 </div>
             </Container>

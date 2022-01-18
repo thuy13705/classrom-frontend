@@ -1,3 +1,4 @@
+
 export default async function getAPI(api) {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
@@ -21,3 +22,4 @@ export default async function getAPI(api) {
         })
         .catch(error => console.log('error', error));
 };
+

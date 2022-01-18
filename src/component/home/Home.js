@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, useHistory } from 'react-router-dom';
 import AddClassdModal from './AddClassModal';
 import Card from './Card';
 import getAPI from '../../helper/getAPI';
+import InviteClassByCode from './InviteClassByCode';
+import Admin from './Admin';
+
 
 import './index.css';
 
@@ -15,6 +18,8 @@ function Home() {
     const [students, setStudent] = useState([]);
     const [teachers, setTeacher] = useState([]);
     const [modalShow, setModalShow] = useState(false);
+    const [isShowInvite, setIsShowInvite] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const handleModalShow = () => {
         setModalShow(!modalShow);
@@ -28,15 +33,26 @@ function Home() {
         }
         else if (result) {
             setStudent(result.students);
+
+
+            setTeacher(result.teachers);
+
           
         }
     }
        
     useEffect(() => {
         handleData();
+        if (localStorage.getItem('roleUser') === 'admin'){
+            setIsAdmin(true);
+        }
+        else setIsAdmin(false);
     }, [isCreate]);
 
     return (
+        <>
+        {isAdmin ? <Admin></Admin>
+        :
         <Container >
             <div className="home">
 
@@ -50,6 +66,13 @@ function Home() {
                         setIsCreate={setIsCreate}
                         show={modalShow}
                         onHide={() => handleModalShow()}
+                    />
+                    <Button variant="primary" onClick={() => setIsShowInvite(true)}>
+                        Invite By Code
+                    </Button>
+                    <InviteClassByCode
+                        isShowInvite={isShowInvite}
+                        setIsShowInvite={setIsShowInvite}
                     />
                 </div>
 
@@ -82,7 +105,8 @@ function Home() {
             </div>
 
 
-        </Container>
+        </Container>}
+        </>
 
     )
 }
