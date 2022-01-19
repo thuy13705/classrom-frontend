@@ -55,7 +55,7 @@ function Point({ teacher, gradeBoard, gradeList, studentID, setOnOne}) {
                                 </td>
                             </thead>
                             <tbody>
-                            {grades ?<> <tr key={grades.studentID}>
+                            {grades ?<> <tr key={grades._id}>
                                         <td className="list">
                                             Student ID:
                                         </td>
