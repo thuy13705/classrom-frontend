@@ -9,37 +9,24 @@ function AddReviewModal({ isReview,setReview,gradeReview, show, onHide }) {
     const history = useHistory();
     const handleSubmit =async (e) => {
         e.preventDefault();
-        const api = "http://localhost:3080/review"
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-        myHeaders.append("Accept", "application/json");
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        const urlencoded = new URLSearchParams();
-        urlencoded.append("grade", gradeReview.grade._id);
-        urlencoded.append("studentID",gradeReview.student.studentID );
-        urlencoded.append("expectation", e.target.expectation.value);
-        urlencoded.append("explanation", e.target.explanation.value);
-
-        await fetch(api, {
-            method: 'POST',
-            headers: myHeaders,
-            body: urlencoded,
-            mode: "cors"
-        })
-            .then(res => res.json())
-            .then(async (result) => {
-                console.log(result);
-                if (result.status !== 401) {
-                    setReview(!isReview);
-                    alert("success.");                }
-                else {
-                    history.push('/signin')
-                }
-            }, (error) => {
-                alert(error);
-            });
+        const api = "https://class-room-midterm.herokuapp.com/review";
+        const result = await postAPI(api,{grade:gradeReview.grade._id,
+                                            studentID:gradeReview.student.studentID,
+                                            expectation:e.target.expectation.value,
+                                            explanation:e.target.explanation.value});
+        if (result === "401") {
+            history.push('/signin');
+        }
+        else if (result) {
+            if (result==="success"){
+                alert("success.");
+                setReview(!isReview);
+            }else{
+                alert("Failed");
+            }
+        }
     }
+
     return (
         <Modal
             show={show}
@@ -54,7 +41,7 @@ function AddReviewModal({ isReview,setReview,gradeReview, show, onHide }) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={async(e)=>await handleSubmit()}>
                     <Form.Group className="mb-3" controlId="name"  >
                         <Form.Label>Grade Name:</Form.Label>
                         <Form.Control type="text" required value={gradeReview.grade.name}/>

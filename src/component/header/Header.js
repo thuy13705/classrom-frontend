@@ -16,15 +16,17 @@ function Header({ loggedIn, setLoggedIn }) {
     const [count, setCount] = useState(0);
 
     const getNoti = async () => {
-        const api = "https://class-room-midterm.herokuapp.com/notification"
-        const result = await getAPI(api);
-        if (result === "401") {
-            history.push('/signin');
-        }
-        else if (result) {
-            console.log(result)
-            setNoti(result);
-            getCount(result);
+        if (loggedIn){
+            const api = "https://class-room-midterm.herokuapp.com/notification"
+            const result = await getAPI(api);
+            if (result === "401") {
+                history.push('/signin');
+            }
+            else if (result) {
+                console.log(result)
+                setNoti(result);
+                getCount(result);
+            }
         }
     }
 
@@ -85,7 +87,7 @@ function Header({ loggedIn, setLoggedIn }) {
 
                                 {notification && notification.map((noty, index) => (
                                     <Dropdown.Item key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
-                                        <NavLink to={`/review/detail/${noty.grade._id}/${noty.userRecieve.studentID}`}>
+                                        <NavLink to={`/review/detail/${noty.grade._id}`}>
                                             <p style={{ fontWeight: "bold", marginBottom: "3px" }}>{noty.user.name}</p>
                                             <p style={{ marginBottom: "0" }}>{noty.grade.name + " " + noty.description}</p>
                                         </NavLink>
@@ -106,8 +108,10 @@ function Header({ loggedIn, setLoggedIn }) {
     }
 
     useEffect(() => {
-        getNoti();
-    }, [])
+        if (loggedIn){
+       getNoti();
+        }
+    }, [loggedIn])
 
     return (
         <div>
