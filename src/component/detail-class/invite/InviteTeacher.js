@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useHistory } from "react-router-dom"
+import Home from '../../home/Home';
 
 
 import './../index.css'
@@ -44,12 +45,9 @@ function InviteTeacher() {
         getInviteStudent();
     }, [])
 
-    // return (
-    //     <div >
-    //       {/* { error?<DetailClass></DetailClass> :<><Login nameurl={link}></Login></>
-    //       } */}
-    //     </div>
-    // );
+    return (
+        <Home/>
+    );
 }
 
 export default InviteTeacher;
