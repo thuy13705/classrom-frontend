@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Container, Table, Button, Accordion, Form } from 'react-bootstrap';
@@ -15,37 +16,40 @@ function AllGradeReview() {
 
     const sendComment = async (e, idReview) => {
         e.preventDefault();
-        console.log(e.target);
-        const api = "http://127.0.0.1:3080/review/comment/" + idReview;
+        const api = "https://class-room-midterm.herokuapp.com/review/comment/" + idReview;
         const result = await postAPI(api, { message: e.target.cmt.value });
+        console.log(result);
         if (result === "401") {
             history.push('/signin');
         }
         else if (result) {
-            if (result.message === "success") {
+            if (result=== "success") {
+                alert("success.")
                 setIsComment(!isComment);
+            }
+            else{
+                alert("Failed");
             }
         }
     }
 
     const responseReview = async (idReview) => {
-        const api = "http://127.0.0.1:3080/review/response/" + idReview;
+        const api = "https://class-room-midterm.herokuapp.com/review/response/" + idReview;
         const result = await postAPI(api,{});
         if (result === "401") {
             history.push('/signin');
         }
         else if (result) {
-            if (result.message === "success") {
+            if (result="success"){
                 alert("success.")
+            }else{
+                alert("Failed");
             }
         }
     }
 
     const getGradeReview = async () => {
-
-        console.log(gradeReview);
-
-        const api = "http://127.0.0.1:3080/review/detail/" + params.idGrade;
+        const api = "https://class-room-midterm.herokuapp.com/review/detail/" + params.idGrade;
         const result = await getAPI(api);
         if (result === "401") {
             history.push('/signin');
@@ -95,14 +99,14 @@ function AllGradeReview() {
                         {gradeReview.reviews.length != 0 ?
                             <>{
                                 gradeReview.reviews.map((item) => (
-                                    <div className="item-inner ">
+                                    <div  key={item._id}className="item-inner ">
                                         <div style={{ textAlign: "left" }}>
                                             <p><b>StudentID</b>: {item.studentID}</p>
                                             <p><b>Expectation</b>: {item.expectation}</p>
                                             <p><b>Current Point</b>: {item.grade.point}</p>
                                             <p><b>Explanation</b>: {item.explanation}</p>
                                             <p><b>Finished</b>: {item.status.toString()}</p>
-                                            {!item.status ? <Button onClick={()=>responseReview(item._id)}>
+                                            {!item.status ? <Button onClick={async ()=>await responseReview(item._id)}>
                                                 <FontAwesomeIcon icon={faCheck} />
                                             </Button> : <></>
                                             }
@@ -113,7 +117,7 @@ function AllGradeReview() {
                                                 <Accordion.Body>
                                                     <div>
                                                         {item.comment && item.comment.map((cmt, index) => (
-                                                            <div className="item-cmt">
+                                                            <div key={index+cmt._id} className="item-cmt">
                                                                 <div style={{ textAlign: "left" }}>
                                                                     <p><b>Name</b>: {cmt.user.name}</p>
                                                                     <p><b>Message</b>: {cmt.message}</p>
@@ -122,7 +126,7 @@ function AllGradeReview() {
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    <Form onSubmit={(e) => sendComment(e, item._id)}
+                                                    <Form onSubmit={async(e) => {await sendComment(e, item._id)}}
                                                         style={{ display: "flex", justifyContent: "space-around" }}>
                                                         <Form.Group controlId="cmt"  >
                                                             <Form.Control type="text" required />

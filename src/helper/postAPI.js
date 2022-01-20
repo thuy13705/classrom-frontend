@@ -16,6 +16,7 @@
         };
         return await fetch(api, requestOptions)
             .then(async response => {
+                console.log(response);
                 if (response.status >= 400) {
                     return await "401";
                 }

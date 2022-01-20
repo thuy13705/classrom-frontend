@@ -44,7 +44,8 @@ function Review({ teacher, items }) {
                     </div>
 
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
-                        {grades && grades.map((item,index)=>( <>{
+                        {grades && grades.map((item,index)=>( 
+                        <>{
                             teacher ? <NavLink key={index+item._id} to={`/review/detail/${item._id}`}>
                                 <div className="item-inner item-grade">
                                     <div>
@@ -52,14 +53,15 @@ function Review({ teacher, items }) {
                                         <p><b>Point</b>: {item.point}</p>
                                     </div>
                                 </div>
-                            </NavLink> : <>{studentID != ""}?<NavLink  key={index+item._id} to={`/review/detail/${item._id}/${studentID}`}>
+                            </NavLink> : <>{studentID != ""?
+                            <NavLink  key={index+item._id} to={`/review/detail/${item._id}/${studentID}`}>
                                 <div className="item-inner item-grade">
                                     <div>
                                         <p><b>Name</b>: {item.name}</p>
                                         <p><b>Point</b>: {item.point}</p>
                                     </div>
                                 </div>
-                            </NavLink>:<></></>
+                            </NavLink>:<></>}</>
                         }</>))}
                     </div>
                 </div>

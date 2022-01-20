@@ -46,12 +46,12 @@ function InviteStudent() {
         getInviteStudent();
     }, [])
 
-    return (
-        <div >
-          {/* { error?<DetailClass></DetailClass> :<><Login nameurl={link}></Login></>
-          } */}
-        </div>
-    );
+    // return (
+    //     <div >
+    //       {/* { error?<DetailClass></DetailClass> :<><Login nameurl={link}></Login></>
+    //       } */}
+    //     </div>
+    // );
 }
 
 export default InviteStudent;

@@ -19,13 +19,13 @@ function GradeReview() {
     const sendComment = async (e, idReview) => {
         e.preventDefault();
         console.log(e.target);
-        const api = "http://127.0.0.1:3080/review/comment/"+idReview;
+        const api = "https://class-room-midterm.herokuapp.com/review/comment/"+idReview;
         const result = await postAPI(api,{message:e.target.cmt.value});
         if (result === "401") {
             history.push('/signin');
         }
         else if (result) {
-            if (result.message === "success") {
+            if (result === "success") {
                 setIsComment(!isComment);
             }
         }
@@ -38,7 +38,7 @@ function GradeReview() {
     const getGradeReview = async () => {
         console.log(gradeReview);
 
-        const api = "http://127.0.0.1:3080/review/detail/" + params.idGrade + "/" + params.studentID;
+        const api = "https://class-room-midterm.herokuapp.com/review/detail/" + params.idGrade + "/" + params.studentID;
         const result = await getAPI(api);
         if (result === "401") {
             history.push('/signin');
@@ -57,7 +57,7 @@ function GradeReview() {
     return (
         <div className="classdetail">
             <Container style={{ minHeight: "400px" }}>
-                {Object.keys(gradeReview).length != 0 ?
+                {Object.keys(gradeReview).length != 0?
                     <div className="classesdetail" >
 
                         <div className="item-inner total-grade" style={{ marginBottom: "40px" }}>
@@ -114,7 +114,7 @@ function GradeReview() {
                             <>{
                                 gradeReview.reviews.map((item) => (
 
-                                    <div className="item-inner ">
+                                    <div  key={item._id} className="item-inner ">
                                         <div style={{textAlign:"left"}}>
                                             <p><b>Expectation</b>: {item.expectation}</p>
                                             <p><b>Current Point</b>: {item.grade.point}</p>
@@ -131,7 +131,6 @@ function GradeReview() {
                                                             <div style={{ textAlign: "left"}}>
                                                             <p><b>Name</b>: {cmt.user.name}</p>
                                                             <p><b>Message</b>: {cmt.message}</p>
-                                                            {/* <p style={{fonSize:"12px"}}>Time: {new Date(cmt.time)}</p> */}
                                                         </div>
                                                        </div>
                                                     ))}

@@ -16,7 +16,7 @@ function AddClassModal({ isCreate,setIsCreate, show, onHide }) {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        await fetch('http://localhost:3080/classes', {
+        await fetch('/classes', {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({

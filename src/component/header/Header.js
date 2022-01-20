@@ -16,15 +16,17 @@ function Header({ loggedIn, setLoggedIn }) {
     const [count, setCount] = useState(0);
 
     const getNoti = async () => {
-        const api = "https://class-room-midterm.herokuapp.com/notification"
-        const result = await getAPI(api);
-        if (result === "401") {
-            history.push('/signin');
-        }
-        else if (result) {
-            console.log(result)
-            setNoti(result);
-            getCount(result);
+        if (loggedIn) {
+            const api = "https://class-room-midterm.herokuapp.com/notification"
+            const result = await getAPI(api);
+            if (result === "401") {
+                history.push('/signin');
+            }
+            else if (result) {
+                console.log(result)
+                setNoti(result);
+                getCount(result);
+            }
         }
     }
 
@@ -52,62 +54,11 @@ function Header({ loggedIn, setLoggedIn }) {
         history.push('/signin');
     }
 
-    let menu;
-    if (!loggedIn) {
-
-        menu = (
-            <Nav>
-                <Nav.Link>
-                    <Link className="header-item" to='/signin'>Login</Link>
-                </Nav.Link>
-                <Nav.Link>
-                    <Link className="header-item" to='/register'>Register</Link>
-                </Nav.Link>
-            </Nav>
-        )
-    } else {
-        menu = (
-            <Nav>
-
-                <Nav>
-                    <Nav.Item >
-                        <Dropdown>
-                            <Dropdown.Toggle className="btn-noty"
-                                id="dropdown-autoclose-true"
-                                style={{ margin: "auto 10px", position: "relative", border: "none" }}>
-                                <FontAwesomeIcon
-                                    style={{ fontSize: "20px", margin: "auto 0" }}
-                                    icon={faBell} />
-                                {count != 0 ? <div className="noty-count">{count}</div> : <></>}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu style={{ maxHeight: "300px", overflow: "auto" }}>
-
-                                {notification && notification.map((noty, index) => (
-                                    <Dropdown.Item key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
-                                        <NavLink to={`/review/detail/${noty.grade._id}/${noty.userRecieve.studentID}`}>
-                                            <p style={{ fontWeight: "bold", marginBottom: "3px" }}>{noty.user.name}</p>
-                                            <p style={{ marginBottom: "0" }}>{noty.grade.name + " " + noty.description}</p>
-                                        </NavLink>
-                                    </Dropdown.Item>
-                                ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Nav.Item>
-                    <Nav.Link>
-                        <Link className="header-item" to='/profile'>My info</Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                        <Link className="header-item" onClick={logout}>Logout</Link>
-                    </Nav.Link>
-                </Nav>
-            </Nav>
-        )
-    }
-
     useEffect(() => {
-        getNoti();
-    }, [])
+        if (loggedIn) {
+            getNoti();
+        }
+    }, [loggedIn])
 
     return (
         <div>
@@ -119,7 +70,48 @@ function Header({ loggedIn, setLoggedIn }) {
                         <Nav className="me-auto">
                         </Nav>
                         <Nav>
-                            {menu}
+                            {!loggedIn ? <Nav>
+                                <Nav.Link>
+                                    <Link className="header-item" to='/signin'>Login</Link>
+                                </Nav.Link>
+                                <Nav.Link>
+                                    <Link className="header-item" to='/register'>Register</Link>
+                                </Nav.Link>
+                            </Nav> : <Nav>
+
+                                <Nav>
+                                    <Nav.Item >
+                                        <Dropdown>
+                                            <Dropdown.Toggle className="btn-noty"
+                                                id="dropdown-autoclose-true"
+                                                style={{ margin: "auto 10px", position: "relative", border: "none" }}>
+                                                <FontAwesomeIcon
+                                                    style={{ fontSize: "20px", margin: "auto 0" }}
+                                                    icon={faBell} />
+                                                {count != 0 ? <div className="noty-count">{count}</div> : <></>}
+                                            </Dropdown.Toggle>
+
+                                            <Dropdown.Menu style={{ maxHeight: "300px", overflow: "auto" }}>
+
+                                                {notification && notification.map((noty, index) => (
+                                                    <Dropdown.Item key={noty._id + index} href="#" style={{ margin: "5px 0px", border: "0.5px solid rgba(0,0,0,.1)", borderRadius: "5px" }}>
+                                                        <NavLink to={`/review/detail/${noty.grade._id}`}>
+                                                            <p style={{ fontWeight: "bold", marginBottom: "3px" }}>{noty.user.name}</p>
+                                                            <p style={{ marginBottom: "0" }}>{noty.grade.name + " " + noty.description}</p>
+                                                        </NavLink>
+                                                    </Dropdown.Item>
+                                                ))}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Nav.Item>
+                                    <Nav.Link>
+                                        <Link className="header-item" to='/profile'>My info</Link>
+                                    </Nav.Link>
+                                    <Nav.Link>
+                                        <Link className="header-item" onClick={logout}>Logout</Link>
+                                    </Nav.Link>
+                                </Nav>
+                            </Nav>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
