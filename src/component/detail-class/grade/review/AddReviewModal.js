@@ -7,28 +7,26 @@ import postAPI from '../../../../helper/postAPI';
 
 function AddReviewModal({ isReview,setReview,gradeReview, show, onHide }) {
     const history = useHistory();
+
     const handleSubmit =async (e) => {
         e.preventDefault();
-        if (e.target.currentPoint.value<=e.target.gradePoint.value){
-            const api = "https://class-room-midterm.herokuapp.com/review";
-            const result = await postAPI(api,{grade:gradeReview.grade._id,
-                                                studentID:gradeReview.student.studentID,
-                                                expectation:e.target.expectation.value,
-                                                explanation:e.target.explanation.value});
-            if (result === "401") {
-                history.push('/signin');
-            }
-            else if (result) {
-                if (result==="success"){
-                    alert("success.");
-                    setReview(!isReview);
-                }else{
-                    alert("Failed");
-                }
-            }
+        console.log("huhu");
+        const api = "https://class-room-midterm.herokuapp.com/review";
+        const result = await postAPI(api,{grade:gradeReview.grade._id,
+                                            studentID:gradeReview.student.studentID,
+                                            expectation:e.target.expectation.value,
+                                            explanation:e.target.explanation.value});
+        if (result === "401") {
+            history.push('/signin');
         }
-        else{
-            alert("Current Point greater than grade point.");
+        else if (result) {
+            console.log(result);
+            if (result==="success"){
+                alert("success.");
+                setReview(!isReview);
+            }else{
+                alert("Failed");
+            }
         }
     }
 

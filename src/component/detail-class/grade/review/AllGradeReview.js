@@ -55,7 +55,6 @@ function AllGradeReview() {
             history.push('/signin');
         }
         else if (result) {
-            console.log(result);
             if (result.message === "success") {
                 setGradeReview(result);
             }
