@@ -153,9 +153,9 @@ function Profile() {
                                     <Nav.Item>
                                         <Nav.Link eventKey="first">My Account</Nav.Link>
                                     </Nav.Item>
-                                    <Nav.Item>
+                                   {items.username!==""? <Nav.Item>
                                         <Nav.Link eventKey="second">Change Password</Nav.Link>
-                                    </Nav.Item>
+                                    </Nav.Item>:<></>}
                                     <Nav.Item>
                                         <Nav.Link eventKey="third">Change Profile</Nav.Link>
                                     </Nav.Item>

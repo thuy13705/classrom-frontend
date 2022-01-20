@@ -14,7 +14,7 @@ import Error from '../error/Error';
 function DetailClass() {
     const history = useHistory();
     const { id } = useParams();
-    const [roleUser,setRoleUser]=useState("no");
+    const [roleUser,setRoleUser]=useState("not");
     const [items, setItems] = useState({});
     const [teacher, setTeacher] = useState(false);
 
@@ -46,12 +46,10 @@ function DetailClass() {
         }
         else if (result) {
             console.log(result);
-            if (result!=="not"){
-                setRoleUser(result);
-            }
+            await setRoleUser(result);
+            return result;
         }
     }
-
 
     const setItem = async (result) =>{
         await setItems(result);
@@ -64,9 +62,9 @@ function DetailClass() {
         setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
     }
 
-    useEffect( () => {
-        getRole();
-        if (roleUser!=="not"){
+    useEffect(async () => {
+        const role = await getRole();
+        if (role!=="not"){
             handleData();
         }
     }, [])
@@ -90,7 +88,7 @@ function DetailClass() {
                </Tab> : <></>
            }
             <Tab eventKey="review" title="Review">
-                <Review items={items} teacher={teacher}></Review>
+                <Review items={items} roleUser={roleUser} teacher={teacher}></Review>
            </Tab>
        </Tabs>
    </div>

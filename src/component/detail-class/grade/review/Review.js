@@ -6,7 +6,7 @@ import {
 // import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { NavLink} from 'react-router-dom';
 
-function Review({ teacher, items }) {
+function Review({teacher, items }) {
     const grades=items.grades;
     const studentID = localStorage.getItem("studentID");
 
@@ -46,7 +46,7 @@ function Review({ teacher, items }) {
                     <div className="item-inner grades" style={{ marginTop: "40px" }}>
                         {grades && grades.map((item,index)=>( 
                         <>{
-                            teacher ? <NavLink key={index+item._id} to={`/review/detail/${item._id}`}>
+                            teacher? <NavLink key={index+item._id} to={`/review/detail/${item._id}`}>
                                 <div className="item-inner item-grade">
                                     <div>
                                         <p><b>Name</b>: {item.name}</p>

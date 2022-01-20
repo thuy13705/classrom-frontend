@@ -9,21 +9,26 @@ function AddReviewModal({ isReview,setReview,gradeReview, show, onHide }) {
     const history = useHistory();
     const handleSubmit =async (e) => {
         e.preventDefault();
-        const api = "https://class-room-midterm.herokuapp.com/review";
-        const result = await postAPI(api,{grade:gradeReview.grade._id,
-                                            studentID:gradeReview.student.studentID,
-                                            expectation:e.target.expectation.value,
-                                            explanation:e.target.explanation.value});
-        if (result === "401") {
-            history.push('/signin');
-        }
-        else if (result) {
-            if (result==="success"){
-                alert("success.");
-                setReview(!isReview);
-            }else{
-                alert("Failed");
+        if (e.target.currentPoint.value<=e.target.gradePoint.value){
+            const api = "https://class-room-midterm.herokuapp.com/review";
+            const result = await postAPI(api,{grade:gradeReview.grade._id,
+                                                studentID:gradeReview.student.studentID,
+                                                expectation:e.target.expectation.value,
+                                                explanation:e.target.explanation.value});
+            if (result === "401") {
+                history.push('/signin');
             }
+            else if (result) {
+                if (result==="success"){
+                    alert("success.");
+                    setReview(!isReview);
+                }else{
+                    alert("Failed");
+                }
+            }
+        }
+        else{
+            alert("Current Point greater than grade point.");
         }
     }
 
@@ -45,6 +50,10 @@ function AddReviewModal({ isReview,setReview,gradeReview, show, onHide }) {
                     <Form.Group className="mb-3" controlId="name"  >
                         <Form.Label>Grade Name:</Form.Label>
                         <Form.Control type="text" required value={gradeReview.grade.name}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="gradePoint" >
+                        <Form.Label>Grade Point:</Form.Label>
+                        <Form.Control type="text" required value={gradeReview.grade.point} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="currentPoint" >
                         <Form.Label>Current Point:</Form.Label>

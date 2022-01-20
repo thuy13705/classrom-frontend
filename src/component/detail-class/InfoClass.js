@@ -38,6 +38,7 @@ function ShowPeopleList({ teacher, items }) {
                             <div className="info-link">
                                 <p> <b>Invite Teacher: </b>{teacherLink}</p>
                                 <p> <b>Invite Student: </b>{studentLink}</p>
+                                <p> <b>Code:</b>{items.code}</p>
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>

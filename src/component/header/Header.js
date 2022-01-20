@@ -16,7 +16,7 @@ function Header({ loggedIn, setLoggedIn }) {
     const [count, setCount] = useState(0);
 
     const getNoti = async () => {
-        if (loggedIn) {
+        if (loggedIn){
             const api = "https://class-room-midterm.herokuapp.com/notification"
             const result = await getAPI(api);
             if (result === "401") {
@@ -50,13 +50,14 @@ function Header({ loggedIn, setLoggedIn }) {
 
     const logout = () => {
         localStorage.clear();
-        setLoggedIn(null)
+        setLoggedIn(null);
         history.push('/signin');
     }
 
+
     useEffect(() => {
-        if (loggedIn) {
-            getNoti();
+        if (loggedIn){
+       getNoti();
         }
     }, [loggedIn])
 
