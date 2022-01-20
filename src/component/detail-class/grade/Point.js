@@ -22,7 +22,9 @@ function Point({ teacher, gradeBoard, gradeList, studentID, setOnOne}) {
         let gr = {studentID: '', name: '', point: []};
         if (gradeList && gradeList.length>0)
         for (let grade of gradeList){
-            gr.point.push({grade: grade, point: 0});
+            let _grade = grade;
+            _grade.isFinal = false;
+            gr.point.push({grade: _grade, point: 0});
         }
         return gr;
     }
@@ -32,7 +34,7 @@ function Point({ teacher, gradeBoard, gradeList, studentID, setOnOne}) {
             setIsMark(true);
         else
             setIsMark(false);
-    },[]);
+    })
 
     const back =() =>{
         setOnOne(false);

@@ -46,9 +46,8 @@ function DetailClass() {
         }
         else if (result) {
             console.log(result);
-            if (result!=="not"){
-                setRoleUser(result);
-            }
+            await setRoleUser(result);
+            return result;
         }
     }
 
@@ -64,9 +63,9 @@ function DetailClass() {
         setTeacher(checkTeacher(result.teachers, localStorage.getItem("user")));
     }
 
-    useEffect( () => {
-        getRole();
-        if (roleUser!=="not"){
+    useEffect(async () => {
+        const role = await getRole();
+        if (role!=="not"){
             handleData();
         }
     }, [])
