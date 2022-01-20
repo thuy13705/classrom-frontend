@@ -57,7 +57,8 @@ function App() {
             </Route>
             </>:<Redirect to="/signin"/>}
           </Switch>
-          <Footer /></>
+         
+         </>
 
 
       </div>
