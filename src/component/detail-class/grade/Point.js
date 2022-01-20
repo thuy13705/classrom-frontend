@@ -34,7 +34,7 @@ function Point({ teacher, gradeBoard, gradeList, studentID, setOnOne}) {
             setIsMark(true);
         else
             setIsMark(false);
-    },[]);
+    });
 
     const back =() =>{
         setOnOne(false);
