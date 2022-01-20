@@ -47,13 +47,12 @@ function ItemGrade({ teacher, grade, index, setItems, getDetail, setGrades }) {
     }
 
 
-    const editGrade = (e) => {
-        e.preventDefault();
+    const editGrade = async () => {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://class-room-midterm.herokuapp.com/grade/edit/' + id, {
+        await fetch('https://class-room-midterm.herokuapp.com/grade/edit/' + id, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({
